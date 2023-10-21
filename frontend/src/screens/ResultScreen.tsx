@@ -1,10 +1,14 @@
 // search result
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Button, View } from "react-native";
 
-export default function SearchPage({navigation}) {
+export default function ResultScreen({navigation}) {
     return (
         <View>
+            <Button 
+            title="Go Back"
+            onPress={ () => navigation.navigate('Search')}
+            />
         </View>
     )
 }
