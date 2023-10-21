@@ -1,15 +1,11 @@
 const express = require('express');
-
 const app = express();
 const port = 3000;
+const mapRoutes = required("./src/routes/mapsRoutes");
 
 // Middleware to parse JSON data
 app.use(express.json());
-
-// Simple route to say hello
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.use('/api', mapsRoutes);
 
 // Start the Express server
 app.listen(port, () => {
