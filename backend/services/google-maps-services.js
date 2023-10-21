@@ -3,7 +3,7 @@ const {Client} = require("@googlemaps/google-maps-services-js");
 const client = new Client({});
 
 client
-  .elevation({
+  .placesNearby({
     params: {
       locations: [{ lat: 45, lng: -110 }],
       key: process.env.GOOGLE_MAPS_API_KEY,
