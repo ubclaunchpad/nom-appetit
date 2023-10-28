@@ -35,8 +35,12 @@ export default function SignupScreen({navigation}) {
                 <Text style={style.text_header2}>Nom Appetit</Text>
             </Text>
 
+            <View style={{ alignItems: 'flex-end' }}>
+                <Text style={{ color: '#004643', textDecorationLine: 'underline', fontSize: 16 }}>Forgot Password?</Text>
+            </View>
+
             <Button 
-            title="Test Sign In"
+            title="Sign In"
             onPress={ () => navigation.navigate('Home')}
             />
         </View>
