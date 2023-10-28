@@ -62,10 +62,6 @@ export default function SignupScreen({navigation}) {
                 </Text>
             </Pressable>
             
-            <Button 
-            title="Sign In"
-            onPress={ () => navigation.navigate('Home')}
-            />
         </View>
         
     )
