@@ -1,6 +1,6 @@
 // signup page
 import React, { useEffect, useState } from "react";
-import { Button, View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
 
 const style = StyleSheet.create({
 
@@ -19,6 +19,15 @@ const style = StyleSheet.create({
     text_header2 : {
         color: '#FFFCF1',
         fontSize: 32,
+    },
+    input: {
+        backgroundColor: 'white',
+        borderColor: '#e8e8e8',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginVertical: 5
     }
 });
 
@@ -39,6 +48,20 @@ export default function SignupScreen({navigation}) {
                 <Text style={{ color: '#004643', textDecorationLine: 'underline', fontSize: 16 }}>Forgot Password?</Text>
             </View>
 
+            <TextInput style={style.input}
+                placeholder='Username'
+            />
+            <TextInput style={style.input}
+                placeholder='Password'
+            />
+            
+
+            <Pressable onPress={ () => navigation.navigate('Home')}>
+                <Text>
+                    Sign In
+                </Text>
+            </Pressable>
+            
             <Button 
             title="Sign In"
             onPress={ () => navigation.navigate('Home')}
