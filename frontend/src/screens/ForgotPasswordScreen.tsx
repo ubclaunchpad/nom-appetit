@@ -1,6 +1,7 @@
-// signup page
+// Forgot Password page
 import React, { useEffect, useState } from "react";
 import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+
 
 const style = StyleSheet.create({
 
@@ -20,6 +21,23 @@ const style = StyleSheet.create({
         color: '#FFFCF1',
         fontSize: 32,
     },
+
+    text1 : {
+        color: '#004643',
+        fontSize: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+    },
+
+    text2 : {
+        color: '#004643',
+        fontSize: 18,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center', 
+    },
+
     input: {
         backgroundColor: 'white',
         borderColor: '#e8e8e8',
@@ -31,9 +49,8 @@ const style = StyleSheet.create({
     }
 });
 
-export default function SignupScreen({navigation}) {
+export default function ForgotPasswordScreen({navigation}) {
     return (
-        
         <View style={style.container}>
 
             <Text style={style.text_header1}>
@@ -44,24 +61,22 @@ export default function SignupScreen({navigation}) {
                 <Text style={style.text_header2}>Nom Appetit</Text>
             </Text>
 
+            <Text style={style.text1}>
+                <Text style={style.text1}>Reset Password</Text>
+            </Text>
+
+            <Text style={style.text2}>
+                <Text style={style.text2}>Instructions to reset your password will be sent to your email</Text>
+            </Text>
+
             <TextInput style={style.input}
-                placeholder='Username'
-            />
-            <TextInput style={style.input}
-                placeholder='Password'
+                placeholder='Registered Email Address'
             />
 
-            <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Forgot Password')}>
-                <Text style={{ color: '#004643', textDecorationLine: 'underline', fontSize: 16 }}>Forgot Password?</Text>
-            </Pressable>
-            
-            <Pressable onPress={ () => navigation.navigate('Home')}>
-                <Text>
-                    Sign In
-                </Text>
+            <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Send Email')}>
+                <Text style={{ color: '#004643', fontSize: 16 }}>Send Email</Text>
             </Pressable>
             
         </View>
-        
     )
 }
