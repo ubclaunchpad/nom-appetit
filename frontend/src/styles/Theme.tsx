@@ -9,5 +9,13 @@ export const ButtonText = {
     fontSize: 16,
     lineHeight: 21,
     letterSpacing: 0.25,
-    color: 'white'
+    color: 'white',
+}
+
+export const RestaurantInfoContainer = {
+    elevation: 40,
+    borderRadius: 30,
+    height: 500,
+    width: 300,
+    backgroundColor: "#fffcf2",
 }
