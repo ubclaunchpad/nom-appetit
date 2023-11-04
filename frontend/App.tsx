@@ -26,7 +26,6 @@ export default function App() {
         <Stack.Screen name="Signup" component={Signup}/>
         <Stack.Screen name="Suggest" component={Suggest}/>
         <Stack.Screen name="View" component={ViewRestaurantScreen}/>
-
       </Stack.Navigator>
     </NavigationContainer>
   );
