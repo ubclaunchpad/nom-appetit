@@ -1,6 +1,6 @@
 // home page
 import React, { useEffect, useState } from "react";
-import { Button, View, StyleSheet, Text, TextInput } from "react-native";
+import { Pressable, View, StyleSheet, Text, TextInput } from "react-native";
 
 export default function HomeScreen({navigation}) {
     return (
@@ -14,15 +14,20 @@ export default function HomeScreen({navigation}) {
                 style={style.input}
                 placeholder="Search for a restaurant"
             />
-
-            <Button 
-            title="View Saved Places"
-            onPress={ () => navigation.navigate('View')}
-            />
-            <Button 
-            title="Suggest a New Place"
-            onPress={ () => navigation.navigate('Suggest')}
-            />
+            <View style={{flexDirection: "row"}}>
+                <Pressable style={style.button} onPress={ () => navigation.navigate('View')}>
+                    <Text>
+                        "Saved Restaurant"
+                    </Text>
+                </Pressable>
+            
+                
+                <Pressable style={style.button} onPress={ () => navigation.navigate('Suggest')}>
+                    <Text>
+                        "Make a Suggestion"
+                    </Text>
+                </Pressable> 
+            </View>
         </View>
     )
 }
@@ -38,7 +43,7 @@ const style = StyleSheet.create({
 
     text_header1 : {
         color: '#FFFCF1',
-        fontSize: 16,
+        fontSize: 20,
     },
 
     text_header2 : {
@@ -49,9 +54,17 @@ const style = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#e8e8e8',
         borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
+        borderRadius: 10,
+        paddingHorizontal: 20,
         paddingVertical: 10,
-        marginVertical: 5
+        marginVertical: 10
+    },
+
+    button: {
+        backgroundColor: "#F3CC91",
+        color: "#004643",
+        paddingHorizontal: 25,
+        paddingVertical: 50,
+        marginHorizontal: 5
     }
 });
