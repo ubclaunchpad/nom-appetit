@@ -1,6 +1,7 @@
 // signup page
 import React, { useEffect, useState } from "react";
-import { Button, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Button from "../components/Button";
 
 export default function SignupScreen({navigation}) {
     return (
@@ -12,3 +13,4 @@ export default function SignupScreen({navigation}) {
         </View>
     )
 }
+
