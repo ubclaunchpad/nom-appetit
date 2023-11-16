@@ -8,27 +8,45 @@ const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#DCE7C2',
+        backgroundColor: '#DCF7C2',
     },
 
     //Welcome message (Welcome to Nom Appetit)
     welcome_message: {
+        flex: 0.43,
         color: '#004643',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingRight: 140,
     },
 
+    //Welcome to
     text_header1: {
         fontSize: 17,
     },
 
+    //Nom Appetit
     text_header2: {
         fontSize: 32,
     },
 
-    input: {
+    //the main slide button
+    slide: {
+        position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
+        top: 200,
+        backgroundColor: '#DCF7C2',
+        zIndex: 2,
+    },
+
+    //the other input fields and buttons
+    input: {
+        flex: 1,
+        alignItems: 'center',
+        top: 45,
+        backgroundColor: '#DCF7C2',
+        zIndex: 1,
     },
 
     buttons: {
@@ -36,9 +54,9 @@ const style = StyleSheet.create({
         borderColor: '#FFFCF1',
         borderWidth: 1,
         borderRadius: 20,
-        paddingHorizontal: 80,
-        paddingVertical: 10,
-        marginVertical: 5
+        paddingHorizontal: 130,
+        paddingVertical: 12,
+        marginVertical: 13,
     },
 
     Account: {
@@ -46,8 +64,8 @@ const style = StyleSheet.create({
         borderColor: '#FFFCF1',
         borderWidth: 1,
         borderRadius: 20,
-        paddingHorizontal: 30,
-        paddingVertical: 10,
+        paddingHorizontal: 80,
+        paddingVertical: 17,
         marginVertical: 5,
         flexDirection: 'row'
     },
@@ -59,14 +77,13 @@ const style = StyleSheet.create({
     },
 
     forgotPassword: {
-        marginVertical: 20,
         color: '#004643', 
         textDecorationLine: 'underline', 
         fontSize: 16
     },
 
     signInBottom: {
-        marginVertical: 20,
+        marginVertical: 28,
         borderRadius: 50,
         backgroundColor: "#F3CC91",
         paddingVertical: 8,
@@ -86,7 +103,7 @@ export default function SignupScreen({navigation}) {
                 </Text>
             </View>
 
-            <View style={style.input}>
+            <View style={style.slide}>
                 <Pressable style={style.Account} onPress={ () => navigation.navigate('Forgot Password')}> 
                     <Text>
                         Create Account
@@ -96,6 +113,10 @@ export default function SignupScreen({navigation}) {
                         Sign in
                     </Text>
                 </Pressable>
+            </View>
+
+            <View style={style.input}>
+
                 <TextInput style={style.buttons}
                     placeholder='Username'
                 />
