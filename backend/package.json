@@ -2,6 +2,8 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.41",
     "express": "^4.18.2",
-    "express-async-handler": "^1.2.0"
-  }
+    "express-async-handler": "^1.2.0",
+    "firebase": "^10.6.0"
+  },
+  "type": "module"
 }
