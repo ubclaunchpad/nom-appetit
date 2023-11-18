@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, StyleSheet, Pressable } from 'react-native';
 import { ButtonContainer, ButtonText} from "../styles/Shared";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   icon?: boolean;
 }
 
-export default function Button({
+export default function BasicButton({
   text,
   onPress,
 }: Props): JSX.Element {

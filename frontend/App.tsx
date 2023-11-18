@@ -23,11 +23,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="signIn" component={SignInScreen}/>
         <Stack.Screen name="home" component={HomeScreen}/>
         <Stack.Screen name="result" component={ResultScreen}/>
         <Stack.Screen name="search" component={SearchScreen}/>
         <Stack.Screen name="selected" component={SelectedScreen}/>
-        <Stack.Screen name="signIn" component={SignInScreen}/>
         <Stack.Screen name="suggest" component={SuggestScreen}/>
         <Stack.Screen name="view" component={ViewRestaurantScreen}/>
       </Stack.Navigator>
