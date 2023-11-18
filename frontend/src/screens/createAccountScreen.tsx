@@ -1,6 +1,6 @@
-// signup page
+// create account screen
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
 
 const style = StyleSheet.create({
 
@@ -58,7 +58,6 @@ const style = StyleSheet.create({
         paddingHorizontal: 130,
         paddingVertical: 12,
         marginVertical: 13,
-        keyboardType: "numeric",
     },
 
     Account: {
@@ -85,12 +84,6 @@ const style = StyleSheet.create({
         borderRadius: 50,
     },
 
-    forgotPassword: {
-        color: '#004643', 
-        textDecorationLine: 'underline', 
-        fontSize: 16
-    },
-
     signInBottom: {
         marginVertical: 40,
         borderRadius: 50,
@@ -104,7 +97,7 @@ const style = StyleSheet.create({
     }
 });
 
-export default function SignupScreen({navigation}) {
+export default function createAccountScreen({navigation}) {
     return (
         <View style={style.container}>
             <View style={style.welcome_message}>
@@ -117,45 +110,63 @@ export default function SignupScreen({navigation}) {
             </View>
 
             <View style={style.slide}>
-                <Pressable style={style.Account} onPress={ () => navigation.navigate('Create Account')}> 
-                    <Text>
+                <Pressable style={style.Account} onPress={ () => navigation.navigate('Signup')}> 
+                    <Text style={style.signInPage}>
                         Create Account
                     </Text>
                     
-                    <Text style={style.signInPage}>
+                    <Text>
                         Sign in
                     </Text>
                 </Pressable>
             </View>
 
             <View style={style.input}>
-                <SafeAreaView>
 
-                    <Text style={style.input_header}>
-                        Username
-                    </Text>
+                <Text style={style.input_header}>
+                    Your name
+                </Text>
 
-                    <TextInput style={style.buttons}
-                        placeholder='Username'
-                        placeholderTextColor='#769575'
-                    />
+                <TextInput style={style.buttons}
+                    placeholder='Your name'
+                    placeholderTextColor='#769575'
+                />
 
-                    <Text style={style.input_header}>
-                        Password
-                    </Text>
+                <Text style={style.input_header}>
+                    Email address
+                </Text>
 
-                    <TextInput style={style.buttons}
-                        placeholder='Password'
-                        placeholderTextColor='#769575'
-                    />
+                <TextInput style={style.buttons}
+                    placeholder='Email Address'
+                    placeholderTextColor='#769575'
+                />
 
-                </SafeAreaView>
+                <Text style={style.input_header}>
+                    Create Username
+                </Text>
 
-                <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Forgot Password')}>
-                    <Text style={style.forgotPassword}>
-                        Forgot Password?
-                    </Text>
-                </Pressable>
+                <TextInput style={style.buttons}
+                    placeholder='Create Username'
+                    placeholderTextColor='#769575'
+                />
+
+                <Text style={style.input_header}>
+                    Create Password
+                </Text>
+
+                <TextInput style={style.buttons}
+                    placeholder='Create Password'
+                    placeholderTextColor='#769575'
+                />
+
+                <Text style={style.input_header}>
+                    Confirm Password
+                </Text>
+
+                <TextInput style={style.buttons}
+                    placeholder='Confirm Password'
+                    placeholderTextColor='#769575'
+                />
                 
                 <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
                     <Text style={style.signInBottomText}>

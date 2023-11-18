@@ -46,6 +46,18 @@ const style = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 10,
         marginVertical: 5
+    },
+
+    sendEmail: {
+        marginVertical: 40,
+        borderRadius: 50,
+        backgroundColor: "#F3CC91",
+        paddingVertical: 8,
+        paddingHorizontal: 40
+    },
+
+    sendEmailText: {
+        color: '#004643',
     }
 });
 
@@ -53,13 +65,13 @@ export default function ForgotPasswordScreen({navigation}) {
     return (
         <View style={style.container}>
 
-            <Text style={style.text_header1}>
+            {/* <Text style={style.text_header1}>
                 <Text style={style.text_header1}>Welcome to</Text>
             </Text>
 
             <Text style={style.text_header2}>
                 <Text style={style.text_header2}>Nom Appetit</Text>
-            </Text>
+            </Text> */}
 
             <Text style={style.text1}>
                 <Text style={style.text1}>Reset Password</Text>
@@ -73,8 +85,14 @@ export default function ForgotPasswordScreen({navigation}) {
                 placeholder='Registered Email Address'
             />
 
-            <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Send Email')}>
+            {/* <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Send Email')}>
                 <Text style={{ color: '#004643', fontSize: 16 }}>Send Email</Text>
+            </Pressable> */}
+
+            <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
+                    <Text style={style.sendEmailText}>
+                        Send Email
+                    </Text>
             </Pressable>
             
         </View>
