@@ -1,11 +1,17 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const mapRoutes = required("./src/routes/mapsRoutes");
-
 // Middleware to parse JSON data
 app.use(express.json());
-app.use('/api', mapsRoutes);
+
+const mapsRouter = require('./routes/mapsRoutes');
+app.use('/maps', mapsRouter);
+
+const placesSearchRouter = require('./routes/placesSearchRoutes');
+app.use('/placesSearch', placesSearchRouter);
+
+
+
 
 // Start the Express server
 app.listen(port, () => {
