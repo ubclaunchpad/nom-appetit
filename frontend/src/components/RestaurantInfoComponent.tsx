@@ -3,7 +3,13 @@ import { Text, StyleSheet, View, Image } from 'react-native';
 import { FlowContainer } from 'typescript';
 import { RestaurantInfoContainer } from '../styles/Theme';
 
-export const RestaurantInfoComponent = ({type, name, distance}) => {
+interface Props {
+    type: string;
+    name: string;
+    distance: string;
+  }
+
+export const RestaurantInfoComponent = ({type, name, distance}: Props) => {
     return(
         <View style={styles.container}>
             <View style={styles.column}>
