@@ -11,6 +11,7 @@ import Suggest from "./src/screens/SuggestRestaurantScreen";
 import ViewRestaurantScreen from "./src/screens/ViewRestaurantScreen";
 import Result from "./src/screens/ResultScreen";
 import ForgotPassword from "./src/screens/ForgotPasswordScreen";
+import createAccount from "./src/screens/createAccountScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ export default function App() {
         <Stack.Screen name="Suggest" component={Suggest}/>
         <Stack.Screen name="View" component={ViewRestaurantScreen}/>
         <Stack.Screen name="Forgot Password" component={ForgotPassword}/>
+        <Stack.Screen name="Create Account" component={createAccount}/>
 
       </Stack.Navigator>
     </NavigationContainer>
