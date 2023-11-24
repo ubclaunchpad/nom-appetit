@@ -1,36 +1,35 @@
-const https = require('https');
+// ======== API IMPORTS ========
+
 const path = require('path');
 const dotenv = require('dotenv');
 const axios = require('axios');
-//const polyline = require('polyline');
 
-// Define the path to the .env file located outside the project folder
+// define the path to the .env file located outside the project folder
 const envPath = path.resolve(__dirname, '../.env');
 
-// Load environment variables from the specified .env file
+// load environment variables from the specified .env file
 dotenv.config({ path: envPath });
 
 const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes';
 const apiKey = process.env.GOOGLE_PLACES_API_KEY;
 
-const test_location = '37.7749,-122.4194';
-
 if (!apiKey) {
   throw new Error('Google API key is missing. Make sure it is defined in your .env file.');
 }
 
-var place_type = 'restaurants';
-// radius is in metres
+// ======== FUNCTIONS ========
+
+var search_type = 'restaurants';
 var radius_type = 2000;
 
+const test_coordinates = '48.778,-123.707';
 
 async function searchPlaces(user_location) {
   try {
     const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
       params: {
-        query: place_type,
-        type: place_type,
         location: user_location,
+        query: search_type,
         radius: radius_type,
         key: apiKey,
       },
@@ -53,4 +52,4 @@ async function searchPlaces(user_location) {
   }
 }
 
-searchPlaces(test_location)
+searchPlaces(test_coordinates)
