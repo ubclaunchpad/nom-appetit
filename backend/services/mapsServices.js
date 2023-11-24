@@ -9,8 +9,6 @@ const envPath = path.resolve(__dirname, '../.env');
 // Load environment variables from the specified .env file
 dotenv.config({ path: envPath });
 
-
-
 const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes';
 const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
