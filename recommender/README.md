@@ -2,7 +2,7 @@
 This module implements a simple restaurant recommendation algorithm based on collaborative filtering.
 
 ## Installation
-1. Clone the repository.
+1. Ensure that Python version >= 3.10.6. Then clone the repository.
 2. Open a terminal and run `cd recommender`.
 3. Run `python -m venv venv` to create a virtual environment.
 4. Activate the virtual environment:
