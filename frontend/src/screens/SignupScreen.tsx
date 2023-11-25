@@ -1,6 +1,6 @@
 // signup page
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+import React, { useEffect, useState, useRef} from "react";
+import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput} from "react-native";
 
 const style = StyleSheet.create({
 
@@ -9,6 +9,8 @@ const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#DCF7C2',
+        width: '100%',
+        height: '100%',
     },
 
     //Welcome message (Welcome to Nom Appetit)
@@ -39,6 +41,7 @@ const style = StyleSheet.create({
         top: 180,
         backgroundColor: '#DCF7C2',
         zIndex: 2,
+        flexDirection: 'row',
     },
 
     //the other input fields and buttons (everything below the slide button)
@@ -58,18 +61,16 @@ const style = StyleSheet.create({
         paddingHorizontal: 130,
         paddingVertical: 12,
         marginVertical: 13,
-        keyboardType: "numeric",
     },
 
     Account: {
         backgroundColor: 'white',
+        position: 'relative',
         borderColor: '#FFFCF1',
-        borderWidth: 1,
-        borderRadius: 20,
-        paddingHorizontal: 80,
+        paddingHorizontal: 20,
         paddingVertical: 17,
         marginVertical: 5,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
 
     //Username/Password text
@@ -77,9 +78,11 @@ const style = StyleSheet.create({
         fontSize: 16,
         color: '#004643',
         alignSelf: 'flex-start',
+        paddingTop: 10,
+        paddingBottom: 5
     },
 
-    signInPage: {
+    activePage: {
         backgroundColor: "#F3CC91",
         marginLeft: 22,
         borderRadius: 50,
@@ -101,10 +104,49 @@ const style = StyleSheet.create({
 
     signInBottomText: {
         color: '#004643',
+    },
+
+    textInput: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#FFFCF1',
+        borderWidth: 1,
+        width: 340,
+        borderRadius: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
     }
 });
 
 export default function SignupScreen({navigation}) {
+
+    const [active, setActive] = useState(true)
+    let transformX = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        console.log(active)
+        if (active) {
+        Animated.timing(transformX, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true
+        }).start()
+        } else {
+        Animated.timing(transformX, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true
+        }).start()
+        }
+    }, [active]);
+
+const rotationX = transformX.interpolate({
+    inputRange: [0, 1],
+    outputRange: [2, Dimensions.get('screen').width / 2]
+})
+
+if (active)
+{
     return (
         <View style={style.container}>
             <View style={style.welcome_message}>
@@ -117,12 +159,13 @@ export default function SignupScreen({navigation}) {
             </View>
 
             <View style={style.slide}>
-                <Pressable style={style.Account} onPress={ () => navigation.navigate('Create Account')}> 
+                <Pressable style={style.Account} onPress={ () => setActive(false)}> 
                     <Text>
                         Create Account
                     </Text>
-                    
-                    <Text style={style.signInPage}>
+                </Pressable>
+                <Pressable style={style.Account} onPress={ () => setActive(true)}>
+                    <Text style={style.activePage}>
                         Sign in
                     </Text>
                 </Pressable>
@@ -130,27 +173,25 @@ export default function SignupScreen({navigation}) {
 
             <View style={style.input}>
                 <SafeAreaView>
+                        <Text style={style.input_header}>
+                            Username
+                        </Text>
 
-                    <Text style={style.input_header}>
-                        Username
-                    </Text>
+                        <TextInput style={style.textInput}
+                            placeholder='Username'
+                            placeholderTextColor='#769575'
+                        />
 
-                    <TextInput style={style.buttons}
-                        placeholder='Username'
-                        placeholderTextColor='#769575'
-                    />
+                        <Text style={style.input_header}>
+                            Password
+                        </Text>
 
-                    <Text style={style.input_header}>
-                        Password
-                    </Text>
-
-                    <TextInput style={style.buttons}
-                        placeholder='Password'
-                        placeholderTextColor='#769575'
-                    />
-
+                        <TextInput style={style.textInput}
+                            placeholder='Password'
+                            placeholderTextColor='#769575'
+                        />
                 </SafeAreaView>
-
+                
                 <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Forgot Password')}>
                     <Text style={style.forgotPassword}>
                         Forgot Password?
@@ -165,4 +206,91 @@ export default function SignupScreen({navigation}) {
             </View>
         </View>
     )
+}
+else
+{
+    return (
+        <View style={style.container}>
+            <View style={style.welcome_message}>
+                <Text style={style.text_header1}>
+                    <Text style={style.text_header1}>Welcome to</Text>
+                </Text>
+                <Text style={style.text_header2}>
+                    <Text style={style.text_header2}>Nom Appetit</Text>
+                </Text>
+            </View>
+
+            <View style={style.slide}>
+            <Pressable style={style.Account} onPress={ () => setActive(false)}> 
+                    <Text style={style.activePage}>
+                        Create Account
+                    </Text>
+                </Pressable>
+                <Pressable style={style.Account} onPress={ () => setActive(true)}>
+                    <Text >
+                        Sign in
+                    </Text>
+                </Pressable>
+            </View>
+
+            <View style={style.input}>
+
+                <SafeAreaView>
+
+                    <Text style={style.input_header}>
+                        Your name
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Your name'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text style={style.input_header}>
+                        Email address
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Email Address'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text style={style.input_header}>
+                        Create Username
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Create Username'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text style={style.input_header}>
+                        Create Password
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Create Password'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text style={style.input_header}>
+                        Confirm Password
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Confirm Password'
+                        placeholderTextColor='#769575'
+                    />
+
+                </SafeAreaView>
+                
+                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
+                    <Text style={style.signInBottomText}>
+                        Create Account
+                    </Text>
+                </Pressable>
+            </View>
+        </View>
+    )
+}
 }
