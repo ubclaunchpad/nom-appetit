@@ -1,23 +1,15 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { ButtonText, SquareButtonContainer} from "../styles/Shared";
+import Images from "../images/Images";
 
 interface Props {
   text: string;
   onPress: () => void;
-  icon: string;
+  icon: any;
 }
 
-export default function SquareButton({
-  text,
-  onPress,
-  icon
-}: Props): JSX.Element {
-
-    const iconString = icon
-
-    const imageUrl = require(icon);
-
+export default function SquareButton({ text, onPress, icon}: Props): JSX.Element {
   return (
     <SquareButtonContainer
       onPress={onPress}
@@ -25,7 +17,7 @@ export default function SquareButton({
       <ButtonText>
         {text}
       </ButtonText>
-      <Image source={imageUrl}/>
+      <Image source={icon}/>
     </SquareButtonContainer>
   );
 }
