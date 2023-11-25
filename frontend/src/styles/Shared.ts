@@ -35,3 +35,20 @@ export const Container = styled.View`
     display: flex;
     align-items: center;
 `;
+
+export const SquareButtonContainer = styled.TouchableOpacity<{
+    icon?: boolean;
+}>`
+    display: flex;
+    border-radius: 20px;
+    background: #F3CC91;
+    shadowOffset: 7px 7px;
+    shadowColor: rgba(67, 101, 91, 0.10);
+    shadowOpacity: 1.0;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 165px;
+    height: 161px;
+`;

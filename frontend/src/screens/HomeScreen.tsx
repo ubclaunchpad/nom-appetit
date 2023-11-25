@@ -4,6 +4,7 @@ import { Button, View, StyleSheet, ScrollView } from "react-native";
 import { RestaurantInfoComponent } from "../components/RestaurantInfoComponent";
 import { RootStackParamList } from "src/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import SquareButton from "../components/SquareButton";
 
 type Props = NativeStackScreenProps<RootStackParamList, "home">;
 
@@ -41,6 +42,10 @@ type Restaurant = {
 export default function HomeScreen({navigation}: Props) {
     return (
         <ScrollView style={styles.container}>
+            <SquareButton 
+                text="Saved Restaurant" 
+                onPress={() => navigation.navigate("home")}
+                icon="../images/heart.png" />
             <Button 
             title="View Restaurant"
             onPress={ () => navigation.navigate('view')}
