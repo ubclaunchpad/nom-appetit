@@ -1,6 +1,6 @@
 // create account screen
 import React, { useEffect, useState } from "react";
-import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
 
 const style = StyleSheet.create({
 
@@ -76,6 +76,8 @@ const style = StyleSheet.create({
         fontSize: 16,
         color: '#004643',
         alignSelf: 'flex-start',
+        paddingTop: 10,
+        paddingBottom: 5
     },
 
     signInPage: {
@@ -94,10 +96,21 @@ const style = StyleSheet.create({
 
     signInBottomText: {
         color: '#004643',
+    },
+
+    textInput: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#FFFCF1',
+        borderWidth: 1,
+        width: 340,
+        borderRadius: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
     }
 });
 
-export default function createAccountScreen({navigation}) {
+export default function CreateAccountScreen({navigation}) {
     return (
         <View style={style.container}>
             <View style={style.welcome_message}>
@@ -123,50 +136,54 @@ export default function createAccountScreen({navigation}) {
 
             <View style={style.input}>
 
-                <Text style={style.input_header}>
-                    Your name
-                </Text>
+                <SafeAreaView>
 
-                <TextInput style={style.buttons}
-                    placeholder='Your name'
-                    placeholderTextColor='#769575'
-                />
+                    <Text style={style.input_header}>
+                        Your name
+                    </Text>
 
-                <Text style={style.input_header}>
-                    Email address
-                </Text>
+                    <TextInput style={style.textInput}
+                        placeholder='Your name'
+                        placeholderTextColor='#769575'
+                    />
 
-                <TextInput style={style.buttons}
-                    placeholder='Email Address'
-                    placeholderTextColor='#769575'
-                />
+                    <Text style={style.input_header}>
+                        Email address
+                    </Text>
 
-                <Text style={style.input_header}>
-                    Create Username
-                </Text>
+                    <TextInput style={style.textInput}
+                        placeholder='Email Address'
+                        placeholderTextColor='#769575'
+                    />
 
-                <TextInput style={style.buttons}
-                    placeholder='Create Username'
-                    placeholderTextColor='#769575'
-                />
+                    <Text style={style.input_header}>
+                        Create Username
+                    </Text>
 
-                <Text style={style.input_header}>
-                    Create Password
-                </Text>
+                    <TextInput style={style.textInput}
+                        placeholder='Create Username'
+                        placeholderTextColor='#769575'
+                    />
 
-                <TextInput style={style.buttons}
-                    placeholder='Create Password'
-                    placeholderTextColor='#769575'
-                />
+                    <Text style={style.input_header}>
+                        Create Password
+                    </Text>
 
-                <Text style={style.input_header}>
-                    Confirm Password
-                </Text>
+                    <TextInput style={style.textInput}
+                        placeholder='Create Password'
+                        placeholderTextColor='#769575'
+                    />
 
-                <TextInput style={style.buttons}
-                    placeholder='Confirm Password'
-                    placeholderTextColor='#769575'
-                />
+                    <Text style={style.input_header}>
+                        Confirm Password
+                    </Text>
+
+                    <TextInput style={style.textInput}
+                        placeholder='Confirm Password'
+                        placeholderTextColor='#769575'
+                    />
+
+                </SafeAreaView>
                 
                 <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
                     <Text style={style.signInBottomText}>
