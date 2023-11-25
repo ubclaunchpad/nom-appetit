@@ -32,20 +32,34 @@ const style = StyleSheet.create({
 
     text2 : {
         color: '#004643',
-        fontSize: 18,
+        fontSize: 14,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center', 
+        width: 285,
+        fontWeight: '400'
+    },
+
+    text3 : {
+        color: '#004643',
+        fontSize: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center', 
+        width: 285,
+        fontWeight: '500',
+        marginRight: 90
     },
 
     input: {
         backgroundColor: 'white',
         borderColor: '#e8e8e8',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 10,
-        marginVertical: 5
+        marginVertical: 5,
+        width: 300
     },
 
     sendEmail: {
@@ -53,41 +67,50 @@ const style = StyleSheet.create({
         borderRadius: 50,
         backgroundColor: "#F3CC91",
         paddingVertical: 8,
-        paddingHorizontal: 40
+        paddingHorizontal: 40,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOffset: { width: 7, height: 7 },
+        shadowOpacity: 4,
+        shadowRadius: 4,
     },
 
     sendEmailText: {
         color: '#004643',
+    },
+
+    spacing: {
+        marginBottom: 30
+    },
+    
+    spacing2: {
+        marginBottom: 20
     }
+
 });
 
 export default function ForgotPasswordScreen({navigation}) {
     return (
         <View style={style.container}>
 
-            {/* <Text style={style.text_header1}>
-                <Text style={style.text_header1}>Welcome to</Text>
-            </Text>
-
-            <Text style={style.text_header2}>
-                <Text style={style.text_header2}>Nom Appetit</Text>
-            </Text> */}
-
             <Text style={style.text1}>
                 <Text style={style.text1}>Reset Password</Text>
             </Text>
+
+            <View style={style.spacing}></View>
 
             <Text style={style.text2}>
                 <Text style={style.text2}>Instructions to reset your password will be sent to your email</Text>
             </Text>
 
-            <TextInput style={style.input}
-                placeholder='Registered Email Address'
-            />
+            <View style={style.spacing2}></View>
 
-            {/* <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Send Email')}>
-                <Text style={{ color: '#004643', fontSize: 16 }}>Send Email</Text>
-            </Pressable> */}
+            <Text style={style.text3}>
+                <Text style={style.text3}>Registered Email Address</Text>
+            </Text>
+
+            <TextInput style={style.input}
+                placeholder='Email Address'
+            />
 
             <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
                     <Text style={style.sendEmailText}>
