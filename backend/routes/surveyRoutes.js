@@ -1,9 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const mapsController = require('../controllers/mapsController');
+import express from 'express';
+import { surveyController } from '../controllers/surveyController.js';
 
-// GET route for fetching polyline 
-router.get('/', mapsController.fetchPolyline);
+const surveyRouter = express.Router();
 
+// GET (gets data from survey in FE)
+surveyRouter.get('/', surveyController.fetchPolyline);
 
-module.exports = router;
+export default surveyRouter;
+

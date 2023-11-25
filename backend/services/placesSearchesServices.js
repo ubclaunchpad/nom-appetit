@@ -1,8 +1,8 @@
 // ======== API IMPORTS ========
 
-const path = require('path');
-const dotenv = require('dotenv');
-const axios = require('axios');
+import path from 'path';
+import dotenv from 'dotenv';
+import axios from 'axios';
 
 // define the path to the .env file located outside the project folder
 const envPath = path.resolve(__dirname, '../.env');
@@ -24,7 +24,7 @@ var radius_type = 2000;
 
 const test_coordinates = '48.778,-123.707';
 
-async function searchPlaces(user_location) {
+export async function searchPlaces(user_location) {
   try {
     const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
       params: {

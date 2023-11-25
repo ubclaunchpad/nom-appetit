@@ -1,7 +1,7 @@
-const searchService = require('../services/placesSearchesServices');
+import { searchPlaces } from '../services/placesSearchesServices.js';
 
 //GOOGLE PLACES API Search By Name
-exports.searchByName = async (req, res, next) => {
+exports  = async (req, res, next) => {
     try{
         const searchString = req.query.name;
         const result = await searchService.searchByName(searchString);
