@@ -4,6 +4,7 @@ import { Button, View, StyleSheet, ScrollView } from "react-native";
 import { RestaurantInfoComponent } from "../components/RestaurantInfoComponent";
 import { RootStackParamList } from "src/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { SearchBar } from "../components/SearchBar";
 
 type Props = NativeStackScreenProps<RootStackParamList, "home">;
 
@@ -59,6 +60,8 @@ export default function HomeScreen({navigation}: Props) {
             title="Search"
             onPress={ () => navigation.navigate('search')}
             />
+
+            <SearchBar />   
 
             <View style={styles.restaurantContainer}>
                 {restaurants.map((restaurant, index) => (
