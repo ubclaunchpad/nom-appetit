@@ -2,12 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mapsController = require('../controllers/mapsController');
 
-// GET route for fetching maps data
-router.get('/maps', mapsController.getMapsData);
-
-router.get('maps/search', mapsController.getMapsData);
-
-
+// GET route for fetching polyline 
+router.get('/', mapsController.fetchPolyline);
 
 
 module.exports = router;
