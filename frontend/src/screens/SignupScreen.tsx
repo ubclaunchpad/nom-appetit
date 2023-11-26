@@ -48,7 +48,7 @@ const style = StyleSheet.create({
     input: {
         flex: 1,
         alignItems: 'center',
-        top: 60,
+        top: 30,
         backgroundColor: '#DCF7C2',
         zIndex: 1,
     },
@@ -91,11 +91,12 @@ const style = StyleSheet.create({
     forgotPassword: {
         color: '#004643', 
         textDecorationLine: 'underline', 
-        fontSize: 16
+        fontSize: 16,
+        marginVertical: 10,
     },
 
     signInBottom: {
-        marginVertical: 40,
+        marginVertical: 25,
         borderRadius: 50,
         backgroundColor: "#F3CC91",
         paddingVertical: 8,
