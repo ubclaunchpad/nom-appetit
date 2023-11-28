@@ -4,7 +4,7 @@ import { searchPlaces } from '../services/placesSearchesServices.js';
 exports  = async (req, res, next) => {
     try{
         const searchString = req.query.name;
-        const result = await searchService.searchByName(searchString);
+        const result = await searchPlaces.searchByName(searchString);
         res.status(200).json(result);
     } catch (error) {
         next(error);
