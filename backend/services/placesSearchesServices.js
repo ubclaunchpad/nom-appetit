@@ -88,7 +88,9 @@ export async function searchPlaces(user_location, filter_param_1, filter_param_2
       var filtered_list = [];
       for (var object of places_list_detailed) {
         if (object[filter_param_1] && object[filter_param_2]) {
-          console.log(object.name + '--' + object.formatted_address);
+          console.log('\n' + 'name: ' + object.name);
+          console.log('formatted_address: ' + object.formatted_address);
+          console.log(object.geometry.location);
           filtered_list.push(object);
         }
       }
@@ -105,4 +107,4 @@ export async function searchPlaces(user_location, filter_param_1, filter_param_2
 
 const test_coordinates = '40.7128, -73.935242';
 
-console.log(searchPlaces(test_coordinates, 'delivery', 'serves_brunch', "italian"));
+console.log(searchPlaces(test_coordinates, 'delivery', 'serves_brunch', "greek"));
