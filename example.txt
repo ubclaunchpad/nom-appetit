@@ -1,0 +1,220 @@
+{
+  address_components: [
+    { long_name: '1480', short_name: '1480', types: [Array] },
+    {
+      long_name: 'Dekalb Avenue',
+      short_name: 'Dekalb Ave',
+      types: [Array]
+    },
+    { long_name: 'Bushwick', short_name: 'Bushwick', types: [Array] },
+    { long_name: 'Brooklyn', short_name: 'Brooklyn', types: [Array] },
+    {
+      long_name: 'Kings County',
+      short_name: 'Kings County',
+      types: [Array]
+    },
+    { long_name: 'New York', short_name: 'NY', types: [Array] },
+    { long_name: 'United States', short_name: 'US', types: [Array] },
+    { long_name: '11237', short_name: '11237', types: [Array] }
+  ],
+  adr_address: '<span class="street-address">1480 Dekalb Ave</span>, <span class="locality">Brooklyn</span>, <span class="region">NY</span> <span class="postal-code">11237</span>, <span class="country-name">USA</span>',
+  business_status: 'OPERATIONAL',
+  curbside_pickup: true,
+  current_opening_hours: {
+    open_now: true,
+    periods: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    weekday_text: [
+      'Monday: 11:00 AM – 12:00 AM',
+      'Tuesday: 11:00 AM – 12:00 AM',
+      'Wednesday: 11:00 AM – 12:00 AM',
+      'Thursday: 11:00 AM – 12:00 AM',
+      'Friday: 11:00 AM – 12:00 AM',
+      'Saturday: 11:00 AM – 12:00 AM',
+      'Sunday: 11:00 AM – 12:00 AM'
+    ]
+  },
+  delivery: true,
+  dine_in: true,
+  formatted_address: '1480 Dekalb Ave, Brooklyn, NY 11237, USA',
+  formatted_phone_number: '(347) 365-4810',
+  geometry: {
+    location: { lat: 40.7013271, lng: -73.9218599 },
+    viewport: { northeast: [Object], southwest: [Object] }
+  },
+  icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png',
+  icon_background_color: '#FF9E67',
+  icon_mask_base_uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet',
+  international_phone_number: '+1 347-365-4810',
+  name: 'Pita Grill',
+  opening_hours: {
+    open_now: true,
+    periods: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    weekday_text: [
+      'Monday: 11:00 AM – 12:00 AM',
+      'Tuesday: 11:00 AM – 12:00 AM',
+      'Wednesday: 11:00 AM – 12:00 AM',
+      'Thursday: 11:00 AM – 12:00 AM',
+      'Friday: 11:00 AM – 12:00 AM',
+      'Saturday: 11:00 AM – 12:00 AM',
+      'Sunday: 11:00 AM – 12:00 AM'
+    ]
+  },
+  photos: [
+    {
+      height: 640,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFjfScYddXGbUefwXzpkiMA0AK0P3BrGKTMSigU9YkfdPBmSG08t4_HldnMY1Qn1Xf4X7wuC4lGR5QKW2NbZIIX4N7B-_0ouqPSjgZl8iVf4vNfCAD8L7E09-gxdtgXh72j9RLz1k9OGIuncJSx-De6yLvXqdq7HtrrIBGHKv9xAnL3A',
+      width: 552
+    },
+    {
+      height: 2251,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFjEMzfY0ABfXVGgNzmUMZRD1FRVjbM5CtDwFNlaiR30Q3GDUavbXh81W0tpU9H3Ywxy5Y_PQWshi9lkaZ49Uj5CiLmSMn1cIiQjrlZKAZsTVtrVMM03EjYuu6vDO1sCgGtq7b6CDne9UeM7BTUmPUxF1RHgJ2LN1hFzzoCMUvKV9J6H',
+      width: 3000
+    },
+    {
+      height: 2385,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFj02TB6C_m72SxSX6SlrTBq-qPGvxIrCDMVoKAirRK-kg3tNnrE7sQO9izTyEeMzn1NaTpbKy3SxTzDs1V4HAAgf1-T_EWBlUgo35NvvG1MHKEnKT_S9PZG-lWkUR6lS4gSh7cG073k8FrAItLRZtZyCjz60oTR3BYcnuQOe5YizN_s',
+      width: 3369
+    },
+    {
+      height: 2251,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFiHju2FbwbHz__OSKf6hUP0VEFQRnfl43ofqMUXJIzMsC9xgC-oEDFVh98XOtbo-x_2A6j2yJNywywitBXh9W2XlGomUaxsfE1Pcs5AKwDwCpr4gqUQP94dTkl8AnzWnYnM8GB-ILB6U4Z39bTTy4uWeKiegd2MfoJ11Rsh5ZvENz4Y',
+      width: 3000
+    },
+    {
+      height: 626,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFjvhUcMBM_M7tn5tTcj4mzFm-gOpzf5zsR8jOgBDRWDqR_0fmaherWwhzr-yp-MJ9xeQaITSpXmMQoWWOT_QXb034ldTQQWpNUfmg035nb_ve-vJevHg-IvTBx29nB7R89WtR7IBVbszP3RaFiLgYJT-PRFUWbcQO2xQ081hYmSsEfk',
+      width: 1280
+    },
+    {
+      height: 3245,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFhJ0ob81hWSVJ82Avp7fbOu08iQys6oLCdK-pI6GYRWrSyGP1l93ZCRg6n8hoXYaYFMmE0VtkDFPAcZOSx4YHcrxUySabPm2UL7HT7G5dE9bHvzKy2zWMmVN0A-1aGaJOCk8kPCYQPe3v0xzsbsINh7_yA7ohvRImeeWxoRqEJgmJ1N',
+      width: 2978
+    },
+    {
+      height: 2268,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFjMjxcI-sT22SwoZ1m_okNIPLoMz2IPeFNDj87uaICBGRIbexft3B9qVeGWtvwKFoBZJsiTnJeNP8pjjaKvayvx_YoPwDMc-xgyITjP5Hr6D9WblSZjFkZJxwfzp5aoeMATGe5GlOX0TZW94UJY9cGwZ7x4mjaFmC72nGjo_JKg6YNV',
+      width: 4032
+    },
+    {
+      height: 2880,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFjvYi5Ne_0aGC9ohDIDG2IO4NtdqJqIxnoHckLv306L8ELl8JKUn6DrvzrfvGf-8d2jPKWf6G0QKZbrpLHqeL8100nqVySVdXGKKwQv83CN40CPhiTuqQhnK6fkJijKPFod7qQj1h4m3q9G8OF1p6DqCkQtfDa8-NaZJe-nE8yhGbHa',
+      width: 3691
+    },
+    {
+      height: 4032,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFijgV6ytXTiKWtch0ogXZokaXMSyU6p8926JUl7NRU5Rr7RDxnPFhOarwiDOfdyu1Sv-6DyHV8D3vARdeYRib-Bnipr_zJ_Xvw1R0-K853yafVv7q1LmCg8iIReGBYldZDw-nj6h8wfhbXgCwvTgLgZoC-kvXfjqc3dhl7WGM8ruh7C',
+      width: 3024
+    },
+    {
+      height: 762,
+      html_attributions: [Array],
+      photo_reference: 'AWU5eFiZBTumH4szFWkWMHtfYSJ0CFN930t0hrarD4MboMmClrE4iJP0B2YPl5H-d_E3Gag-eSwAyBLQlzvzZaNC6i4Axipowid9JSKleJbht9UE8WLt8XWN2bt206MgJkSlgeEwqV9X_shUdPxg_IMnVkaBOMCwVzb12Pwl1cYvCaEcPhMB',
+      width: 755
+    }
+  ],
+  place_id: 'ChIJf7ijjVhdwokR6-ycm_-zIIY',
+  plus_code: {
+    compound_code: 'P32H+G7 New York, NY, USA',
+    global_code: '87G8P32H+G7'
+  },
+  price_level: 2,
+  rating: 4.7,
+  reference: 'ChIJf7ijjVhdwokR6-ycm_-zIIY',
+  reservable: true,
+  reviews: [
+    {
+      author_name: 'Jenna Wardner',
+      author_url: 'https://www.google.com/maps/contrib/105519291667371992635/reviews',
+      language: 'en',
+      original_language: 'en',
+      profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjXZKay65c4LMFxjEbMtCtZfl4yJ1KVnNc8ne9VH3dfYVzA=s128-c0x00000000-cc-rp-mo',
+      rating: 5,
+      relative_time_description: '4 months ago',
+      text: 'We’ve ordered takeout from here a few times and it’s one of our go-tos now. The pita is always fresh, the chicken is cooked perfectly and the Greek salad is fresh! Couldn’t recommend enough',
+      time: 1689979716,
+      translated: false
+    },
+    {
+      author_name: 'Kenia Martinez',
+      author_url: 'https://www.google.com/maps/contrib/114682296983092284322/reviews',
+      language: 'en',
+      original_language: 'en',
+      profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjXweVVJRItTE4HHm1Un5_f7-Fnd-f4z5c4fA5mQtYKDpSY=s128-c0x00000000-cc-rp-mo-ba3',
+      rating: 5,
+      relative_time_description: '6 months ago',
+      text: 'I walked past this place numerous times and I’ve always wanted to try. Today was my lucky day because it was delicious and so fresh! I feel like I’m in Greece! 🇬🇷 Definitely coming back and recommending to my friends and family. Thank you for the tasty food!☺️',
+      time: 1683334230,
+      translated: false
+    },
+    {
+      author_name: 'AJ Sinker',
+      author_url: 'https://www.google.com/maps/contrib/109350742874918316916/reviews',
+      language: 'en',
+      original_language: 'en',
+      profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjUra1Q18PVI-wi3OstyCieIVvfKSEwzCkCJLkO8olx2Dpc=s128-c0x00000000-cc-rp-mo',
+      rating: 5,
+      relative_time_description: 'a month ago',
+      text: 'Fantastic, best mediterranean food in the area. Practically everything on the menu comes with their (very good) pita and tzatziki, so for $5 or $10 you can get a small meal. This became an instant staple for us. Highly recommend!',
+      time: 1698627623,
+      translated: false
+    },
+    {
+      author_name: 'Ivan Gonzalez',
+      author_url: 'https://www.google.com/maps/contrib/100992247500381323916/reviews',
+      language: 'en',
+      original_language: 'en',
+      profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjXsIzFenIbjsoskvrxJD50mdwVSpWMHTykH3ICi7XTVyd3k=s128-c0x00000000-cc-rp-mo-ba3',
+      rating: 5,
+      relative_time_description: 'a year ago',
+      text: 'New Pita spot in the neighborhood. On the way home from work decided to try and was super pleased. Was exactly what I was looking for and craving. Fries were fresh, pita bread was great, and chicken was perfectly seasoned and cooked. Definitely recommend trying them out! Saw a few other customers come in that seem to be returning regulars for this new place, so that must be good sign!',
+      time: 1661535866,
+      translated: false
+    },
+    {
+      author_name: 'Vanessa Cebreros',
+      author_url: 'https://www.google.com/maps/contrib/100790807868071064670/reviews',
+      language: 'en',
+      original_language: 'en',
+      profile_photo_url: 'https://lh3.googleusercontent.com/a-/ALV-UjU8cxl5X8DyvhriBSceJ0g9a-z2mJNDzzZfkSGO4hLvnA=s128-c0x00000000-cc-rp-mo',
+      rating: 5,
+      relative_time_description: 'in the last week',
+      text: 'Delicious Greek food in the heart of Bushwick, they have really good options, my favorite is any pita souvlaki, chickens, beef or lamb is tender and delicious, staff is very friendly.',
+      time: 1700936091,
+      translated: false
+    }
+  ],
+  serves_beer: false,
+  serves_breakfast: true,
+  serves_brunch: true,
+  serves_dinner: true,
+  serves_lunch: true,
+  serves_vegetarian_food: true,
+  serves_wine: false,
+  takeout: true,
+  types: [ 'restaurant', 'food', 'point_of_interest', 'establishment' ],
+  url: 'https://maps.google.com/?cid=9664922710745869547',
+  user_ratings_total: 113,
+  utc_offset: -300,
+  vicinity: '1480 Dekalb Avenue, Brooklyn',
+  website: 'https://www.orderpitagrillbk.com/',
+  wheelchair_accessible_entrance: true
+}

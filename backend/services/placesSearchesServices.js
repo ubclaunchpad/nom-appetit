@@ -66,8 +66,8 @@ export async function searchPlaces(user_location, filter_param_1, filter_param_2
 
       // transforms all object in places_list to detailed object 
       async function detailedResults(place_object) {
-        // CONSOLE TESTING REMOVE WHEN FINISHED
-        console.log(place_object.place_id);
+        // CONSOLE LOGGING:
+        // console.log(place_object.place_id);
 
         const response2 = await axios.get(details_URL, {
           params: {
@@ -88,9 +88,10 @@ export async function searchPlaces(user_location, filter_param_1, filter_param_2
       var filtered_list = [];
       for (var object of places_list_detailed) {
         if (object[filter_param_1] && object[filter_param_2]) {
-          console.log('\n' + 'name: ' + object.name);
-          console.log('formatted_address: ' + object.formatted_address);
-          console.log(object.geometry.location);
+          // CONSOLE LOGGING:
+          // console.log('\n' + 'name: ' + object.name);
+          // console.log('formatted_address: ' + object.formatted_address);
+          // console.log(object.geometry.location)
           filtered_list.push(object);
         }
       }
