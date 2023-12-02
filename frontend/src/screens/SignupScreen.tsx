@@ -138,7 +138,7 @@ export default function SignupScreen({navigation}) {
             duration: 300,
             useNativeDriver: true
         }).start()
-        }
+        } 
     }, [active]);
 
 const rotationX = transformX.interpolate({
@@ -149,24 +149,24 @@ const rotationX = transformX.interpolate({
 if (active)
 {
     return (
-        <View style={style.container}>
+        <View style={style.container}> 
             <View style={style.welcome_message}>
-                <Text style={style.text_header1}>
-                    <Text style={style.text_header1}>Welcome to</Text>
+                <Text allowFontScaling={false} style={style.text_header1} >
+                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
                 </Text>
-                <Text style={style.text_header2}>
-                    <Text style={style.text_header2}>Nom Appetit</Text>
+                <Text allowFontScaling={false} style={style.text_header2}>
+                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
                 </Text>
             </View>
 
             <View style={style.slide}>
                 <Pressable style={style.Account} onPress={ () => setActive(false)}> 
-                    <Text>
+                    <Text allowFontScaling={false}>
                         Create Account
                     </Text>
                 </Pressable>
                 <Pressable style={style.Account} onPress={ () => setActive(true)}>
-                    <Text style={style.activePage}>
+                    <Text allowFontScaling={false} style={style.activePage}>
                         Sign in
                     </Text>
                 </Pressable>
@@ -174,33 +174,33 @@ if (active)
 
             <View style={style.input}>
                 <SafeAreaView>
-                        <Text style={style.input_header}>
+                        <Text allowFontScaling={false} style={style.input_header}>
                             Username
                         </Text>
 
-                        <TextInput style={style.textInput}
+                        <TextInput allowFontScaling={false} style={style.textInput}
                             placeholder='Username'
                             placeholderTextColor='#769575'
                         />
 
-                        <Text style={style.input_header}>
+                        <Text allowFontScaling={false} style={style.input_header}>
                             Password
                         </Text>
 
-                        <TextInput style={style.textInput}
+                        <TextInput allowFontScaling={false} style={style.textInput}
                             placeholder='Password'
                             placeholderTextColor='#769575'
                         />
                 </SafeAreaView>
                 
                 <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('Forgot Password')}>
-                    <Text style={style.forgotPassword}>
+                    <Text allowFontScaling={false} style={style.forgotPassword}>
                         Forgot Password?
                     </Text>
                 </Pressable>
                 
                 <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
-                    <Text style={style.signInBottomText}>
+                    <Text allowFontScaling={false} style={style.signInBottomText}>
                         Sign In
                     </Text>
                 </Pressable>
@@ -213,22 +213,22 @@ else
     return (
         <View style={style.container}>
             <View style={style.welcome_message}>
-                <Text style={style.text_header1}>
-                    <Text style={style.text_header1}>Welcome to</Text>
+                <Text allowFontScaling={false} style={style.text_header1}>
+                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
                 </Text>
-                <Text style={style.text_header2}>
-                    <Text style={style.text_header2}>Nom Appetit</Text>
+                <Text allowFontScaling={false} style={style.text_header2}>
+                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
                 </Text>
             </View>
 
             <View style={style.slide}>
             <Pressable style={style.Account} onPress={ () => setActive(false)}> 
-                    <Text style={style.activePage}>
+                    <Text allowFontScaling={false} style={style.activePage}>
                         Create Account
                     </Text>
                 </Pressable>
                 <Pressable style={style.Account} onPress={ () => setActive(true)}>
-                    <Text >
+                    <Text allowFontScaling={false}>
                         Sign in
                     </Text>
                 </Pressable>
@@ -238,47 +238,47 @@ else
 
                 <SafeAreaView>
 
-                    <Text style={style.input_header}>
+                    <Text allowFontScaling={false} style={style.input_header}>
                         Your name
                     </Text>
 
-                    <TextInput style={style.textInput}
+                    <TextInput allowFontScaling={false} style={style.textInput}
                         placeholder='Your name'
                         placeholderTextColor='#769575'
                     />
 
-                    <Text style={style.input_header}>
+                    <Text allowFontScaling={false} style={style.input_header}>
                         Email address
                     </Text>
 
-                    <TextInput style={style.textInput}
+                    <TextInput allowFontScaling={false} style={style.textInput}
                         placeholder='Email Address'
                         placeholderTextColor='#769575'
                     />
 
-                    <Text style={style.input_header}>
+                    <Text allowFontScaling={false} style={style.input_header}>
                         Create Username
                     </Text>
 
-                    <TextInput style={style.textInput}
+                    <TextInput allowFontScaling={false} style={style.textInput}
                         placeholder='Create Username'
                         placeholderTextColor='#769575'
                     />
 
-                    <Text style={style.input_header}>
+                    <Text allowFontScaling={false} style={style.input_header}>
                         Create Password
                     </Text>
 
-                    <TextInput style={style.textInput}
+                    <TextInput allowFontScaling={false} style={style.textInput}
                         placeholder='Create Password'
                         placeholderTextColor='#769575'
                     />
 
-                    <Text style={style.input_header}>
+                    <Text allowFontScaling={false} style={style.input_header}>
                         Confirm Password
                     </Text>
 
-                    <TextInput style={style.textInput}
+                    <TextInput allowFontScaling={false} style={style.textInput}
                         placeholder='Confirm Password'
                         placeholderTextColor='#769575'
                     />
@@ -286,7 +286,7 @@ else
                 </SafeAreaView>
                 
                 <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
-                    <Text style={style.signInBottomText}>
+                    <Text allowFontScaling={false} style={style.signInBottomText}>
                         Create Account
                     </Text>
                 </Pressable>
