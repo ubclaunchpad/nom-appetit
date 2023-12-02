@@ -11,7 +11,7 @@ import Suggest from "./src/screens/SuggestRestaurantScreen";
 import ViewRestaurantScreen from "./src/screens/ViewRestaurantScreen";
 import Result from "./src/screens/ResultScreen";
 import ForgotPassword from "./src/screens/ForgotPasswordScreen";
-import CreateAccountScreen from './src/screens/CreateAccountScreen';
+import CreateAccountScreen from './src/screens/createAccountScreen';
 
 const Stack = createNativeStackNavigator();
 

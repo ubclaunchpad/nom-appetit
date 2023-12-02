@@ -12,32 +12,49 @@ const style = StyleSheet.create({
         backgroundColor: '#DCE7C2',
     },
 
+    container2: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#DCE7C2',
+        paddingBottom: 30,
+    },
+
+    container3: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#DCE7C2',
+    },
+
     text_header1 : {
         color: '#FFFCF1',
         fontSize: 16,
+        fontWeight: 'normal',
     },
 
     text_header2 : {
         color: '#FFFCF1',
         fontSize: 32,
+        fontWeight: 'normal',
     },
 
     text1 : {
         color: '#004643',
-        fontSize: 32,
+        fontSize: 36,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
+        marginBottom: 15,
+        fontWeight: 'normal',
     },
 
     text2 : {
         color: '#004643',
-        fontSize: 14,
+        fontSize: 18,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center', 
         width: 285,
-        fontWeight: '400'
+        fontWeight: '400',
     },
 
     text3 : {
@@ -48,7 +65,7 @@ const style = StyleSheet.create({
         textAlign: 'center', 
         width: 285,
         fontWeight: '500',
-        marginRight: 90
+        marginRight: 90,
     },
 
     input: {
@@ -78,13 +95,13 @@ const style = StyleSheet.create({
         color: '#004643',
     },
 
-    spacing: {
-        marginBottom: 30
-    },
+    // spacing: {
+    //     marginBottom: 10
+    // },
     
-    spacing2: {
-        marginBottom: 20
-    }
+    // spacing2: {
+    //     marginBottom: 20
+    // }
 
 });
 
@@ -92,28 +109,32 @@ export default function ForgotPasswordScreen({navigation}) {
     return (
         <View style={style.container}>
 
-            <Text style={style.text1}>
-                <Text style={style.text1}>Reset Password</Text>
-            </Text>
+            <View style={style.container2}>
+                <Text allowFontScaling={false} style={style.text1}>
+                    <Text allowFontScaling={false} style={style.text1}>Reset Password</Text>
+                </Text>
 
-            <View style={style.spacing}></View>
+                {/* <View style={style.spacing}></View> */}
 
-            <Text style={style.text2}>
-                <Text style={style.text2}>Instructions to reset your password will be sent to your email</Text>
-            </Text>
+                <Text allowFontScaling={false} style={style.text2}>
+                    <Text allowFontScaling={false} style={style.text2}>Instructions to reset your password will be sent to your email</Text>
+                </Text>
+            </View>
 
-            <View style={style.spacing2}></View>
+            <View style={style.container3}>
+                {/* <View style={style.spacing2}></View> */}
 
-            <Text style={style.text3}>
-                <Text style={style.text3}>Registered Email Address</Text>
-            </Text>
+                <Text allowFontScaling={false} style={style.text3}>
+                    <Text allowFontScaling={false} style={style.text3}>Registered Email Address</Text>
+                </Text>
 
-            <TextInput style={style.input}
-                placeholder='Email Address'
-            />
+                <TextInput allowFontScaling={false} style={style.input}
+                    placeholder='Email Address'
+                />
+            </View>
 
             <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
-                    <Text style={style.sendEmailText}>
+                    <Text allowFontScaling={false} style={style.sendEmailText}>
                         Send Email
                     </Text>
             </Pressable>
