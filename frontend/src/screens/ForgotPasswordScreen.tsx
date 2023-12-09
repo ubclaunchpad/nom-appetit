@@ -5,18 +5,24 @@ import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "
 
 const style = StyleSheet.create({
 
-    container: {
+    outerContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: '#DCE7C2',
     },
 
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginTop: 110,
+    },
+
     container2: {
+        flex: 0.25,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#DCE7C2',
-        paddingBottom: 30,
+        paddingBottom: '10%',
     },
 
     container3: {
@@ -38,12 +44,12 @@ const style = StyleSheet.create({
     },
 
     text1 : {
+        flex: 0.80,
         color: '#004643',
         fontSize: 36,
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        marginBottom: 15,
         fontWeight: 'normal',
     },
 
@@ -65,7 +71,7 @@ const style = StyleSheet.create({
         textAlign: 'center', 
         width: 285,
         fontWeight: '500',
-        marginRight: 90,
+        marginRight: '30%',
     },
 
     input: {
@@ -95,50 +101,41 @@ const style = StyleSheet.create({
         color: '#004643',
     },
 
-    // spacing: {
-    //     marginBottom: 10
-    // },
-    
-    // spacing2: {
-    //     marginBottom: 20
-    // }
-
 });
 
 export default function ForgotPasswordScreen({navigation}) {
     return (
-        <View style={style.container}>
+        <View style={style.outerContainer}>
+            <View style={style.container}>
 
-            <View style={style.container2}>
-                <Text allowFontScaling={false} style={style.text1}>
-                    <Text allowFontScaling={false} style={style.text1}>Reset Password</Text>
-                </Text>
-
-                {/* <View style={style.spacing}></View> */}
-
-                <Text allowFontScaling={false} style={style.text2}>
-                    <Text allowFontScaling={false} style={style.text2}>Instructions to reset your password will be sent to your email</Text>
-                </Text>
-            </View>
-
-            <View style={style.container3}>
-                {/* <View style={style.spacing2}></View> */}
-
-                <Text allowFontScaling={false} style={style.text3}>
-                    <Text allowFontScaling={false} style={style.text3}>Registered Email Address</Text>
-                </Text>
-
-                <TextInput allowFontScaling={false} style={style.input}
-                    placeholder='Email Address'
-                />
-            </View>
-
-            <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
-                    <Text allowFontScaling={false} style={style.sendEmailText}>
-                        Send Email
+                <View style={style.container2}>
+                    <Text allowFontScaling={false} style={style.text1}>
+                        <Text allowFontScaling={false} style={style.text1}>Reset Password</Text>
                     </Text>
-            </Pressable>
-            
+
+                    <Text allowFontScaling={false} style={style.text2}>
+                        <Text allowFontScaling={false} style={style.text2}>Instructions to reset your password will be sent to your email</Text>
+                    </Text>
+                </View>
+
+                <View style={style.container3}>
+
+                    <Text allowFontScaling={false} style={style.text3}>
+                        <Text allowFontScaling={false} style={style.text3}>Registered Email Address</Text>
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.input}
+                        placeholder='Email Address'
+                    />
+                </View>
+
+                <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
+                        <Text allowFontScaling={false} style={style.sendEmailText}>
+                            Send Email
+                        </Text>
+                </Pressable>
+                
+            </View>
         </View>
     )
 }
