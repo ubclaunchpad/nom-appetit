@@ -70,6 +70,8 @@ export default function HomeScreen({navigation}: Props) {
             onPress={ () => navigation.navigate('search')}
             />
 
+            <SearchBar />   
+
             <View style={styles.restaurantContainer}>
                 {restaurants.map((restaurant, index) => (
                     <RestaurantInfoComponent key={index} {...restaurant} />
