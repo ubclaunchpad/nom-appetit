@@ -37,11 +37,13 @@ const style = StyleSheet.create({
     slide: {
         position: 'absolute',
         alignItems: 'center',
-        justifyContent: 'center',
         top: 180,
-        backgroundColor: '#DCF7C2',
         zIndex: 2,
+        backgroundColor: 'white',
         flexDirection: 'row',
+        borderRadius: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 4
     },
 
     //the other input fields and buttons (everything below the slide button)
@@ -57,20 +59,25 @@ const style = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#FFFCF1',
         borderWidth: 1,
-        borderRadius: 20,
+        borderRadius: 30,
         paddingHorizontal: 130,
         paddingVertical: 12,
         marginVertical: 13,
     },
 
     Account: {
+        justifyContent: 'center',
         backgroundColor: 'white',
-        position: 'relative',
-        borderColor: '#FFFCF1',
-        paddingHorizontal: 20,
-        paddingVertical: 17,
-        marginVertical: 5,
-        flexDirection: 'row',
+        paddingHorizontal: 45,
+        paddingVertical: 15,
+        borderRadius: 20,
+    },
+
+    activePage: {
+        backgroundColor: "#F3CC91",
+        paddingVertical: 15,
+        paddingHorizontal: 45,
+        borderRadius: 20,
     },
 
     //Username/Password text
@@ -80,12 +87,6 @@ const style = StyleSheet.create({
         alignSelf: 'flex-start',
         paddingTop: 10,
         paddingBottom: 5
-    },
-
-    activePage: {
-        backgroundColor: "#F3CC91",
-        marginLeft: 22,
-        borderRadius: 50,
     },
 
     forgotPassword: {
@@ -125,7 +126,6 @@ export default function SignupScreen({navigation}) {
     let transformX = useRef(new Animated.Value(0)).current
 
     useEffect(() => {
-        console.log(active)
         if (active) {
         Animated.timing(transformX, {
             toValue: 1,
@@ -165,8 +165,8 @@ if (active)
                         Create Account
                     </Text>
                 </Pressable>
-                <Pressable style={style.Account} onPress={ () => setActive(true)}>
-                    <Text allowFontScaling={false} style={style.activePage}>
+                <Pressable style={style.activePage} onPress={ () => setActive(true)}>
+                    <Text allowFontScaling={false}>
                         Sign in
                     </Text>
                 </Pressable>
@@ -222,8 +222,8 @@ else
             </View>
 
             <View style={style.slide}>
-            <Pressable style={style.Account} onPress={ () => setActive(false)}> 
-                    <Text allowFontScaling={false} style={style.activePage}>
+            <Pressable style={style.activePage} onPress={ () => setActive(false)}> 
+                    <Text allowFontScaling={false}>
                         Create Account
                     </Text>
                 </Pressable>
