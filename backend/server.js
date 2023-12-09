@@ -6,11 +6,13 @@ app.use(express.json());
 
 import { auth } from './firebase/auth.js';
 
-const mapsRouter = require('./routes/mapsRoutes');
-app.use('/maps', mapsRouter);
+//import surveyrouter
+import surveyRouter from './routes/surveyRoutes.js';
+app.use('/survey', surveyRouter);
 
-const placesSearchRouter = require('./routes/placesSearchRoutes');
-app.use('/placesSearch', placesSearchRouter);
+//import placesSearchRouter
+import selectRestaurantRouter from './routes/selectRestaurantRoutes.js';
+app.use('/selectRestaurant', selectRestaurantRouter);
 
 
 // Start the Express server
