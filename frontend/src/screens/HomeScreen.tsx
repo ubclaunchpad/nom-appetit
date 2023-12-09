@@ -2,6 +2,10 @@
 import React from "react";
 import { Button, View, StyleSheet, ScrollView } from "react-native";
 import { RestaurantInfoComponent } from "../components/RestaurantInfoComponent";
+import { RootStackParamList } from "src/types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type Props = NativeStackScreenProps<RootStackParamList, "home">;
 
 // boilerplate for future restaurants
 type Restaurant = {
@@ -34,26 +38,26 @@ type Restaurant = {
   ];
 
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation}: Props) {
     return (
         <ScrollView style={styles.container}>
             <Button 
             title="View Restaurant"
-            onPress={ () => navigation.navigate('View')}
+            onPress={ () => navigation.navigate('view')}
             />
             <Button 
             title="Suggest Restaurant"
-            onPress={ () => navigation.navigate('Suggest')}
+            onPress={ () => navigation.navigate('suggest')}
             />
 
             <Button 
             title="Go Back"
-            onPress={ () => navigation.navigate('Signup')}
+            onPress={ () => navigation.navigate('signIn')}
             />
 
             <Button 
             title="Search"
-            onPress={ () => navigation.navigate('Search')}
+            onPress={ () => navigation.navigate('search')}
             />
 
             <View style={styles.restaurantContainer}>
