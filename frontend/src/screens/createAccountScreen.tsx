@@ -1,6 +1,8 @@
 // create account screen
 import React, { useEffect, useState } from "react";
 import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "src/types";
 
 const style = StyleSheet.create({
 
@@ -110,7 +112,11 @@ const style = StyleSheet.create({
     }
 });
 
-export default function CreateAccountScreen({navigation}) {
+
+type Props = NativeStackScreenProps<RootStackParamList, "forgotPassword">;
+
+
+export default function CreateAccountScreen({navigation}: Props) {
     return (
         <View style={style.container}>
             <View style={style.welcome_message}>
@@ -123,7 +129,7 @@ export default function CreateAccountScreen({navigation}) {
             </View>
 
             <View style={style.slide}>
-                <Pressable style={style.Account} onPress={ () => navigation.navigate('Signup')}> 
+                <Pressable style={style.Account} onPress={ () => navigation.navigate('signIn')}> 
                     <Text allowFontScaling={false} style={style.signInPage}>
                         Create Account
                     </Text>
@@ -185,7 +191,7 @@ export default function CreateAccountScreen({navigation}) {
 
                 </SafeAreaView>
                 
-                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('Home')}>
+                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
                     <Text allowFontScaling={false} style={style.signInBottomText}>
                         Sign In
                     </Text>

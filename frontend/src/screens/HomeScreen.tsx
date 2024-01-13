@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         backgroundColor: "#dee7c5",
-        alignItems: 'center',
-        justifyContent: 'center',
+        // alignItems: 'center',
+        // justifyContent: 'center',
         // backgroundColor: '#DCE7C2',
     },
     parentContainer: {

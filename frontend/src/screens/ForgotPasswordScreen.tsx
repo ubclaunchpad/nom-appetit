@@ -1,7 +1,47 @@
 // Forgot Password page
 import React, { useEffect, useState } from "react";
 import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "src/types";
 
+type Props = NativeStackScreenProps<RootStackParamList, "forgotPassword">;
+
+export default function ForgotPasswordScreen({navigation}: Props) {
+    return (
+        <View style={style.outerContainer}>
+            <View style={style.container}>
+
+                <View style={style.container2}>
+                    <Text allowFontScaling={false} style={style.text1}>
+                        <Text allowFontScaling={false} style={style.text1}>Reset Password</Text>
+                    </Text>
+
+                    <Text allowFontScaling={false} style={style.text2}>
+                        <Text allowFontScaling={false} style={style.text2}>Instructions to reset your password will be sent to your email</Text>
+                    </Text>
+                </View>
+
+                <View style={style.container3}>
+
+                    <Text allowFontScaling={false} style={style.text3}>
+                        <Text allowFontScaling={false} style={style.text3}>Registered Email Address</Text>
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.input}
+                        placeholder='Email Address'
+                    />
+                </View>
+
+                <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('home')}>
+                        <Text allowFontScaling={false} style={style.sendEmailText}>
+                            Send Email
+                        </Text>
+                </Pressable>
+                
+            </View>
+        </View>
+    )
+}
 
 const style = StyleSheet.create({
 
@@ -102,40 +142,3 @@ const style = StyleSheet.create({
     },
 
 });
-
-export default function ForgotPasswordScreen({navigation}) {
-    return (
-        <View style={style.outerContainer}>
-            <View style={style.container}>
-
-                <View style={style.container2}>
-                    <Text allowFontScaling={false} style={style.text1}>
-                        <Text allowFontScaling={false} style={style.text1}>Reset Password</Text>
-                    </Text>
-
-                    <Text allowFontScaling={false} style={style.text2}>
-                        <Text allowFontScaling={false} style={style.text2}>Instructions to reset your password will be sent to your email</Text>
-                    </Text>
-                </View>
-
-                <View style={style.container3}>
-
-                    <Text allowFontScaling={false} style={style.text3}>
-                        <Text allowFontScaling={false} style={style.text3}>Registered Email Address</Text>
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.input}
-                        placeholder='Email Address'
-                    />
-                </View>
-
-                <Pressable style={style.sendEmail} onPress={ () => navigation.navigate('Home')}>
-                        <Text allowFontScaling={false} style={style.sendEmailText}>
-                            Send Email
-                        </Text>
-                </Pressable>
-                
-            </View>
-        </View>
-    )
-}
