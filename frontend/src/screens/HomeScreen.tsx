@@ -1,14 +1,109 @@
 // home page
 import React, { useEffect, useState } from "react";
-import { Pressable, View, StyleSheet, Text, TextInput } from "react-native";
+import { Button, View, StyleSheet, ScrollView, Text, TextInput, Pressable} from "react-native";
+import { RestaurantInfoComponent } from "../components/RestaurantInfoComponent";
+import { RootStackParamList } from "src/types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import SquareButton from "../components/SquareButton";
+import Images from "../images/Images";
 
-const style = StyleSheet.create({
+type Props = NativeStackScreenProps<RootStackParamList, "home">;
 
+// boilerplate for future restaurants
+type Restaurant = {
+    type: string;
+    name: string;
+    distance: string;
+  };
+    const restaurants: Restaurant[] = [
+    {
+        type: "Chinese",
+        name: "Lin's Chinese Cuisine",
+        distance: "1.2 km away",
+    },
+    {
+      type: "Italian",
+      name: "Trattoria",
+      distance: "1.2 km away",
+    },
+    {
+      type: "Mexican",
+      name: "Taqueria",
+      distance: "1.2 km away",
+    },
+    {
+      type: "Japanese",
+      name: "Koi Sushi",
+      distance: "1.2 km away",
+    },
+    
+  ];
+
+export default function HomeScreen({navigation}: Props) {
+    return (
+        <ScrollView style={styles.container}>
+            <Text
+            style={{fontSize: 30, textAlign: 'center'}}>
+                What would you like to eat?
+            </Text>
+
+            <TextInput
+                style={styles.input}
+                placeholder="Search for a restaurant"
+            />
+            
+        <SquareButton 
+            text="Saved Restaurant" 
+            onPress={() => navigation.navigate("home")}
+            icon={Images.heartPNG} />
+        <SquareButton 
+            text="Give me suggestions" 
+            onPress={() => navigation.navigate("home")}
+            icon={Images.lighbulbPNG} />
+        <Button 
+        title="View Restaurant"
+        onPress={ () => navigation.navigate('view')}
+        />
+        <Button 
+        title="Suggest Restaurant"
+        onPress={ () => navigation.navigate('suggest')}
+        />
+
+        <Button 
+        title="Go Back"
+        onPress={ () => navigation.navigate('signIn')}
+        />
+
+        <Button 
+        title="Search"
+        onPress={ () => navigation.navigate('search')}
+        />
+
+        <View style={styles.restaurantContainer}>
+            {restaurants.map((restaurant, index) => (
+                <RestaurantInfoComponent key={index} {...restaurant} />
+            ))}
+        </View>
+    </ScrollView>
+    )
+}
+
+const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: "100%",
+        backgroundColor: "#dee7c5",
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#DCE7C2',
+        // backgroundColor: '#DCE7C2',
+    },
+    parentContainer: {
+        height: "100%",
+    },
+
+    restaurantContainer: {
+        padding: 25,
+        gap: 25
     },
 
     text_header1 : {
@@ -42,34 +137,4 @@ const style = StyleSheet.create({
         shadowRadius: 4,
         borderRadius: 20,
     }
-});
-
-export default function HomeScreen({navigation}) {
-    return (
-        <View style={style.container}>
-            <Text
-            style={{fontSize: 30, textAlign: 'center'}}>
-                What would you like to eat?
-            </Text>
-
-            <TextInput
-                style={style.input}
-                placeholder="Search for a restaurant"
-            />
-            <View style={{flexDirection: "row"}}>
-                <Pressable style={style.button} onPress={ () => navigation.navigate('View')}>
-                    <Text>
-                        Saved Restaurant
-                    </Text>
-                </Pressable>
-            
-                
-                <Pressable style={style.button} onPress={ () => navigation.navigate('Suggest')}>
-                    <Text>
-                        Give me suggestions
-                    </Text>
-                </Pressable> 
-            </View>
-        </View>
-    )
-}
+})

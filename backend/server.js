@@ -1,7 +1,8 @@
-const express = require('express');
-
+import express from 'express';
 const app = express();
 const port = 3000;
+
+import { auth } from './firebase/auth.js';
 
 // Middleware to parse JSON data
 app.use(express.json());
