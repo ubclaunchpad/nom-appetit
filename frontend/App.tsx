@@ -18,7 +18,7 @@ import ViewRestaurantScreen from "./src/screens/ViewRestaurantScreen";
 import ResultScreen from "./src/screens/ResultScreen";
 import ForgotPassword from "./src/screens/ForgotPasswordScreen";
 import CreateAccountScreen from './src/screens/createAccountScreen';
-import SearchFriends from './src/screens/SearchFriendsScreen';
+// import SearchFriends from './src/screens/SearchFriendsScreen';
 import loadAssets from "./src/hooks/loadAssets";
 import { RootStackParamList } from 'src/types';
 
