@@ -4,9 +4,9 @@ import { View } from "react-native";
 import { RootStackParamList } from "src/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type Props = NativeStackScreenProps<RootStackParamList, "selected">;
+type Props = NativeStackScreenProps<RootStackParamList, "selectedRestaurant">;
 
-export default function SelectedScreen({navigation}: Props) {
+export default function SelectedRestaurantScreen({navigation}: Props) {
     return (
         <View>
         </View>

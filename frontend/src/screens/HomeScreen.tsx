@@ -61,12 +61,12 @@ export default function HomeScreen({navigation}: Props) {
             onPress={() => navigation.navigate("home")}
             icon={Images.lighbulbPNG} />
         <Button 
-        title="View Restaurant"
-        onPress={ () => navigation.navigate('view')}
+        title="View Saved Restaurant"
+        onPress={ () => navigation.navigate('viewSavedRestaurants')}
         />
         <Button 
         title="Suggest Restaurant"
-        onPress={ () => navigation.navigate('suggest')}
+        onPress={ () => navigation.navigate('suggestRestaurant')}
         />
 
         <Button 
@@ -76,7 +76,7 @@ export default function HomeScreen({navigation}: Props) {
 
         <Button 
         title="Search"
-        onPress={ () => navigation.navigate('search')}
+        onPress={ () => navigation.navigate('searchRestaurant')}
         />
 
         <View style={styles.restaurantContainer}>

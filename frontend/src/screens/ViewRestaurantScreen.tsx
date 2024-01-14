@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Button, View } from "react-native";
 import { RootStackParamList } from "src/types";
 
-type Props = NativeStackScreenProps<RootStackParamList, "view">;
+type Props = NativeStackScreenProps<RootStackParamList, "viewSavedRestaurants">;
 
-export default function ViewRestaurantScreen({navigation}: Props) {
+export default function ViewSavedRestaurantsScreen({navigation}: Props) {
     return (
         <View>
             <Button 
