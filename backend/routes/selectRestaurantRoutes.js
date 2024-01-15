@@ -6,6 +6,6 @@ const selectRestaurantRouter = express.Router();
 // REQUIRES : query with latitude & longitude (lat, lng) of origin and destination
 //          : Current Time / Departure Time (in seconds)
 // RETURNS : JSON object with polyline
-router.get('/', selectRestaurantController);
+selectRestaurantRouter.get('/', selectRestaurantController);
 
 export default selectRestaurantRouter;
