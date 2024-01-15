@@ -1,12 +1,13 @@
-import { searchPlaces } from '../services/placesSearchesServices.js';
+import { fetchPolyLineService } from '../services/drawMapsServices.js';
 
-//GOOGLE PLACES API Search By Name
-exports  = async (req, res, next) => {
-    try{
-        const searchString = req.query.name;
-        const result = await searchPlaces.searchByName(searchString);
+const selectRestaurantController = async (req, res, next) => {
+    try {
+        // Call the function directly
+        const result = await fetchPolyLineService(req.query.origin, req.query.destination, req.query.departureTime);
         res.status(200).json(result);
     } catch (error) {
         next(error);
     }
-}
+};
+
+export default selectRestaurantController;

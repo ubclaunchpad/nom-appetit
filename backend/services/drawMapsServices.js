@@ -1,10 +1,17 @@
-const https = require('https');
-const path = require('path');
-const dotenv = require('dotenv');
+import https from 'https';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 //const polyline = require('polyline');
+
+// Convert the URL to a file path
+const __filename = fileURLToPath(import.meta.url);
+// Get the directory name
+const __dirname = path.dirname(__filename);
 
 // Define the path to the .env file located outside the project folder
 const envPath = path.resolve(__dirname, '../.env');
+
 
 // Load environment variables from the specified .env file
 dotenv.config({ path: envPath });
@@ -18,7 +25,7 @@ const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 // 2. will also take destination longitude and latitude as parameters
 
 
-async function fetchPolyline(origin, destination, currentTime) {
+export const fetchPolyLineService =  async (origin, destination, currentTime) => {
   try {
     // defining the response data in the correct format for the api call
     const requestData = {
