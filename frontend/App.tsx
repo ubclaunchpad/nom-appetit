@@ -32,15 +32,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="signIn" component={SignInScreen}/>
-        <Stack.Screen name="home" component={HomeScreen}/>
+        {/* <Stack.Screen name="signIn" component={SignInScreen}/>
         <Stack.Screen name="restaurantResult" component={RestaurantResultScreen}/>
         <Stack.Screen name="searchRestaurant" component={SearchRestaurantScreen}/>
-        <Stack.Screen name="selectedRestaurant" component={SelectedRestaurantScreen}/>
+        <Stack.Screen name="selectedRestaurant" component={SelectedRestaurantScreen}/> */}
         <Stack.Screen name="suggestRestaurant" component={SuggestRestaurantScreen}/>
-        <Stack.Screen name="viewSavedRestaurants" component={ViewSavedRestaurantsScreen}/>
+        {/* <Stack.Screen name="viewSavedRestaurants" component={ViewSavedRestaurantsScreen}/>
         <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen}/>
-        <Stack.Screen name="searchFriends" component={SearchFriendsScreen}/>
+        <Stack.Screen name="searchFriends" component={SearchFriendsScreen}/> */}
+        <Stack.Screen name="home" component={HomeScreen}/>        
       </Stack.Navigator>
   </NavigationContainer>
   );

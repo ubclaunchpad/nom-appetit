@@ -52,3 +52,25 @@ export const SquareButtonContainer = styled.TouchableOpacity<{
     width: 165px;
     height: 161px;
 `;
+
+export const RadioButtonContainer = styled.TouchableOpacity`
+    border: #004643;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    border-radius: 45px;
+    background: transparent;
+    justify-content: center;
+    align-items: center;
+    border-width: 10px;
+`;
+
+export const RadioButtonSelection = styled.TouchableOpacity`
+    width: 85px;
+    height: 85px;
+    display: flex;
+    border-radius: 45px;
+    background: #004643;
+    justify-content: center;
+    align-items: center;
+`;
