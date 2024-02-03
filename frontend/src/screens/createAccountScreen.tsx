@@ -4,6 +4,94 @@ import { Pressable, View, StyleSheet, Text, TouchableOpacity, TextInput, SafeAre
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "src/types";
 
+type Props = NativeStackScreenProps<RootStackParamList, "forgotPassword">;
+
+
+export default function CreateAccountScreen({navigation}: Props) {
+    return (
+        <View style={style.container}>
+            <View style={style.welcome_message}>
+                <Text allowFontScaling={false} style={style.text_header1}>
+                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
+                </Text>
+                <Text allowFontScaling={false} style={style.text_header2}>
+                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
+                </Text>
+            </View>
+
+            <View style={style.slide}>
+                <Pressable style={style.Account} onPress={ () => navigation.navigate('signIn')}> 
+                    <Text allowFontScaling={false} style={style.signInPage}>
+                        Create Account
+                    </Text>
+                    
+                    <Text>
+                        Sign in
+                    </Text>
+                </Pressable>
+            </View>
+
+            <View style={style.input}>
+
+                <SafeAreaView>
+
+                    <Text allowFontScaling={false} style={style.input_header}>
+                        Your name
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.textInput}
+                        placeholder='Your name'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text allowFontScaling={false} style={style.input_header}>
+                        Email address
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.textInput}
+                        placeholder='Email Address'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text allowFontScaling={false} style={style.input_header}>
+                        Create Username
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.textInput}
+                        placeholder='Create Username'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text allowFontScaling={false} style={style.input_header}>
+                        Create Password
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.textInput}
+                        placeholder='Create Password'
+                        placeholderTextColor='#769575'
+                    />
+
+                    <Text allowFontScaling={false} style={style.input_header}>
+                        Confirm Password
+                    </Text>
+
+                    <TextInput allowFontScaling={false} style={style.textInput}
+                        placeholder='Confirm Password'
+                        placeholderTextColor='#769575'
+                    />
+
+                </SafeAreaView>
+                
+                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
+                    <Text allowFontScaling={false} style={style.signInBottomText}>
+                        Sign In
+                    </Text>
+                </Pressable>
+            </View>
+        </View>
+    )
+}
+
 const style = StyleSheet.create({
 
     container: {
@@ -111,92 +199,3 @@ const style = StyleSheet.create({
         paddingVertical: 12,
     }
 });
-
-
-type Props = NativeStackScreenProps<RootStackParamList, "forgotPassword">;
-
-
-export default function CreateAccountScreen({navigation}: Props) {
-    return (
-        <View style={style.container}>
-            <View style={style.welcome_message}>
-                <Text allowFontScaling={false} style={style.text_header1}>
-                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
-                </Text>
-                <Text allowFontScaling={false} style={style.text_header2}>
-                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
-                </Text>
-            </View>
-
-            <View style={style.slide}>
-                <Pressable style={style.Account} onPress={ () => navigation.navigate('signIn')}> 
-                    <Text allowFontScaling={false} style={style.signInPage}>
-                        Create Account
-                    </Text>
-                    
-                    <Text>
-                        Sign in
-                    </Text>
-                </Pressable>
-            </View>
-
-            <View style={style.input}>
-
-                <SafeAreaView>
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Your name
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Your name'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Email address
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Email Address'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Username
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Username'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Password'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Confirm Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Confirm Password'
-                        placeholderTextColor='#769575'
-                    />
-
-                </SafeAreaView>
-                
-                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
-                    <Text allowFontScaling={false} style={style.signInBottomText}>
-                        Sign In
-                    </Text>
-                </Pressable>
-            </View>
-        </View>
-    )
-}
