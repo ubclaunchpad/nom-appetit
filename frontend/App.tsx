@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {useFonts} from 'expo-font';
+/*
+If you get any errors with the drawer import, try running the following commands in the frontend directory:
+
+$ npm install @react-navigation/drawer
+$ npm install react-native-gesture-handler react-native-reanimated
+*/
 
 import HomeScreen from "./src/screens/HomeScreen";
-import SearchScreen from "./src/screens/SearchScreen";
-import SelectedScreen from "./src/screens/SelectedScreen";
+import SearchRestaurantScreen from "./src/screens/SearchScreen";
+import SelectedRestaurantScreen from "./src/screens/SelectedScreen";
 import SignInScreen from "./src/screens/SignInScreen";
-import SuggestScreen from "./src/screens/SuggestRestaurantScreen";
-import ViewRestaurantScreen from "./src/screens/ViewRestaurantScreen";
-import ResultScreen from "./src/screens/ResultScreen"
+import SuggestRestaurantScreen from "./src/screens/SuggestRestaurantScreen";
+import ViewSavedRestaurantsScreen from "./src/screens/ViewRestaurantScreen";
+import RestaurantResultScreen from "./src/screens/ResultScreen";
+import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
+import SearchFriendsScreen from './src/screens/SearchFriendsScreen';
 import loadAssets from "./src/hooks/loadAssets";
 import { RootStackParamList } from 'src/types';
 
@@ -25,13 +34,14 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="signIn" component={SignInScreen}/>
         <Stack.Screen name="home" component={HomeScreen}/>
-        <Stack.Screen name="result" component={ResultScreen}/>
-        <Stack.Screen name="search" component={SearchScreen}/>
-        <Stack.Screen name="selected" component={SelectedScreen}/>
-        <Stack.Screen name="suggest" component={SuggestScreen}/>
-        <Stack.Screen name="view" component={ViewRestaurantScreen}/>
+        <Stack.Screen name="restaurantResult" component={RestaurantResultScreen}/>
+        <Stack.Screen name="searchRestaurant" component={SearchRestaurantScreen}/>
+        <Stack.Screen name="selectedRestaurant" component={SelectedRestaurantScreen}/>
+        <Stack.Screen name="suggestRestaurant" component={SuggestRestaurantScreen}/>
+        <Stack.Screen name="viewSavedRestaurants" component={ViewSavedRestaurantsScreen}/>
+        <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen}/>
+        <Stack.Screen name="searchFriends" component={SearchFriendsScreen}/>
       </Stack.Navigator>
-    </NavigationContainer>
+  </NavigationContainer>
   );
 }
-
