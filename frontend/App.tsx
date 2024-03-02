@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {useFonts} from 'expo-font';
-/*
-If you get any errors with the drawer import, try running the following commands in the frontend directory:
 
-$ npm install @react-navigation/drawer
-$ npm install react-native-gesture-handler react-native-reanimated
-*/
+import 'react-native-gesture-handler';
+//import 'react-native-screens'; // npm install this
+//import 'react-native-safe-area-context'; // npm install this
+//import '@react-native-community/masked-view'; // npm install this
+// npm i react-native-paper
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import HomeScreen from "./src/screens/HomeScreen";
 import SearchRestaurantScreen from "./src/screens/SearchScreen";
@@ -23,8 +24,15 @@ import { RootStackParamList } from 'src/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const StackNav=()=>{
+  const Stack = createNativeStackNavigator<RootStackParamList>();
+
+  
+}
+
 export default function App() {
 
+  const Drawer = createDrawerNavigator();
   const isLoaded = loadAssets();
 
   if (!isLoaded) return null;
