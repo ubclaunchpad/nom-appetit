@@ -48,54 +48,31 @@ const restaurants: Restaurant[] = [
 
 export default function HomeScreen({ navigation }: Props) {
   return (
-    // <ScrollView style={styles.container}>
     <View style={styles.containerBackground}>
       <View style={styles.container}>
-        <Text style={{ fontSize: 30, textAlign: "center" }}>
+        <Text style={{ fontSize: 30, textAlign: "center", width: "75%" }}>
           What would you like to eat?
         </Text>
-
-        <TextInput style={styles.input} placeholder="Search for a restaurant" />
+        <View>
+          <TextInput 
+            style={styles.input}
+            placeholder="Search for a restaurant" />
+        </View>
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
           <SquareButton
             text="Saved Restaurant"
-            // onPress={() => navigation.navigate("home")}
             onPress={() => navigation.navigate("viewSavedRestaurants")}
             icon={Images.heartPNG}
-            // style={{ width: 100, height: 100 }}
           />
+          <View style={{ width: 15 }} />
           <SquareButton
             text="Give me suggestions"
-            // onPress={() => navigation.navigate("home")}
             onPress={() => navigation.navigate("suggestRestaurant")}
             icon={Images.lighbulbPNG}
-            // style={{ width: 100, height: 100 }}
           />
         </View>
-        {/* <Button
-          title="View Saved Restaurant"
-          onPress={() => navigation.navigate("viewSavedRestaurants")}
-        />
-        <Button
-          title="Suggest Restaurant"
-          onPress={() => navigation.navigate("suggestRestaurant")}
-        /> */}
-
-        <Button title="Go Back" onPress={() => navigation.navigate("signIn")} />
-
-        <Button
-          title="Search"
-          onPress={() => navigation.navigate("searchRestaurant")}
-        />
-
-        {/* <View style={styles.restaurantContainer}>
-            {restaurants.map((restaurant, index) => (
-                <RestaurantInfoComponent key={index} {...restaurant} />
-            ))}
-        </View> */}
       </View>
     </View>
-    // </ScrollView>
   );
 }
 
@@ -104,12 +81,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: "#dee7c5",
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: '#DCE7C2',
   },
   container: {
-    flex: 1,
+    flex: 0.85,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
@@ -136,10 +110,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#e8e8e8",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 15,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    marginVertical: 10,
+    marginVertical: 25,
+    width: 345,
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 
   button: {
@@ -148,10 +127,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 50,
     marginHorizontal: 5,
-    shadowColor: "rgba(0, 0, 0, 0.1)",
+    shadowColor: "#000",
     shadowOffset: { width: 7, height: 7 },
-    shadowOpacity: 4,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     borderRadius: 20,
+  },
+  
+  icon: {
+    marginLeft: 10
   },
 });
