@@ -1,7 +1,7 @@
 // view saved restaurant
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Button, View, Text, Pressable, StyleSheet } from "react-native";
+import { Button, View, Text, Pressable, StyleSheet, ScrollView } from "react-native";
 import { RestaurantInfoComponent } from "../components/RestaurantInfoComponent";
 import { RootStackParamList } from "src/types";
 
@@ -38,71 +38,73 @@ export default function ViewSavedRestaurantsScreen({navigation}: Props) {
           name: "Koi Sushi",
           distance: "1.2 km away",
         },
-        
       ];
 
     if (active) {
         return (
-            <View style={style.container}>
-                <Button 
-                title="Go Back"
-                onPress={ () => navigation.navigate('home')}
-                />
-                <Text style={style.titleText}>
-                    Saved Places
-                </Text>
-                <View style={style.slide}>
-                    <Pressable style={style.activePage} onPress={ () => setActive(true)}> 
-                        <Text allowFontScaling={false}>
-                            Visited
-                        </Text>
-                    </Pressable>
-                    <Pressable style={style.account} onPress={ () => setActive(false)}>
-                        <Text allowFontScaling={false}>
-                            Wishlist
-                        </Text>
-                    </Pressable>
+            <ScrollView>
+                <View style={style.container}>
+                    <Button 
+                    title="Go Back"
+                    onPress={ () => navigation.navigate('home')}
+                    />
+                    <Text style={style.titleText}>
+                        Saved Places
+                    </Text>
+                    <View style={style.slide}>
+                        <Pressable style={style.activePage} onPress={ () => setActive(true)}> 
+                            <Text allowFontScaling={false}>
+                                Visited
+                            </Text>
+                        </Pressable>
+                        <Pressable style={style.account} onPress={ () => setActive(false)}>
+                            <Text allowFontScaling={false}>
+                                Wishlist
+                            </Text>
+                        </Pressable>
+                    </View>
+
+
+                    <View style={style.restaurantContainer}>
+                        {restaurants.map((restaurant, index) => (
+                            <RestaurantInfoComponent key={index} {...restaurant} />
+                        ))}
+                    </View>
                 </View>
-
-
-                <View style={style.restaurantContainer}>
-                    {restaurants.map((restaurant, index) => (
-                        <RestaurantInfoComponent key={index} {...restaurant} />
-                    ))}
-                </View>
-            </View>
-
+            </ScrollView>
         )
     }
     else {
         return (
-            <View style={style.container}>
-                <Button 
-                title="Go Back"
-                onPress={ () => navigation.navigate('home')}
-                />
-                <Text style={style.titleText}>
-                    Saved Places
-                </Text>
-                <View style={style.slide}>
-                    <Pressable style={style.account} onPress={ () => setActive(true)}> 
-                        <Text allowFontScaling={false}>
-                            Visited
-                        </Text>
-                    </Pressable>
-                    <Pressable style={style.activePage} onPress={ () => setActive(false)}>
-                        <Text allowFontScaling={false}>
-                            Wishlist
-                        </Text>
-                    </Pressable>
-                </View>
+            <ScrollView>
+                <View style={style.container}>
+                    <Button 
+                    title="Go Back"
+                    onPress={ () => navigation.navigate('home')}
+                    />
+                    <Text style={style.titleText}>
+                        Saved Places
+                    </Text>
+                    <View style={style.slide}>
+                        <Pressable style={style.account} onPress={ () => setActive(true)}> 
+                            <Text allowFontScaling={false}>
+                                Visited
+                            </Text>
+                        </Pressable>
+                        <Pressable style={style.activePage} onPress={ () => setActive(false)}>
+                            <Text allowFontScaling={false}>
+                                Wishlist
+                            </Text>
+                        </Pressable>
+                    </View>
 
-                <View style={style.restaurantContainer}>
-                    {restaurants.map((restaurant, index) => (
-                        <RestaurantInfoComponent key={index} {...restaurant} />
-                    ))}
+                    <View style={style.restaurantContainer}>
+                        {restaurants.map((restaurant, index) => (
+                            <RestaurantInfoComponent key={index} {...restaurant} />
+                        ))}
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }
