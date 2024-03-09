@@ -71,6 +71,10 @@ export default function HomeScreen({ navigation }: Props) {
             icon={Images.lighbulbPNG}
           />
         </View>
+        <Button 
+          title="Filter Restaurant" 
+          onPress={() => navigation.navigate("filterRestaurant")}>
+        </Button>
       </View>
     </View>
   );
