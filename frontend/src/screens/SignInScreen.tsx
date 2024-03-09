@@ -6,7 +6,6 @@ import { Container } from "../styles/Shared";
 import React, { useEffect, useState, useRef} from "react";
 import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput} from "react-native";
 
-
 type Props = NativeStackScreenProps<RootStackParamList, "signIn">;
 
 export default function SignInScreen({navigation}: Props) {
@@ -178,7 +177,6 @@ else
                         placeholder='Confirm Password'
                         placeholderTextColor='#769575'
                     />
-
                 </SafeAreaView>
                 
                 <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
@@ -309,4 +307,3 @@ const style = StyleSheet.create({
         paddingVertical: 12,
     }
 });
-
