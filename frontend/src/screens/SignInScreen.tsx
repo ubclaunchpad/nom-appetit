@@ -6,123 +6,6 @@ import { Container } from "../styles/Shared";
 import React, { useEffect, useState, useRef} from "react";
 import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput} from "react-native";
 
-const style = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#DCF7C2',
-        width: '100%',
-        height: '100%',
-    },
-
-    //Welcome message (Welcome to Nom Appetit)
-    welcome_message: {
-        flex: 0.43,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingRight: 110,
-    },
-
-    //Welcome to
-    text_header1: {
-        fontSize: 17,
-        color: '#004643',
-    },
-
-    //Nom Appetit
-    text_header2: {
-        fontSize: 32,
-        color: '#004643',
-    },
-
-    //the main slide button
-    slide: {
-        position: 'absolute',
-        alignItems: 'center',
-        top: 180,
-        zIndex: 2,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        borderRadius: 20,
-        paddingVertical: 5,
-        paddingHorizontal: 4
-    },
-
-    //the other input fields and buttons (everything below the slide button)
-    input: {
-        flex: 1,
-        alignItems: 'center',
-        top: 30,
-        backgroundColor: '#DCF7C2',
-        zIndex: 1,
-    },
-
-    buttons: {   
-        backgroundColor: 'white',
-        borderColor: '#FFFCF1',
-        borderWidth: 1,
-        borderRadius: 30,
-        paddingHorizontal: 130,
-        paddingVertical: 12,
-        marginVertical: 13,
-    },
-
-    Account: {
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        paddingHorizontal: 45,
-        paddingVertical: 15,
-        borderRadius: 20,
-    },
-
-    activePage: {
-        backgroundColor: "#F3CC91",
-        paddingVertical: 15,
-        paddingHorizontal: 45,
-        borderRadius: 20,
-    },
-
-    //Username/Password text
-    input_header: {
-        fontSize: 16,
-        color: '#004643',
-        alignSelf: 'flex-start',
-        paddingTop: 10,
-        paddingBottom: 5
-    },
-
-    forgotPassword: {
-        color: '#004643', 
-        textDecorationLine: 'underline', 
-        fontSize: 16,
-        marginVertical: 10,
-    },
-
-    signInBottom: {
-        marginVertical: 25,
-        borderRadius: 50,
-        backgroundColor: "#F3CC91",
-        paddingVertical: 8,
-        paddingHorizontal: 40
-    },
-
-    signInBottomText: {
-        color: '#004643',
-    },
-
-    textInput: {
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderColor: '#FFFCF1',
-        borderWidth: 1,
-        width: 340,
-        borderRadius: 15,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-    }
-});
 
 type Props = NativeStackScreenProps<RootStackParamList, "signIn">;
 
@@ -306,6 +189,124 @@ else
             </View>
         </View>
     )
+    }
 }
-}
+
+const style = StyleSheet.create({
+
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#DCF7C2',
+        width: '100%',
+        height: '100%',
+    },
+
+    //Welcome message (Welcome to Nom Appetit)
+    welcome_message: {
+        flex: 0.43,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingRight: 110,
+    },
+
+    //Welcome to
+    text_header1: {
+        fontSize: 17,
+        color: '#004643',
+    },
+
+    //Nom Appetit
+    text_header2: {
+        fontSize: 32,
+        color: '#004643',
+    },
+
+    //the main slide button
+    slide: {
+        position: 'absolute',
+        alignItems: 'center',
+        top: 180,
+        zIndex: 2,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        borderRadius: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 4
+    },
+
+    //the other input fields and buttons (everything below the slide button)
+    input: {
+        flex: 1,
+        alignItems: 'center',
+        top: 30,
+        backgroundColor: '#DCF7C2',
+        zIndex: 1,
+    },
+
+    buttons: {   
+        backgroundColor: 'white',
+        borderColor: '#FFFCF1',
+        borderWidth: 1,
+        borderRadius: 30,
+        paddingHorizontal: 130,
+        paddingVertical: 12,
+        marginVertical: 13,
+    },
+
+    Account: {
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        paddingHorizontal: 45,
+        paddingVertical: 15,
+        borderRadius: 20,
+    },
+
+    activePage: {
+        backgroundColor: "#F3CC91",
+        paddingVertical: 15,
+        paddingHorizontal: 45,
+        borderRadius: 20,
+    },
+
+    //Username/Password text
+    input_header: {
+        fontSize: 16,
+        color: '#004643',
+        alignSelf: 'flex-start',
+        paddingTop: 10,
+        paddingBottom: 5
+    },
+
+    forgotPassword: {
+        color: '#004643', 
+        textDecorationLine: 'underline', 
+        fontSize: 16,
+        marginVertical: 10,
+    },
+
+    signInBottom: {
+        marginVertical: 25,
+        borderRadius: 50,
+        backgroundColor: "#F3CC91",
+        paddingVertical: 8,
+        paddingHorizontal: 40
+    },
+
+    signInBottomText: {
+        color: '#004643',
+    },
+
+    textInput: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#FFFCF1',
+        borderWidth: 1,
+        width: 340,
+        borderRadius: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+    }
+});
 
