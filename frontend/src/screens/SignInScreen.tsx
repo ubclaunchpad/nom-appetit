@@ -4,7 +4,8 @@ import { RootStackParamList } from "src/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container } from "../styles/Shared";
 import React, { useEffect, useState, useRef} from "react";
-import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput} from "react-native";
+import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput, ScrollView} from "react-native";
+import { KeyboardAvoidingView } from 'react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, "signIn">;
 
@@ -131,59 +132,63 @@ else
 
             <View style={style.input}>
 
+                <ScrollView
+                automaticallyAdjustKeyboardInsets = {true}>
+                    <SafeAreaView>
+                        <Text allowFontScaling={false} style={style.input_header}>
+                            Your name
+                        </Text>
+
+                        <TextInput allowFontScaling={false} style={style.textInput}
+                            placeholder='Your name'
+                            placeholderTextColor='#769575'
+                        />
+
+                        <Text allowFontScaling={false} style={style.input_header}>
+                            Email address
+                        </Text>
+
+                        <TextInput allowFontScaling={false} style={style.textInput}
+                            placeholder='Email Address'
+                            placeholderTextColor='#769575'
+                        />
+
+                        <Text allowFontScaling={false} style={style.input_header}>
+                            Create Username
+                        </Text>
+
+                        <TextInput allowFontScaling={false} style={style.textInput}
+                            placeholder='Create Username'
+                            placeholderTextColor='#769575'
+                        />
+
+                        <Text allowFontScaling={false} style={style.input_header}>
+                            Create Password
+                        </Text>
+
+                        <TextInput allowFontScaling={false} style={style.textInput}
+                            placeholder='Create Password'
+                            placeholderTextColor='#769575'
+                        />
+
+                        <Text allowFontScaling={false} style={style.input_header}>
+                            Confirm Password
+                        </Text>
+
+                        <TextInput allowFontScaling={false} style={style.textInput}
+                            placeholder='Confirm Password'
+                            placeholderTextColor='#769575'
+                        />
+                    </SafeAreaView>
+                </ScrollView>
+
                 <SafeAreaView>
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Your name
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Your name'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Email address
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Email Address'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Username
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Username'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Password'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Confirm Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Confirm Password'
-                        placeholderTextColor='#769575'
-                    />
+                    <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
+                            <Text allowFontScaling={false} style={style.signInBottomText}>
+                                Create Account
+                            </Text>
+                    </Pressable>
                 </SafeAreaView>
-                
-                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
-                    <Text allowFontScaling={false} style={style.signInBottomText}>
-                        Create Account
-                    </Text>
-                </Pressable>
             </View>
         </View>
     )
