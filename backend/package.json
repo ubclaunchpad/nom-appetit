@@ -1,7 +1,17 @@
 {
-  "dependencies": {
-    "express": "^4.18.2",
-    "firebase": "^10.6.0"
+  "name": "nomappetit-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
   },
-  "type": "module"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.17.1"
+  }
 }
