@@ -1,7 +1,7 @@
 // ===== imports  =====
 import express from 'express';
 import { searchRestaurants } from './services/search.js';
-import { createUser, saveRestaurant } from './services/database.js';
+import { createUser, saveRestaurant, addReview } from './services/database.js';
 
 // ===== express configuration =====
 const app = express();
@@ -37,6 +37,19 @@ app.get('/saveRestaurant', async (req, res) => {
   try {
     const { place_id, user_id } = req.query;
     await saveRestaurant(place_id, user_id);
+    res.json('succesfully added restaurant to list')
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+app.get('/addReview', async (req, res) => {
+  // example: /addReview?place_id=ChIJQ56quS1zhlQRD0hapwfuhd4&user_id=FXJ0g8uYC5SJFEaCEpJVxHNsOun2&review="Absolutely loved it, definitely coming back again next time!"&rating=3
+  try {
+    const { place_id, user_id, review, rating } = req.query;
+    await addReview(place_id, user_id, review, rating);
+    res.json('succesfully added review to list')
 
   } catch (error) {
     throw new Error(error.message);

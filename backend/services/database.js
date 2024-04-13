@@ -28,8 +28,8 @@ async function createProfile(user_id) {
   try {
     const db = admin.firestore();
     const data = {
-      biography: '',
-      profile_picture: 'IMG_0000.png',
+      bio: '',
+      profile_pic: 'IMG_0000.png',
       friends: [],
       saved_restaurants: [],
     };
@@ -51,7 +51,25 @@ export async function saveRestaurant(place_id, user_id) {
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+}
+
+export async function addReview(place_id, user_id, review, rating) {
+    try {
+      const db = admin.firestore();
+      const data = {
+        place_id: place_id,
+        user_id: user_id,
+        review: review,
+        rating: rating
+      };
+      await db.collection('reviews').doc().set(data);
+  
+    } catch (error) {
+      throw new Error(error.message);
+    }
+}
+
+
   
 
 
