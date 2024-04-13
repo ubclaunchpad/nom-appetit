@@ -1,7 +1,7 @@
 // ===== imports  =====
 import express from 'express';
 import { searchRestaurants } from './services/search.js';
-import { createUser } from './services/database.js';
+import { createUser, saveRestaurant } from './services/database.js';
 
 // ===== express configuration =====
 const app = express();
@@ -26,6 +26,17 @@ app.get('/signup', async (req, res) => {
     const { name, email, password } = req.query;
     const user_id = await createUser(name, email, password);
     res.json(user_id);
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+app.get('/saveRestaurant', async (req, res) => {
+  // example: /saveRestaurant?place_id=ChIJQ56quS1zhlQRD0hapwfuhd4&user_id=FXJ0g8uYC5SJFEaCEpJVxHNsOun2
+  try {
+    const { place_id, user_id } = req.query;
+    await saveRestaurant(place_id, user_id);
 
   } catch (error) {
     throw new Error(error.message);

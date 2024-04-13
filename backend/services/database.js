@@ -1,5 +1,6 @@
 // ===== imports  =====
 import admin from "firebase-admin";
+import { FieldValue } from 'firebase-admin/firestore';
 import serviceAccount from "./config/serviceAccountKey.json" assert { type: 'json' };
 
 // ===== api authentication =====
@@ -38,6 +39,20 @@ async function createProfile(user_id) {
     throw new Error(error.message);
   }
 }
+
+export async function saveRestaurant(place_id, user_id) {
+    try {
+      const db = admin.firestore();
+      const userRef = db.collection('profiles').doc(user_id);
+      await userRef.update({
+        saved_restaurants: FieldValue.arrayUnion(place_id)
+      });
+  
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+  
 
 
 
