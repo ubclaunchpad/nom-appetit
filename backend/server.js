@@ -1,18 +1,24 @@
+// ===== imports  =====
 import express from 'express';
+import { searchRestaurants } from './services/search.js';
+
+// ===== express configuration =====
 const app = express();
-const port = 3000;
+const port = 3000; 
 
-import { auth } from './firebase/auth.js';
+// ===== routing =====
+app.get('/search', async (req, res) => {
+  // example: /search?location=49.2606,-123.2460&keyword=pizza
+  try {
+    const { location, keyword } = req.query;
+    const restaurants = await searchRestaurants(location, keyword);
+    res.json(restaurants);
 
-// Middleware to parse JSON data
-app.use(express.json());
-
-// Simple route to say hello
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+  } catch (error) {
+    throw new Error(error.message);
+  }
 });
 
-// Start the Express server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server listening at http://localhost:${port}`);
 });

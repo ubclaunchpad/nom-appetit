@@ -1,6 +1,6 @@
-# nom-appetit
+# Nom Appetit
 
-## Development Setup
+### Development Setup
 Please ensure that you have the following installed:
 - Node.js
 - Expo Go (mobile app)
