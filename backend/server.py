@@ -14,6 +14,7 @@ def searchRoute():
     try:
         user_location = request.args.get('user_location')
         keyword = request.args.get('keyword')
+        # returns a list of restaurants 
         return searchRestaurants(user_location, keyword)
        
     except Exception as e:
@@ -59,8 +60,6 @@ def addRestaurantRoute():
     except Exception as e:
         raise Exception(str(e))
     
-         
-
 if __name__ == "__main__":
     app.run(debug=True)
 
