@@ -7,7 +7,7 @@ cred = credentials.Certificate('./services/secrets/serviceAccountKey.json')
 app = fb.initialize_app(cred)
 
 # ===== functions =====
-def createUser(display_name, email, password):
+def createUser(display_name, username, email, password):
     user = auth.create_user(
         display_name = display_name,
         email = email,
@@ -15,12 +15,13 @@ def createUser(display_name, email, password):
         disabled = False)
         
     user_id = user.uid 
-    createProfile(user_id)
+    createProfile(user_id, username)
     return user_id
 
-def createProfile(user_id):
+def createProfile(user_id, username):
     db = firestore.client()
     data  = {
+        "username": username,
         "bio": '',
         "profile_pic": 'IMG_0000.png',
         "friends": [],
@@ -32,7 +33,24 @@ def addRestaurant(user_id, place_id):
     db = firestore.client() 
     user_ref = db.collection("profiles").document(user_id)
     user_ref.update({ "saved_restaurants" : firestore.ArrayUnion([place_id])})
-    return "Restaurant added sucessfully to list"
+    return user_id 
+
+def addReview(user_id, place_id, review, rating):
+    db = firestore.client()
+    data = {
+        "user_id": user_id,
+        "place_id": place_id,
+        "review": review,
+        "rating": int(rating)
+    }
+    review_ref = db.collection("reviews").document()
+    review_ref.set(data)
+    return review_ref.id
+
+
+
+
+
 
 
 
