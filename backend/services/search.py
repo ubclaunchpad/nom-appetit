@@ -4,7 +4,7 @@ import requests
 import os
 
 # ===== api configuration =====
-load_dotenv('./services/config/.env')
+load_dotenv('./services/secrets/.env')
 
 GOOGLE_KEY = os.getenv('GOOGLE_KEY')
 GOOGLE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"

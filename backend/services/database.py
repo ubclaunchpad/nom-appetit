@@ -3,7 +3,7 @@ from firebase_admin import auth, credentials, firestore
 import firebase_admin as fb
 
 # ===== firebase authentication =====
-cred = credentials.Certificate('./services/config/serviceAccountKey.json')
+cred = credentials.Certificate('./services/secrets/serviceAccountKey.json')
 app = fb.initialize_app(cred)
 
 # ===== functions =====
