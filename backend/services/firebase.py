@@ -25,16 +25,21 @@ def createUser(display_name, username, email, password):
     createProfile(user_id, username)
     return user_id
 
-def updateProfile(username, bio):
+def updateBio(user_id, bio):
     db = firestore.client()
-    user_id = auth.current_user().uid
     user_ref = db.collection("profiles").document(user_id)
-    # check if username exists, if so, update username, else, only update bio 
+    user_ref.update({ "bio": bio})
+    return user_id
+
+def updateUsername(user_id, username):
+    db = firestore.client()
     profiles = db.collection("profiles").where("username", "==", username).get()
     if len(profiles) > 0:
         raise Exception("Username already exists")
-    user_ref.update({ "username": username, "bio": bio})
+    user_ref = db.collection("profiles").document(user_id)
+    user_ref.update({ "username": username})
     return user_id
+
 
 def createProfile(user_id, username):
     db = firestore.client()
@@ -47,6 +52,8 @@ def createProfile(user_id, username):
         "saved_restaurants": [],
     }
     db.collection("profiles").document(user_id).set(data)
+
+
 
 def addRestaurant(user_id, place_id):
     db = firestore.client() 

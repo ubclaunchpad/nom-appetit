@@ -2,7 +2,7 @@
 from flask import Flask
 from flask import request
 from services.search import searchRestaurants
-from services.firebase import createUser, addRestaurant, addReview
+import services.firebase as fb
 
 # ===== flask configuration =====
 app = Flask(__name__)
@@ -33,10 +33,11 @@ def createUserRoute():
         username = data.get("username")
         email = data.get("email")
         password = data.get("password")
-        return createUser(display_name, username, email, password)
+        return fb.createUser(display_name, username, email, password)
 
     except Exception as e:
         raise Exception(str(e))
+    
 
 ## UPDATE USER PROFILE : username, bio
 @app.route("/profile", methods=['PUT'])
@@ -44,10 +45,16 @@ def createUserRoute():
 def updateProfileRoute():
     try:
         data = request.get_json()
-        username = data.get("username")
-        bio = data.get("bio")
-        updateProfile(username, bio)
-
+        user_id = data.get("user_id")
+        
+        if "username" in data:
+            username = data.get("username")
+            return fb.updateUsername(user_id, username)
+        
+        if "bio" in data:
+            bio = data.get("bio")
+            return fb.updateBio(user_id, bio)
+        
     except Exception as e:
         raise Exception(str(e))
     
@@ -62,7 +69,7 @@ def addReviewRoute():
         review = request.args.get("review")
         rating = request.args.get("rating")
         # return review_id
-        return addReview(user_id, place_id, review, rating)
+        return fb.addReview(user_id, place_id, review, rating)
 
     except Exception as e:
         raise Exception(str(e))  
@@ -74,7 +81,7 @@ def addRestaurantRoute():
         user_id = request.args.get("user_id")
         place_id = request.args.get("place_id")
         # returns user_id 
-        return addRestaurant(user_id, place_id)
+        return fb.addRestaurant(user_id, place_id)
 
     except Exception as e:
         raise Exception(str(e))
