@@ -121,8 +121,6 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-services/secrets
-
 # Environments
 serviceAccountKey.json/
 .env
