@@ -20,19 +20,23 @@ def searchRoute():
     except Exception as e:
         raise Exception(f'An error occurred: {str(e)}')    
     
-@app.route("/createUser", methods=['POST'])
+# ===== routing for user / social features =====
+# CREATE USER : display_name, username, email, password in the body
+@app.route("/user", methods=['POST'])
 # example: /createUser?display_name=_____&username=_____&email=_____&password=_____
 def createUserRoute():
     try:
-        display_name = request.args.get("display_name")
-        username = request.args.get("username")
-        email = request.args.get("email")
-        password = request.args.get("password")
-        # returns user_id
+        data = request.get_json()
+        display_name = data.get("display_name")
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
         return createUser(display_name, username, email, password)
 
     except Exception as e:
         raise Exception(str(e))
+    
+@app.route("/")
     
 @app.route("/addReview", methods=['POST'])
 # example: /addReview?user_id=_____&place_id=_____&review=_____&rating=_____
@@ -59,6 +63,10 @@ def addRestaurantRoute():
 
     except Exception as e:
         raise Exception(str(e))
+    
+
+    
+
     
 if __name__ == "__main__":
     app.run(debug=True)

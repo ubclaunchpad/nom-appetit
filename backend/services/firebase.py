@@ -8,6 +8,12 @@ app = fb.initialize_app(cred)
 
 # ===== functions =====
 def createUser(display_name, username, email, password):
+    db = firestore.client() 
+
+    profiles = db.collection("profiles").where("username", "==", username).get()
+    if len(profiles) > 0:
+        raise Exception("Username already exists")
+    
     user = auth.create_user(
         display_name = display_name,
         email = email,
@@ -15,11 +21,13 @@ def createUser(display_name, username, email, password):
         disabled = False)
         
     user_id = user.uid 
+    print(user_id, username)
     createProfile(user_id, username)
     return user_id
 
 def createProfile(user_id, username):
     db = firestore.client()
+    
     data  = {
         "username": username,
         "bio": '',
