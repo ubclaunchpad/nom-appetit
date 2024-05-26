@@ -25,6 +25,17 @@ def createUser(display_name, username, email, password):
     createProfile(user_id, username)
     return user_id
 
+def updateProfile(username, bio):
+    db = firestore.client()
+    user_id = auth.current_user().uid
+    user_ref = db.collection("profiles").document(user_id)
+    # check if username exists, if so, update username, else, only update bio 
+    profiles = db.collection("profiles").where("username", "==", username).get()
+    if len(profiles) > 0:
+        raise Exception("Username already exists")
+    user_ref.update({ "username": username, "bio": bio})
+    return user_id
+
 def createProfile(user_id, username):
     db = firestore.client()
     

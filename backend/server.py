@@ -8,6 +8,8 @@ from services.firebase import createUser, addRestaurant, addReview
 app = Flask(__name__)
 
 # ===== routing  =====
+@app.route("/")
+
 @app.route("/search", methods=['GET'])
 # example: /search?user_location=_____&keyword=_____
 def searchRoute():
@@ -35,8 +37,21 @@ def createUserRoute():
 
     except Exception as e:
         raise Exception(str(e))
+
+## UPDATE USER PROFILE : username, bio
+@app.route("/profile", methods=['PUT'])
+
+def updateProfileRoute():
+    try:
+        data = request.get_json()
+        username = data.get("username")
+        bio = data.get("bio")
+        updateProfile(username, bio)
+
+    except Exception as e:
+        raise Exception(str(e))
     
-@app.route("/")
+
     
 @app.route("/addReview", methods=['POST'])
 # example: /addReview?user_id=_____&place_id=_____&review=_____&rating=_____
