@@ -1,5 +1,5 @@
 # ===== imports =====
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 import requests
 import os
 
@@ -28,7 +28,4 @@ def searchRestaurants(user_location, keyword):
         response = requests.get(GOOGLE_URL, params=params)
         return response.json()['results']
     except Exception as e:
-        raise Exception(f'An error occurred: {str(e)}')     
-
-
-
+        raise Exception(f'An error occurred: {str(e)}') 

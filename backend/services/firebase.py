@@ -70,14 +70,10 @@ def addReview(user_id, place_id, review, rating):
     review_ref.set(data)
     return review_ref.id
 
-
-
-
-
-
-
-
-
-
-    
-
+def getAllReviews():
+    db = firestore.client()
+    docs = db.collection("reviews").get()
+    doc_df = {}
+    for doc in docs:
+        doc_df[doc.id] = doc.to_dict()
+    return doc_df
