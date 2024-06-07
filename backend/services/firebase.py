@@ -8,6 +8,12 @@ app = fb.initialize_app(cred)
 
 # ===== functions =====
 def createUser(display_name, username, email, password):
+    db = firestore.client() 
+
+    profiles = db.collection("profiles").where("username", "==", username).get()
+    if len(profiles) > 0:
+        raise Exception("Username already exists")
+    
     user = auth.create_user(
         display_name = display_name,
         email = email,
@@ -15,11 +21,28 @@ def createUser(display_name, username, email, password):
         disabled = False)
         
     user_id = user.uid 
+    print(user_id, username)
     createProfile(user_id, username)
+    return user_id
+
+def updateBio(user_id, bio):
+    db = firestore.client()
+    user_ref = db.collection("profiles").document(user_id)
+    user_ref.update({ "bio": bio})
+    return user_id
+
+def updateUsername(user_id, username):
+    db = firestore.client()
+    profiles = db.collection("profiles").where("username", "==", username).get()
+    if len(profiles) > 0:
+        raise Exception("Username already exists")
+    user_ref = db.collection("profiles").document(user_id)
+    user_ref.update({ "username": username})
     return user_id
 
 def createProfile(user_id, username):
     db = firestore.client()
+    
     data  = {
         "username": username,
         "bio": '',
@@ -29,7 +52,7 @@ def createProfile(user_id, username):
     }
     db.collection("profiles").document(user_id).set(data)
 
-def addRestaurant(user_id, place_id):
+def saveRestaurant(user_id, place_id):
     db = firestore.client() 
     user_ref = db.collection("profiles").document(user_id)
     user_ref.update({ "saved_restaurants" : firestore.ArrayUnion([place_id])})
