@@ -23,19 +23,10 @@ Please ensure that you have the following installed:
 
 #### Backend
 1. Navigate to the `backend` folder.
-```
-cd backend
-```
 
 2. Create a `secrets` folder in the `services` folder.
-```
-mkdir services/secrets
-```
 
 2. Create `.env` file in `secrets` folder and assign Google Cloud API key to `GOOGLE_KEY`.
-```
-touch services/secrets/.env
-```
 
 3. Generate & download Firebase Admin SDK key and place in `secrets` folder.
 
@@ -51,9 +42,6 @@ python server.py
 
 #### Frontend
 1. Navigate to the `frontend` folder.
-```
-cd frontend
-```
 
 2. Install the required Node.js modules.
 ```
