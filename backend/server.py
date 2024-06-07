@@ -1,31 +1,32 @@
 # ===== imports =====
-from flask import Flask
+from flask import Flask, Response
 from flask import request
-from services.search import searchRestaurants
+import services.search as gs
 import services.firebase as fb
 
 # ===== flask configuration =====
 app = Flask(__name__)
 
-# ===== routing  =====
-@app.route("/")
+# ===== routing -> search =====
+@app.route("/", methods=['GET','POST','PUT'])
+def index():
+    return Response(status = 204)
 
 @app.route("/search", methods=['GET'])
-# example: /search?user_location=_____&keyword=_____
 def searchRoute():
     try:
-        user_location = request.args.get('user_location')
-        keyword = request.args.get('keyword')
+        data = request.get_json()
+        user_location = data.get('user_location')
+        keyword = data.get('keyword')
         # returns a list of restaurants 
-        return searchRestaurants(user_location, keyword)
+        return gs.searchRestaurants(user_location, keyword)
        
     except Exception as e:
-        raise Exception(f'An error occurred: {str(e)}')    
+        raise Exception(f'An error occurred: {str(e)}')   
     
-# ===== routing for user / social features =====
-# CREATE USER : display_name, username, email, password in the body
+# ===== routing -> user & social =====
 @app.route("/user", methods=['POST'])
-# example: /createUser?display_name=_____&username=_____&email=_____&password=_____
+# params: display_name, username, email, password
 def createUserRoute():
     try:
         data = request.get_json()
@@ -33,15 +34,14 @@ def createUserRoute():
         username = data.get("username")
         email = data.get("email")
         password = data.get("password")
+        # returns user_id
         return fb.createUser(display_name, username, email, password)
 
     except Exception as e:
         raise Exception(str(e))
     
-
-## UPDATE USER PROFILE : username, bio
 @app.route("/profile", methods=['PUT'])
-
+# params: user_id, user_name | bio
 def updateProfileRoute():
     try:
         data = request.get_json()
@@ -49,47 +49,44 @@ def updateProfileRoute():
         
         if "username" in data:
             username = data.get("username")
+            # returns user_id
             return fb.updateUsername(user_id, username)
         
         if "bio" in data:
             bio = data.get("bio")
+            # returns user_id
             return fb.updateBio(user_id, bio)
         
     except Exception as e:
         raise Exception(str(e))
-    
 
-    
 @app.route("/addReview", methods=['POST'])
-# example: /addReview?user_id=_____&place_id=_____&review=_____&rating=_____
+# params: user_id, place_id, review, rating
 def addReviewRoute():
     try:
-        user_id = request.args.get("user_id")
-        place_id = request.args.get("place_id")
-        review = request.args.get("review")
-        rating = request.args.get("rating")
-        # return review_id
+        data = request.get_json()
+        user_id = data.get("user_id")
+        place_id = data.get("place_id")
+        review = data.get("review")
+        rating = data.get("rating")
+        # returns review_id
         return fb.addReview(user_id, place_id, review, rating)
 
     except Exception as e:
         raise Exception(str(e))  
 
-@app.route("/addRestaurant", methods=['POST'])
-# example: /addRestaurant?user_id=_____&place_id=_____
-def addRestaurantRoute():
+@app.route("/saveRestaurant", methods=['POST'])
+# params: user_id, place_id 
+def saveRestaurantRoute():
     try:
-        user_id = request.args.get("user_id")
-        place_id = request.args.get("place_id")
+        data = request.get_json()
+        user_id = data.get("user_id")
+        place_id = data.get("place_id")
         # returns user_id 
-        return fb.addRestaurant(user_id, place_id)
+        return fb.saveRestaurant(user_id, place_id)
 
     except Exception as e:
         raise Exception(str(e))
-    
 
-    
-
-    
 if __name__ == "__main__":
     app.run(debug=True)
-

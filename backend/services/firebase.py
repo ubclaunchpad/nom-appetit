@@ -40,7 +40,6 @@ def updateUsername(user_id, username):
     user_ref.update({ "username": username})
     return user_id
 
-
 def createProfile(user_id, username):
     db = firestore.client()
     
@@ -53,9 +52,7 @@ def createProfile(user_id, username):
     }
     db.collection("profiles").document(user_id).set(data)
 
-
-
-def addRestaurant(user_id, place_id):
+def saveRestaurant(user_id, place_id):
     db = firestore.client() 
     user_ref = db.collection("profiles").document(user_id)
     user_ref.update({ "saved_restaurants" : firestore.ArrayUnion([place_id])})
