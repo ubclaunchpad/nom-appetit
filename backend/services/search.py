@@ -1,5 +1,5 @@
 # ===== imports =====
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 import requests
 import os
 
@@ -7,28 +7,35 @@ import os
 load_dotenv('./services/secrets/.env')
 
 GOOGLE_KEY = os.getenv('GOOGLE_KEY')
-GOOGLE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 TYPE = 'restaurant'
-RADIUS = 2000
 
 if not GOOGLE_KEY:
     raise Exception("API Key is either missing or invalid")
 
 # ===== functions =====
-def searchRestaurants(user_location, keyword):
+def searchRestaurants(user_location, keyword, radius):
     params = {
         'key': GOOGLE_KEY,
         'type': TYPE,
-        'radius': RADIUS,
+        'radius': radius,
         'location': user_location,
         'query': keyword
     }
-
     try: 
-        response = requests.get(GOOGLE_URL, params=params)
+        response = requests.get(PLACES_URL, params=params)
         return response.json()['results']
     except Exception as e:
-        raise Exception(f'An error occurred: {str(e)}')     
-
-
-
+        raise Exception(f'An error occurred: {str(e)}')
+    
+def getRestaurantDetails(place_id):
+    params = {
+        "key": GOOGLE_KEY,
+        "place_id": place_id
+    }
+    try:
+        response = requests.get(DETAILS_URL, params=params)
+        return response.json()
+    except Exception as e:
+        raise Exception(f'An error occurred: {str(e)}')
