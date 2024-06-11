@@ -34,7 +34,7 @@ export default function SignInScreen({ navigation }: Props) {
                 Nom Appetit
               </Text>
             </View>
-            <Image source={Images.pandaPizza} style={style.logo} />
+            <Image source={Images.pandaBamboo} style={style.logo} />
           </View>
 
           <View style={style.slidingButton}>
