@@ -78,7 +78,10 @@ export default function SignInScreen({ navigation }: Props) {
                 <TextInput style={style.input} placeholder="Confirm Password" />
               </View>
 
-              <Pressable style={style.actionButton}>
+              <Pressable
+                onPress={() => navigation.navigate("home")}
+                style={style.actionButton}
+              >
                 <Text>Create account</Text>
               </Pressable>
 
@@ -145,7 +148,10 @@ export default function SignInScreen({ navigation }: Props) {
                 </Text>
               </View>
 
-              <Pressable style={style.actionButton}>
+              <Pressable
+                onPress={() => navigation.navigate("home")}
+                style={style.actionButton}
+              >
                 <Text>Sign In</Text>
               </Pressable>
 
