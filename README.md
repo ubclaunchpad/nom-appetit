@@ -2,11 +2,11 @@
 <div>
   <p align="center">
     <a href="">
-      <img src="frontend/assets/logo-1.jpg" alt="Logo" width="125" height="125">
+      <img src="frontend/assets/logo.jpg" alt="Logo" width="125" height="125">
     </a>
   </p>
   <h3 align="center">Nom Appetit</h3>
-  <p align="center">Restaurant tracking and recommendation mobile application</p>
+  <p align="center">Social restaurant tracking and recommendation application<p>
 </div>
 <br>
 
@@ -16,7 +16,7 @@
 + [Deployment](#deployment)
 
 ## About The Project
-Nom Appetit is a social restaurant tracking app with the purpose of helping users pick a place to eat for both individuals and groups. It is designed to finally answer the question of “So… where do you want to eat?”
+Nom Appetit is a social restaurant tracking and recommendation app with the purpose of helping users pick a place to eat for both individuals and groups. It is designed to finally answer the question of “So… where do you want to eat?”
 
 The first feature is a tracking feature that allows you to create shareable lists and populate them with restaurants you’ve been to, as well as restaurants that you would like to go to. Think Google Maps lists, but with more sorting and commenting functionalities. A stretch goal for this feature would be to build social media platform integrations to auto-populate or import restaurants into these lists.
 
