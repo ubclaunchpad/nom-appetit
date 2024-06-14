@@ -214,8 +214,8 @@ const style = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     backgroundColor: "#e6efd9",
-    width: "100%",
     height: "100%",
+    marginHorizontal: 30,
   },
   header: {
     flexDirection: "row",
