@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation }: Props) {
           onPress={() => navigation.navigate("filterRestaurant")}
         ></Button>
         <Button
-          title="Individual Survery Question"
+          title="Individual Survey Question"
           onPress={() => navigation.navigate("individualSurvey")}
         ></Button>
       </View>
