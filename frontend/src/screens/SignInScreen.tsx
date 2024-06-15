@@ -1,309 +1,301 @@
-// signup page
-import BasicButton from "../components/BasicButton";
 import { RootStackParamList } from "src/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Container } from "../styles/Shared";
-import React, { useEffect, useState, useRef} from "react";
-import { SafeAreaView, Pressable, StyleSheet, Animated, Dimensions, Text, View, TouchableOpacity, TextInput} from "react-native";
+import Images from "../images/Images";
+import React, { useState } from "react";
+import {
+  Platform,
+  SafeAreaView,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  KeyboardAvoidingView,
+} from "react-native";
 
 type Props = NativeStackScreenProps<RootStackParamList, "signIn">;
 
-export default function SignInScreen({navigation}: Props) {
-    // return (
-    //     <Container>
-    //         <BasicButton 
-    //         text="Test Sign In"
-    //         onPress={ () => navigation.navigate('home')}
-    //         />
-    //     </Container>
-    // )
-    const [active, setActive] = useState(true)
-    let transformX = useRef(new Animated.Value(0)).current
+export default function SignInScreen({ navigation }: Props) {
+  const [isCreatingAccount, setCreatingAccount] = useState(true);
 
-    useEffect(() => {
-        if (active) {
-        Animated.timing(transformX, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true
-        }).start()
-        } else {
-        Animated.timing(transformX, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true
-        }).start()
-        } 
-    }, [active]);
-
-const rotationX = transformX.interpolate({
-    inputRange: [0, 1],
-    outputRange: [2, Dimensions.get('screen').width / 2]
-})
-
-if (active)
-{
-    return (
-        <View style={style.container}> 
-            <View style={style.welcome_message}>
-                <Text allowFontScaling={false} style={style.text_header1} >
-                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
-                </Text>
-                <Text allowFontScaling={false} style={style.text_header2}>
-                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
-                </Text>
-            </View>
-
-            <View style={style.slide}>
-                <Pressable style={style.Account} onPress={ () => setActive(false)}> 
-                    <Text allowFontScaling={false}>
-                        Create Account
-                    </Text>
-                </Pressable>
-                <Pressable style={style.activePage} onPress={ () => setActive(true)}>
-                    <Text allowFontScaling={false}>
-                        Sign in
-                    </Text>
-                </Pressable>
-            </View>
-
-            <View style={style.input}>
-                <SafeAreaView>
-                        <Text allowFontScaling={false} style={style.input_header}>
-                            Username
-                        </Text>
-
-                        <TextInput allowFontScaling={false} style={style.textInput}
-                            placeholder='Username'
-                            placeholderTextColor='#769575'
-                        />
-
-                        <Text allowFontScaling={false} style={style.input_header}>
-                            Password
-                        </Text>
-
-                        <TextInput allowFontScaling={false} style={style.textInput}
-                            placeholder='Password'
-                            placeholderTextColor='#769575'
-                        />
-                </SafeAreaView>
-                
-                <Pressable style={{ alignItems: 'flex-end' }} onPress={ () => navigation.navigate('forgotPassword')}>
-                    <Text allowFontScaling={false} style={style.forgotPassword}>
-                        Forgot Password?
-                    </Text>
-                </Pressable>
-                
-                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
-                    <Text allowFontScaling={false} style={style.signInBottomText}>
-                        Sign In
-                    </Text>
-                </Pressable>
-            </View>
-        </View>
-    )
-}
-else
-{
-    return (
+  return (
+    <SafeAreaView style={{ backgroundColor: "#e6efd9" }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "position" : "position"}
+      >
         <View style={style.container}>
-            <View style={style.welcome_message}>
-                <Text allowFontScaling={false} style={style.text_header1}>
-                    <Text allowFontScaling={false} style={style.text_header1}>Welcome to</Text>
+          <View style={style.header}>
+            <View style={style.titleMessage}>
+              <Text allowFontScaling={false} style={style.textHeader1}>
+                Welcome to
+              </Text>
+              <Text allowFontScaling={false} style={style.textHeader2}>
+                Nom Appetit
+              </Text>
+            </View>
+            <Image source={Images.pandaBamboo} style={style.logo} />
+          </View>
+
+          <View style={style.slidingButton}>
+            {isCreatingAccount ? (
+              <>
+                <Pressable style={style.activeButton}>
+                  <Text>Create Account</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setCreatingAccount(!isCreatingAccount)}
+                  style={style.inactiveButton}
+                >
+                  <Text>Sign In</Text>
+                </Pressable>
+              </>
+            ) : (
+              <>
+                <Pressable
+                  onPress={() => setCreatingAccount(!isCreatingAccount)}
+                  style={style.inactiveButton}
+                >
+                  <Text>Create Account</Text>
+                </Pressable>
+                <Pressable style={style.activeButton}>
+                  <Text>Sign In</Text>
+                </Pressable>
+              </>
+            )}
+          </View>
+
+          {isCreatingAccount ? (
+            <>
+              <View style={style.inputContainer}>
+                <Text style={style.textHeader1}>Your name</Text>
+                <TextInput style={style.input} placeholder="Your name" />
+                <Text style={style.textHeader1}>Email address</Text>
+                <TextInput style={style.input} placeholder="Email Address" />
+                <Text style={style.textHeader1}>Create password</Text>
+                <TextInput style={style.input} placeholder="Create Password" />
+                <Text style={style.textHeader1}>Confirm password</Text>
+                <TextInput style={style.input} placeholder="Confirm Password" />
+              </View>
+
+              <Pressable
+                onPress={() => navigation.navigate("home")}
+                style={style.actionButton}
+              >
+                <Text>Create account</Text>
+              </Pressable>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "90%",
+                  margin: 20,
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    backgroundColor: "black",
+                  }}
+                />
+                <View>
+                  <Text
+                    style={{
+                      width: 100,
+                      textAlign: "center",
+                      marginHorizontal: 20,
+                    }}
+                  >
+                    or sign up with
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    backgroundColor: "black",
+                  }}
+                />
+              </View>
+              <View style={style.signInOptions}>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.facebook_ic} />
+                </Pressable>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.google_ic} />
+                </Pressable>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.apple_ic} />
+                </Pressable>
+              </View>
+            </>
+          ) : (
+            <>
+              <View style={style.inputContainer}>
+                <Text style={style.textHeader1}>Username</Text>
+                <TextInput style={style.input} placeholder="Username" />
+                <Text style={style.textHeader1}>Password</Text>
+                <TextInput style={style.input} placeholder="Password" />
+                <Text
+                  style={{
+                    textAlign: "right",
+                  }}
+                >
+                  Forgot Password?
                 </Text>
-                <Text allowFontScaling={false} style={style.text_header2}>
-                    <Text allowFontScaling={false} style={style.text_header2}>Nom Appetit</Text>
-                </Text>
-            </View>
+              </View>
 
-            <View style={style.slide}>
-            <Pressable style={style.activePage} onPress={ () => setActive(false)}> 
-                    <Text allowFontScaling={false}>
-                        Create Account
-                    </Text>
+              <Pressable
+                onPress={() => navigation.navigate("home")}
+                style={style.actionButton}
+              >
+                <Text>Sign In</Text>
+              </Pressable>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "90%",
+                  margin: 20,
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    backgroundColor: "black",
+                  }}
+                />
+                <View>
+                  <Text
+                    style={{
+                      width: 100,
+                      textAlign: "center",
+                      marginHorizontal: 20,
+                    }}
+                  >
+                    or login with
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    height: 1,
+                    backgroundColor: "black",
+                  }}
+                />
+              </View>
+              <View style={style.signInOptions}>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.facebook_ic} />
                 </Pressable>
-                <Pressable style={style.Account} onPress={ () => setActive(true)}>
-                    <Text allowFontScaling={false}>
-                        Sign in
-                    </Text>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.google_ic} />
                 </Pressable>
-            </View>
-
-            <View style={style.input}>
-
-                <SafeAreaView>
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Your name
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Your name'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Email address
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Email Address'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Username
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Username'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Create Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Create Password'
-                        placeholderTextColor='#769575'
-                    />
-
-                    <Text allowFontScaling={false} style={style.input_header}>
-                        Confirm Password
-                    </Text>
-
-                    <TextInput allowFontScaling={false} style={style.textInput}
-                        placeholder='Confirm Password'
-                        placeholderTextColor='#769575'
-                    />
-                </SafeAreaView>
-                
-                <Pressable style={style.signInBottom} onPress={ () => navigation.navigate('home')}>
-                    <Text allowFontScaling={false} style={style.signInBottomText}>
-                        Create Account
-                    </Text>
+                <Pressable style={style.optionButtons}>
+                  <Image source={Images.apple_ic} />
                 </Pressable>
-            </View>
+              </View>
+            </>
+          )}
         </View>
-    )
-    }
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 }
 
 const style = StyleSheet.create({
+  container: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#e6efd9",
+    height: "100%",
+    marginHorizontal: 30,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 25,
+  },
 
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#DCF7C2',
-        width: '100%',
-        height: '100%',
-    },
+  titleMessage: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    //Welcome message (Welcome to Nom Appetit)
-    welcome_message: {
-        flex: 0.43,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingRight: 110,
-    },
+  textHeader1: { fontSize: 16 },
+  textHeader2: { fontSize: 32 },
+  logo: { width: 125, height: 125 },
 
-    //Welcome to
-    text_header1: {
-        fontSize: 17,
-        color: '#004643',
-    },
+  slidingButton: {
+    width: 364,
+    height: 48,
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    borderRadius: 12,
+    padding: 4,
+    gap: 7.5,
+    marginTop: 40,
+  },
+  activeButton: {
+    backgroundColor: "#f3cc91",
+    width: 172,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+  },
+  inactiveButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 172,
+    height: 40,
+    borderRadius: 12,
+  },
+  inputContainer: {
+    display: "flex",
+    justifyContent: "flex-start",
+    marginVertical: 20,
+  },
+  input: {
+    width: 364,
+    height: 48,
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#9cb7b1",
+    marginVertical: 5,
+  },
+  actionButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 175,
+    height: 44,
+    backgroundColor: "#f3cc91",
+    borderRadius: 12,
+  },
+  signInOptions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
+  },
 
-    //Nom Appetit
-    text_header2: {
-        fontSize: 32,
-        color: '#004643',
-    },
-
-    //the main slide button
-    slide: {
-        position: 'absolute',
-        alignItems: 'center',
-        top: 180,
-        zIndex: 2,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        borderRadius: 20,
-        paddingVertical: 5,
-        paddingHorizontal: 4
-    },
-
-    //the other input fields and buttons (everything below the slide button)
-    input: {
-        flex: 1,
-        alignItems: 'center',
-        top: 30,
-        backgroundColor: '#DCF7C2',
-        zIndex: 1,
-    },
-
-    buttons: {   
-        backgroundColor: 'white',
-        borderColor: '#FFFCF1',
-        borderWidth: 1,
-        borderRadius: 30,
-        paddingHorizontal: 130,
-        paddingVertical: 12,
-        marginVertical: 13,
-    },
-
-    Account: {
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        paddingHorizontal: 45,
-        paddingVertical: 15,
-        borderRadius: 20,
-    },
-
-    activePage: {
-        backgroundColor: "#F3CC91",
-        paddingVertical: 15,
-        paddingHorizontal: 45,
-        borderRadius: 20,
-    },
-
-    //Username/Password text
-    input_header: {
-        fontSize: 16,
-        color: '#004643',
-        alignSelf: 'flex-start',
-        paddingTop: 10,
-        paddingBottom: 5
-    },
-
-    forgotPassword: {
-        color: '#004643', 
-        textDecorationLine: 'underline', 
-        fontSize: 16,
-        marginVertical: 10,
-    },
-
-    signInBottom: {
-        marginVertical: 25,
-        borderRadius: 50,
-        backgroundColor: "#F3CC91",
-        paddingVertical: 8,
-        paddingHorizontal: 40
-    },
-
-    signInBottomText: {
-        color: '#004643',
-    },
-
-    textInput: {
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderColor: '#FFFCF1',
-        borderWidth: 1,
-        width: 340,
-        borderRadius: 15,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-    }
+  optionButtons: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 115,
+    height: 61,
+    borderRadius: 8,
+    backgroundColor: "white",
+  },
 });
