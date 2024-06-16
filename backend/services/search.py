@@ -27,7 +27,7 @@ def searchRestaurants(user_location, keyword, radius):
         response = requests.get(PLACES_URL, params=params)
         return response.json()['results']
     except Exception as e:
-        raise Exception(f'An error occurred: {str(e)}')
+        raise Exception(e)
     
 def getRestaurantDetails(place_id):
     params = {
@@ -38,4 +38,4 @@ def getRestaurantDetails(place_id):
         response = requests.get(DETAILS_URL, params=params)
         return response.json()
     except Exception as e:
-        raise Exception(f'An error occurred: {str(e)}')
+        raise Exception(e)

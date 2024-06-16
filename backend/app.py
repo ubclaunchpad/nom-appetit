@@ -1,5 +1,5 @@
 # ===== imports =====
-from flask import Flask, Response
+from flask import Flask
 from flask import request, jsonify
 from services.firebase import *
 from services.search import *
@@ -9,10 +9,6 @@ from services.filter import *
 app = Flask(__name__)
 
 # ===== routing -> search =====
-@app.route("/", methods=['GET','POST'])
-def index():
-    return Response(status = 204)
-
 @app.route("/search", methods=['GET'])
 # params: user_location, keyword
 # returns: [list of restaurants] 
@@ -30,7 +26,7 @@ def searchRoute():
 
 # ===== routing -> algorithm =====
 # params: user_id, user_location, poll questions 1-9
-# returns: [parses wishlist/visited that meets poll criteria], [new restaurant search that meet poll criteria]
+# returns: method, [detailed_array], [valid_array]
 # function: returns back restaurants (place_id) that meet poll criteria
 @app.route("/userAlgorithm", methods=['GET', 'POST'])
 def userAlgorithmRoute():
@@ -38,32 +34,29 @@ def userAlgorithmRoute():
         data = request.get_json()
         user_id = data.get("user_id")
         user_location = data.get("user_location")
-        # determines if it checks wishlist or visited
-        q1 = data.get("q1")
-        # determines price_level
-        q2a = data.get("q2a")
-        q2b = data.get("q2b")
-        # simple google details parameters
-        q3 = data.get("q3")
-        q4 = data.get("q4")
-        q5 = data.get("q5")
-        q6 = data.get("q6")
-        q7 = data.get("q7")
-        q8 = data.get("q8")
-        q9 = data.get("q9")
-        q10 = data.get("q10")
-        valid_array, search_valid_array = pollFilter(user_id, user_location, q1, q2a, q2b, q3, q4, q5, q6, q7, q8, q9, q10)
-        return jsonify({
-            "valid_array": valid_array,
-            "search_valid_array": search_valid_array
-        })
+        q1 = bool(data.get("q1"))
+        q2 = bool(data.get("q2"))
+        q3 = bool(data.get("q3"))
+        q4 = bool(data.get("q4"))
+        q5 = bool(data.get("q5"))
+        q6 = bool(data.get("q6"))
+        q7 = bool(data.get("q7"))
+        q8 = bool(data.get("q8"))
+        q9 = bool(data.get("q9"))
+        q10 = bool(data.get("q10"))
+        method, detailed_array, valid_array = pollFilter(user_id, user_location, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10)
+        return {
+            "method": method,
+            "detailed_array": detailed_array,
+            "valid_array": valid_array
+        }
 
     except Exception as e:
         raise Exception(f'An error occurred: {str(e)}')
 
 # ===== routing -> user & social =====
-@app.route("/user", methods=['POST'])
-# params: display_name, username, email, password
+@app.route("/createUser", methods=['POST'])
+# params: display_name, (unique) username, (unique) email, password
 # returns: user_id 
 # function: creates user authentication and instantiates user profile in fb database
 def createUserRoute():
@@ -78,7 +71,7 @@ def createUserRoute():
     except Exception as e:
         raise Exception(str(e))
     
-@app.route("/profile", methods=['PUT'])
+@app.route("/updateProfile", methods=['PUT'])
 # params: user_id, user_name | bio
 # returns: user_id 
 # function: updates the username or bio given user_id
@@ -126,7 +119,7 @@ def saveToVistedRoute():
     except Exception as e:
         raise Exception(str(e))
 
-# ===== reviews =====
+# ===== routing -> reviews =====
 @app.route("/addReview", methods=['POST'])
 # params: user_id, place_id, review, rating
 # returns: review_id 
@@ -142,7 +135,4 @@ def addReviewRoute():
         return addReview(user_id, place_id, review, rating)
 
     except Exception as e:
-        raise Exception(str(e))  
-
-if __name__ == "__main__":
-    app.run(debug=True)
+        raise Exception(str(e))
