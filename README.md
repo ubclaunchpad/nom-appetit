@@ -2,11 +2,11 @@
 <div>
   <p align="center">
     <a href="">
-      <img src="frontend/assets/logo.jpg" alt="Logo" width="125" height="125">
+      <img src="frontend/assets/logo.png" alt="Logo" width="100" height="100">
     </a>
   </p>
   <h3 align="center">Nom Appetit</h3>
-  <p align="center">Social restaurant tracking and recommendation application<p>
+  <p align="center">Restaurant tracking and recommendation app<p>
 </div>
 <br>
 
@@ -23,14 +23,29 @@ The first feature is a tracking feature that allows you to create shareable list
 The second feature is a restaurant picking feature - the heart and soul of Nom Appetit. Each user is prompted with yes or no statements in a short quiz, such as “I want to try a new place”. The app will then algorithmically draw upon each user’s lists and answers, and suggest a restaurant to go to. A stretch goal for this feature would be to implement machine learning to “smart suggest” a place to eat.
 
 ## Getting Started
-### Prerequisites
-Please ensure that you have the following installed
+To get a local copy up and running follow these simple example steps.
 
-- Python
-- Expo Go
+### Prerequisites
+
+- [Python](https://www.python.org/downloads/)
+- [Expo Go](https://docs.expo.dev/)
+
+### API Credentials
+- [Google Cloud](https://cloud.google.com/docs)
+- [Firebase](https://firebase.google.com/docs/functions/get-started?gen=2nd)
 
 ### Installation
-To get a local copy up and running follow these simple steps
+
+#### Frontend
+1. Navigate to the `frontend` folder.
+2. Install the required Node.js modules.
+```
+npm install
+```
+3. Start the application and follow the instructions in the terminal.
+```
+npx expo start
+```
 
 #### Backend
 1. Navigate to the `backend` folder.
@@ -43,18 +58,7 @@ pip install -r requirements.txt
 ```
 6. Run the server.
 ```
-python server.py
-```
-
-#### Frontend
-1. Navigate to the `frontend` folder.
-2. Install the required Node.js modules.
-```
-npm install
-```
-3. Start the application and follow the instructions in the terminal.
-```
-npx expo start
+flask run
 ```
 
 ## Deployment
