@@ -53,6 +53,8 @@ const restaurants: Restaurant[] = [
 ];
 
 export default function SearchScreen({ navigation }: Props) {
+  const [selected, setSelected] = useState("popular");
+
   return (
     <SafeAreaView style={styles.containerBackground}>
       <View style={styles.container}>
@@ -91,6 +93,38 @@ export default function SearchScreen({ navigation }: Props) {
               size={24}
             />
           </View>
+        </View>
+        <View style={styles.filtersContainer}>
+          <Pressable
+            style={
+              selected === "popular"
+                ? styles.selectedButton
+                : styles.filterButton
+            }
+            onPress={() => setSelected("popular")}
+          >
+            <Text style={{ color: "#004643" }}>Popular</Text>
+          </Pressable>
+          <Pressable
+            style={
+              selected === "recently viewed"
+                ? styles.selectedButton
+                : styles.filterButton
+            }
+            onPress={() => setSelected("recently viewed")}
+          >
+            <Text style={{ color: "#004643" }}>Recently Viewed</Text>
+          </Pressable>
+          <Pressable
+            style={
+              selected === "near you"
+                ? styles.selectedButton
+                : styles.filterButton
+            }
+            onPress={() => setSelected("near you")}
+          >
+            <Text style={{ color: "#004643" }}>Near You</Text>
+          </Pressable>
         </View>
 
         <FlatList
@@ -134,5 +168,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 5,
     width: 304,
+    marginVertical: 10,
+  },
+
+  filtersContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    gap: 12,
+  },
+
+  filterButton: {
+    backgroundColor: "#F3CC91",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
+    marginVertical: 12,
+  },
+
+  selectedButton: {
+    backgroundColor: "#FFFEFA",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
+    marginVertical: 12,
   },
 });

@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
+    marginVertical: 10,
   },
 
   input: {
