@@ -53,10 +53,15 @@ export default function HomeScreen({ navigation }: Props) {
         <Text style={{ fontSize: 30, textAlign: "center", width: "75%" }}>
           What would you like to eat?
         </Text>
+        <View>
+          <TextInput
         <Pressable>
           <TextInput
             onPress={() => navigation.navigate("searchRestaurant")}
             style={styles.input}
+            placeholder="Search for a restaurant"
+          />
+        </View>
             placeholder="Search for a restaurant"
           />
         </Pressable>
@@ -73,6 +78,14 @@ export default function HomeScreen({ navigation }: Props) {
             icon={Images.lighbulbPNG}
           />
         </View>
+        <Button
+          title="Filter Restaurant"
+          onPress={() => navigation.navigate("filterRestaurant")}
+        ></Button>
+        <Button
+          title="Individual Survey Question"
+          onPress={() => navigation.navigate("individualSurvey")}
+        ></Button>
         <Button
           title="Filter Restaurant"
           onPress={() => navigation.navigate("filterRestaurant")}
@@ -140,7 +153,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
+
   icon: {
+    marginLeft: 10,
     marginLeft: 10,
   },
 });

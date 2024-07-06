@@ -5,6 +5,7 @@ const Images = {
   google_ic: require("../images/google_ic.png"),
   facebook_ic: require("../images/facebook_ic.png"),
   apple_ic: require("../images/apple_ic.png"),
+  pandaPizza: require("../images/pandaPizza.png"),
 };
 
 export default Images;

@@ -20,6 +20,7 @@ import RestaurantResultScreen from "./src/screens/ResultScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import SearchFriendsScreen from "./src/screens/SearchFriendsScreen";
 import RestaurantFilterScreen from "./src/screens/RestaurantFilterScreen";
+import IndividualSurvey from "src/screens/IndividualSurvey";
 import loadAssets from "./src/hooks/loadAssets";
 import { RootStackParamList } from "src/types";
 
@@ -59,6 +60,7 @@ export default function App() {
           name="filterRestaurant"
           component={RestaurantFilterScreen}
         />
+        <Stack.Screen name="individualSurvey" component={IndividualSurvey} />
         <Stack.Screen name="forgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="searchFriends" component={SearchFriendsScreen} />
       </Stack.Navigator>
