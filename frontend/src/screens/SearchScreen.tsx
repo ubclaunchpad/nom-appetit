@@ -69,15 +69,28 @@ export default function SearchScreen({ navigation }: Props) {
           Search Restaurants
         </Text>
         <View style={styles.inputContainer}>
-          <Pressable>
-            <TextInput
-              onPress={() => navigation.navigate("searchRestaurant")}
-              style={styles.input}
-              placeholder="Search for a restaurant..."
-              placeholderTextColor={"#8FA68E"}
-              onSubmitEditing={() => navigation.navigate("selectedRestaurant")}
-            />
-          </Pressable>
+          <View style={styles.searchSection}>
+            <View style={styles.searchIcon}>
+              <Icon
+                name="search"
+                type="font-awesome"
+                color="#004643"
+                size={18}
+              />
+            </View>
+
+            <Pressable>
+              <TextInput
+                style={styles.input}
+                placeholder="Search for a restaurant..."
+                placeholderTextColor={"#8FA68E"}
+                onSubmitEditing={() =>
+                  navigation.navigate("selectedRestaurant")
+                }
+              />
+            </Pressable>
+          </View>
+
           <View
             style={{
               padding: 10,
@@ -141,13 +154,31 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#dee7c5",
   },
+
   container: {
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
+
   parentContainer: {
     height: "100%",
+  },
+  searchSection: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fffefa",
+    borderColor: "#80a29e",
+    borderRadius: 12,
+    borderWidth: 1,
+    minHeight: 48,
+    width: 254,
+  },
+
+  searchIcon: {
+    padding: 7.5,
   },
 
   inputContainer: {
@@ -159,16 +190,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor: "#fffefa",
-    minHeight: 48,
+    width: 200,
     color: "#9db19b",
-    borderColor: "#80a29e",
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    width: 304,
-    marginVertical: 10,
   },
 
   filtersContainer: {
