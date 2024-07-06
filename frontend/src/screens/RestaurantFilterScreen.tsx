@@ -115,7 +115,10 @@ export default function RestaurantFilterScreen({ navigation }: Props) {
             <Text>Reset</Text>
           </Pressable>
 
-          <Pressable style={styles.applyButton}>
+          <Pressable
+            onPress={() => navigation.navigate("selectedRestaurant")}
+            style={styles.applyButton}
+          >
             <Text style={{ color: "white" }}>Apply</Text>
           </Pressable>
         </View>
