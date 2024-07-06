@@ -3,67 +3,64 @@ from services.firebase import *
 from services.search import *
 
 # ===== functions =====
-def pollFilter(user_id, user_location, q1, q2a, q2b, q3, q4, q5, q6, q7, q8, q9, q10):
-    # ===== step 1 =====
+def pollFilter(user_id, user_location, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10):
+    # ===== Q1 =====
     wishlist = getWishlist(user_id)
     visited = getVisited(user_id)
-    detailed_array = []
-    # option 1 => exploring new restaurants == true => search wishlist
-    if q1 == True and wishlist:
-        detailed_array = detailedPlaces(wishlist)
-    # option 2 => exploring new restaurants == false => search visited
-    elif q1 == False and visited:
-        detailed_array = detailedPlaces(visited)
+    # option 1: true => search wishlist
+    if q1 and wishlist:
+        detailed_array = placeDetails(wishlist)
+        method = "wishlist"
+    # option 2: false => search visited
+    elif visited:
+        detailed_array = placeDetails(visited)
+        method = "visited"
+    # option 3: else => search nearby restaurants
+    else:
+        search_array = searchRestaurants(user_location, "restaurant", 2000)
+        search_place_id_array = []
+        for place_info in search_array:
+            place_id = place_info["place_id"]
+            search_place_id_array.append(place_id)
+        detailed_array = placeDetails(search_place_id_array)
+        method = "search"
 
-    # ===== step 2 =====
-    # search restaurants that match poll filter near user
-    search_array = searchRestaurants(user_location, "restaurant", 2000)
-    # array with place_id's ONLY
-    search_place_id_array = []
-    for place_info in search_array:
-        place_id = place_info["place_id"]
-        search_place_id_array.append(place_id)
-    # array with places details
-    search_details_array = detailedPlaces(search_place_id_array)
+    # ===== Q2 =====
+    # option 1: true => search cheap
+    if q2:
+        q2_options = [0,1,2]
+    # option 2: false => search cheap
+    elif q2:
+        q2_options = [3,4]
 
-    # ===== step 3 =====
-    # simplify data to only have poll features
-    valid_array = []
-    search_valid_array = []
-    # assigning q2 to correct price_level
-    if q2a:
-        q2 = [0,1,2]
-    elif q2b:
-        q2 = [3,4]
-    if detailed_array:
-        simplified_array = simplifyDetails(detailed_array)
-        # cross check between poll & restaurant
-        valid_array = userPollValidation(simplified_array, q2, q3, q4, q5, q6 , q7, q8, q9, q10)
-    if search_details_array:
-        search_simplified_array = simplifyDetails(search_details_array)
-        search_valid_array = userPollValidation(search_simplified_array, q2, q3, q4, q5, q6, q7, q8, q9, q10)
-    return valid_array, search_valid_array, detailed_array, search_details_array
+    # ===== TOTAL =====
+    # check between poll & restaurant
+    simplified_array = simplifyDetails(detailed_array)
+    valid_array = userPollValidation(simplified_array, q2_options, q3, q4, q5, q6, q7, q8, q9, q10)
+
+    return method, detailed_array, valid_array
 
 # ===== helpers =====
 def simplifyDetails(places_details):
-    simplified_array = [] 
+    simplified_array = []
     for place in places_details:
-        simplified_dict = {}
-        result = place['result']
-        simplified_dict['place_id'] = result['place_id']
-        simplified_dict['q2'] = result.get('price_level')
-        simplified_dict['q3'] = result.get('serves_wine')
-        simplified_dict['q4'] = result.get('serves_beer')
-        simplified_dict['q5'] = result.get('takeout')
-        simplified_dict['q6'] = result.get('serves_vegetarian_food')
-        simplified_dict['q7'] = result.get('serves_breakfast')
-        simplified_dict['q8'] = result.get('serves_lunch')
-        simplified_dict['q9'] = result.get('serves_dinner')
-        simplified_dict['q10'] = result.get('reservable')
+        result = place.get("result")
+        simplified_dict = {
+            "place_id": result.get("place_id"),
+            "q2": result.get("price_level"),
+            "q3": result.get("serves_wine"),
+            "q4": result.get("serves_beer"),
+            "q5": result.get("takeout"),
+            "q6": result.get("serves_vegetarian_food"),
+            "q7": result.get("serves_breakfast"),
+            "q8": result.get("serves_lunch"),
+            "q9": result.get("serves_dinner"),
+            "q10": result.get("reservable")
+        }
         simplified_array.append(simplified_dict)
     return simplified_array
-    
-def detailedPlaces(places_array):
+
+def placeDetails(places_array):
     details_array = []
     for place_id in places_array:
         details = getRestaurantDetails(place_id)
@@ -71,28 +68,15 @@ def detailedPlaces(places_array):
     return details_array
 
 def userPollValidation(simplified_array, q2, q3, q4, q5, q6, q7, q8, q9, q10):
-    validRestaurants = []
+    valid_array = []
     for place_info in simplified_array:
-        valid = True
-        place_id = place_info['place_id']
-        if place_info.get('q2') not in q2:
-            valid = False
-        if place_info.get('q3') != q3:
-            valid = False
-        if place_info.get('q4') != q4:
-            valid = False
-        if place_info.get('q5') != q5:
-            valid = False
-        if place_info.get('q6') != q6:
-            valid = False
-        if place_info.get('q7') != q7:
-            valid = False
-        if place_info.get('q8') != q8:
-            valid = False
-        if place_info.get('q9') != q9:
-            valid = False
-        if place_info.get('q10') != q10:
-            valid = False
-        if valid:
-            validRestaurants.append(place_id)
-    return validRestaurants
+        place_id = place_info.get('place_id')
+        keys_to_check = ['q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10']
+        values_to_check = [q3, q4, q5, q6, q7, q8, q9, q10]
+        # checks if conditions are met 
+        all_conditions_met = all(place_info.get(key) == value for key, value in zip(keys_to_check, values_to_check))
+        # checks the special case for q2
+        q2_condition_met = place_info.get('q2') in q2
+        if q2_condition_met and all_conditions_met:
+            valid_array.append(place_id)
+    return valid_array
