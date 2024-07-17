@@ -1,5 +1,5 @@
-import InputForm from "components/InputForm";
-import AuthButton from "components/AuthButton";
+import InputForm from "@components/InputForm";
+import AuthButton from "@components/AuthButton";
 import { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

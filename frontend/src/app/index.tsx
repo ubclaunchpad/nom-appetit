@@ -2,11 +2,10 @@ import { useFonts } from "expo-font";
 import SignIn from "./(auth)/signin";
 import SignUp from "./(auth)/signup";
 import { StyleSheet, View } from "react-native";
-import Header from "components/Header";
-import Switch from "components/Switch";
+import Header from "@components/Header";
+import Switch from "@components/Switch";
 import { useState } from "react";
-import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RootPage = () => {
   const [fontsLoaded] = useFonts({
@@ -24,11 +23,10 @@ const RootPage = () => {
       </View>
 
       <View style={{ paddingTop: 30 }}>
-        <Switch signIn={signIn} setSignIn={setSignIn}/>
+        <Switch signIn={signIn} setSignIn={setSignIn} />
       </View>
 
       {signIn ? <SignIn /> : <SignUp />}
-
     </SafeAreaView>
   );
 };

@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Link, router } from "expo-router";
-import InputForm from "components/InputForm";
-import AuthButton from "components/AuthButton";
-import Images from "assets/images";
+import InputForm from "@components/InputForm";
+import AuthButton from "@components/AuthButton";
+import Images from "@assets/images";
 import axios from "axios";
 
 export default function SignIn() {
