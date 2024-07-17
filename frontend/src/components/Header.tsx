@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import Images from "assets/images";
+import Images from "@assets/images";
 
 export default function Header() {
   return (
@@ -11,7 +11,7 @@ export default function Header() {
       <Image source={Images.pandaBamboo} style={styles.image} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   row: {

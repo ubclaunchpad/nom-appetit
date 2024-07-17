@@ -10,7 +10,7 @@ import {
   Pressable,
 } from "react-native";
 import RadioButton from "@components/RadioButton";
-import Images from "src/images/Images";
+import Images from "@assets/images";
 
 enum buttonState {
   selected = "selected",

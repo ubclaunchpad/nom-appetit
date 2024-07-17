@@ -12,7 +12,7 @@ import {
 import { RestaurantInfoComponent } from "@components/RestaurantInfoComponent";
 
 import SquareButton from "@components/SquareButton";
-import Images from "../images/Images";
+import Images from "@assets/images";
 
 export default function HomeScreen() {
   return (
@@ -29,17 +29,9 @@ export default function HomeScreen() {
           />
         </Pressable>
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-          <SquareButton
-            text="Saved Restaurant"
-            onPress={() => {}}
-            icon={Images.heartPNG}
-          />
+          <SquareButton />
           <View style={{ width: 15 }} />
-          <SquareButton
-            text="Give me suggestions"
-            onPress={() => {}}
-            icon={Images.lighbulbPNG}
-          />
+          <SquareButton />
         </View>
         <Pressable onPress={() => {}}>
           <Text>Profile</Text>

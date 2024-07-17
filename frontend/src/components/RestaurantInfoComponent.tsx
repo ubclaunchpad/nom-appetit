@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 import { FlowContainer } from "typescript";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
+import Images from "@assets/images";
 
 interface Props {
   type: string;
@@ -20,10 +21,7 @@ export const RestaurantInfoComponent = ({
     <View style={styles.container}>
       <View style={styles.column}>
         <View style={styles.imageContainer}>
-          <Image
-            source={require("../images/dummy-image.png")}
-            style={styles.image}
-          />
+          <Image source={Images.dummyImage} style={styles.image} />
         </View>
       </View>
       <View style={styles.column}>
