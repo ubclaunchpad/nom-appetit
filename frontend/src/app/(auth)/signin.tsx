@@ -8,9 +8,9 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
-import InputForm from "components/InputForm";
-import AuthButton from "components/AuthButton";
-import Images from "assets/images";
+import InputForm from "@components/InputForm";
+import AuthButton from "@components/AuthButton";
+import Images from "@assets/images";
 import axios from "axios";
 
 export default function SignIn() {
