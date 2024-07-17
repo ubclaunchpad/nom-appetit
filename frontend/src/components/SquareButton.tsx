@@ -1,23 +1,13 @@
 import React from "react";
-import { Image } from "react-native";
-import { ButtonText, SquareButtonContainer } from "../styles/Shared";
-import Images from "../images/Images";
+import { View, Text, Image, StyleSheet } from "react-native";
+import Images from "@assets/images";
 
-interface Props {
-  text: string;
-  onPress: () => void;
-  icon: any;
-}
-
-export default function SquareButton({
-  text,
-  onPress,
-  icon,
-}: Props): JSX.Element {
+export default function SquareButton(): JSX.Element {
   return (
-    <SquareButtonContainer onPress={onPress}>
-      <ButtonText>{text}</ButtonText>
-      <Image source={icon} />
-    </SquareButtonContainer>
+    <View>
+      <Text>This is a button</Text>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({});
