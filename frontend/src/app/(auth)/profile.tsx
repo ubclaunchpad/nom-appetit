@@ -1,10 +1,10 @@
-import InputForm from "@components/InputForm";
 import AuthButton from "@components/AuthButton";
-import { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { router, useLocalSearchParams } from "expo-router";
+import InputForm from "@components/AuthInput";
 import axios from "axios";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Profile() {
   const { user_id, password } = useLocalSearchParams();

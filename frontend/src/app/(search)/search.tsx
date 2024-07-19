@@ -1,215 +1,215 @@
-// home page
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-  TextInput,
-  FlatList,
-  Pressable,
-  SafeAreaView,
-} from "react-native";
-import { RestaurantInfoComponent } from "@components/RestaurantInfoComponent";
-
+import Navigation from "@components/Navigation";
+import { RestaurantInfoComponent } from "@components/RestaurantInfo";
+import SearchInput from "@components/SearchInput";
+import { router } from "expo-router";
+import { useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// boilerplate for future restaurants
 type Restaurant = {
   type: string;
+  price: string;
   name: string;
   rating: number;
   distance: string;
 };
+
 const restaurants: Restaurant[] = [
   {
     type: "Chinese",
+    price: "$$",
     name: "Lin's Chinese Cuisine",
-    rating: 4,
+    rating: 4.1,
     distance: "1.2 km away",
   },
   {
     type: "Italian",
+    price: "$$$",
     name: "Trattoria",
-    rating: 3.5,
+    rating: 3.4,
     distance: "1.2 km away",
   },
   {
     type: "Mexican",
+    price: "$",
     name: "Taqueria",
-    rating: 2,
+    rating: 3.6,
     distance: "1.2 km away",
   },
   {
     type: "Japanese",
+    price: "$$",
     name: "Koi Sushi",
-    rating: 5,
+    rating: 2.4,
     distance: "1.2 km away",
   },
 ];
 
-export default function SearchScreen() {
-  const [selected, setSelected] = useState("popular");
+export default function Search() {
+  const [restaurant, setRestaurant] = useState("");
+  const [popularIsPressed, setPopularIsPressed] = useState(true);
+  const [recentlyViewedIsPressed, setRecentlyViewedIsPressed] = useState(false);
+  const [nearYouIsPressed, setNearYouIsPressed] = useState(false);
+
+  const handlePopular = () => {
+    setPopularIsPressed(true);
+    setRecentlyViewedIsPressed(false);
+    setNearYouIsPressed(false);
+  };
+  const handleRecentlyViewed = () => {
+    setPopularIsPressed(false);
+    setRecentlyViewedIsPressed(true);
+    setNearYouIsPressed(false);
+  };
+  const handleNearYou = () => {
+    setPopularIsPressed(false);
+    setRecentlyViewedIsPressed(false);
+    setNearYouIsPressed(true);
+  };
 
   return (
-    <SafeAreaView style={styles.containerBackground}>
-      <View style={styles.container}>
-        <Text
-          style={{
-            fontSize: 24,
-            textAlign: "center",
-            width: "75%",
-            marginVertical: 10,
-          }}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.main}>
+        <View style={[styles.navigation, { marginTop: 10 }]}>
+          <Navigation backNavigation="home"/>
+        </View>
+
+        <View style={[styles.headerContainer, { marginTop: 20 }]}>
+          <Text style={styles.header}>Search Restaurants</Text>
+        </View>
+
+        <Pressable
+          style={[styles.form, { marginTop: 30 }]}
+          onPress={() => router.push("(search)/filter")}
         >
-          Search Restaurants
-        </Text>
-        <View style={styles.inputContainer}>
-          <View style={styles.searchSection}>
-            <View style={styles.searchIcon}>
-              <Icon
-                name="search"
-                type="font-awesome"
-                color="#004643"
-                size={18}
-              />
-            </View>
-
-            <Pressable>
-              <TextInput
-                style={styles.input}
-                placeholder="Search for a restaurant..."
-                placeholderTextColor={"#8FA68E"}
-                onSubmitEditing={() => {}}
-              />
-            </Pressable>
+          <SearchInput
+            value={restaurant}
+            onChangeText={setRestaurant}
+            autoCapitalize="words"
+            width="82%"
+            placeholder="Search for a restaurant..."
+          />
+          <View style={styles.filterButton}>
+            <Icon name="filter" type="font-awesome" color="#004643" size={25} />
           </View>
+        </Pressable>
 
-          <View
-            style={{
-              padding: 10,
-              backgroundColor: "#f3cc91",
-              borderRadius: 12,
-            }}
-          >
-            <Icon
-              onPress={() => {}}
-              name="filter"
-              type="font-awesome"
-              color="#004643"
-              size={24}
-            />
-          </View>
-        </View>
-        <View style={styles.filtersContainer}>
+        <View style={[styles.categories, { marginTop: 20 }]}>
           <Pressable
-            style={
-              selected === "popular"
-                ? styles.selectedButton
-                : styles.filterButton
-            }
-            onPress={() => setSelected("popular")}
+            style={[
+              styles.individualCategory,
+              { backgroundColor: popularIsPressed ? "#FFFFFF" : "#F3CC91" },
+            ]}
+            onPress={handlePopular}
           >
-            <Text style={{ color: "#004643" }}>Popular</Text>
+            <Text style={styles.categoryText}>Popular</Text>
           </Pressable>
+
           <Pressable
-            style={
-              selected === "recently viewed"
-                ? styles.selectedButton
-                : styles.filterButton
-            }
-            onPress={() => setSelected("recently viewed")}
+            style={[
+              styles.individualCategory,
+              {
+                backgroundColor: recentlyViewedIsPressed
+                  ? "#FFFFFF"
+                  : "#F3CC91",
+              },
+            ]}
+            onPress={handleRecentlyViewed}
           >
-            <Text style={{ color: "#004643" }}>Recently Viewed</Text>
+            <Text style={styles.categoryText}>Recently Viewed</Text>
           </Pressable>
+
           <Pressable
-            style={
-              selected === "near you"
-                ? styles.selectedButton
-                : styles.filterButton
-            }
-            onPress={() => setSelected("near you")}
+            style={[
+              styles.individualCategory,
+              { backgroundColor: nearYouIsPressed ? "#FFFFFF" : "#F3CC91" },
+            ]}
+            onPress={handleNearYou}
           >
-            <Text style={{ color: "#004643" }}>Near You</Text>
+            <Text style={styles.categoryText}>Near You</Text>
           </Pressable>
         </View>
 
-        <FlatList
-          data={restaurants}
-          renderItem={({ item }) => <RestaurantInfoComponent {...item} />}
-        />
+        <View style={[styles.restaurantContainer, { marginTop: 20, marginBottom: 20}]}>
+          <FlatList
+            data={restaurants}
+            renderItem={({ item }) => <RestaurantInfoComponent {...item} />}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  containerBackground: {
-    width: "100%",
-    backgroundColor: "#dee7c5",
-  },
-
   container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#E6EFD9",
+  },
+  main: {
+    width: 334,
+    flex: 1,
+    backgroundColor: "pink",
+  },
+  navigation: {
+    // backgroundColor: "red",
+  },
+  headerContainer: {
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
-
-  parentContainer: {
-    height: "100%",
+  header: {
+    fontSize: 24,
+    fontWeight: "600",
+    fontFamily: "Lato",
+    color: "#004643",
+    // backgroundColor: "yellow",
   },
-  searchSection: {
-    display: "flex",
+  form: {
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fffefa",
-    borderColor: "#80a29e",
-    borderRadius: 12,
-    borderWidth: 1,
-    minHeight: 48,
-    width: 254,
+    justifyContent: "space-between",
+    // backgroundColor: "red",
   },
-
-  searchIcon: {
-    padding: 7.5,
-  },
-
-  inputContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-  },
-
-  input: {
-    width: 200,
-    color: "#9db19b",
-  },
-
-  filtersContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
-    gap: 12,
-  },
-
   filterButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
     backgroundColor: "#F3CC91",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginVertical: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
-
-  selectedButton: {
-    backgroundColor: "#FFFEFA",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginVertical: 12,
+  categories: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // backgroundColor: "green",
   },
+  individualCategory: {
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  categoryText: {
+    fontFamily: "Lato",
+    color: "#004643",
+  },
+  restaurantContainer: {
+    flex: 1,
+    // backgroundColor: "blue",
+  },
+  restaurant: {
+    backgroundColor: "white",
+    width: "100%",
+    height: 115,
+    borderRadius: 12,
+  }
 });
+

@@ -8,10 +8,10 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
-import InputForm from "@components/InputForm";
+import axios from "axios";
+import InputForm from "@components/AuthInput";
 import AuthButton from "@components/AuthButton";
 import Images from "@assets/images";
-import axios from "axios";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
@@ -45,7 +45,7 @@ export default function SignIn() {
 
   return (
     <ScrollView>
-      <View style={{ paddingTop: 20 }}>
+      <View>
         <InputForm
           title="Username"
           onChangeText={setUsername}
@@ -59,7 +59,7 @@ export default function SignIn() {
         )}
       </View>
 
-      <View style={{ paddingTop: 20 }}>
+      <View style={{ paddingTop: 15 }}>
         <InputForm
           title="Password"
           onChangeText={setPassword}
@@ -79,11 +79,9 @@ export default function SignIn() {
 
       <View style={[styles.lineContainer, { paddingTop: 30 }]}>
         <View style={styles.line} />
-
         <View style={styles.textContainer}>
           <Text style={styles.text}>or sign in with</Text>
         </View>
-
         <View style={styles.line} />
       </View>
 
@@ -122,15 +120,15 @@ const styles = StyleSheet.create({
     fontFamily: "Lato",
   },
   signInOptions: {
-    alignItems: "center",
+    justifyContent: "center",
     flexDirection: "row",
     gap: 10,
   },
   optionButtons: {
     justifyContent: "center",
     alignItems: "center",
-    width: 108,
-    height: 61,
+    width: 104,
+    height: 60,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#80A29E",

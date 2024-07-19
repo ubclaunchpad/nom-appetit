@@ -8,6 +8,7 @@ export default function Header() {
         <Text style={styles.textSmall}> Welcome to</Text>
         <Text style={styles.textLarge}> Nom Appetit</Text>
       </View>
+
       <Image source={Images.pandaBamboo} style={styles.image} />
     </View>
   );
@@ -16,10 +17,10 @@ export default function Header() {
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   textContainer: {
-    paddingRight: 20,
     alignItems: "center",
   },
   textSmall: {

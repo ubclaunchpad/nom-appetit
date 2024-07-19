@@ -1,19 +1,18 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type SignInProps = {
-  signIn: boolean;
-  setSignIn: (signIn: boolean) => void;
+  leftNavText: string;
+  rightNavText: string;
+  rightNav: boolean;
+  setRightNav: (signIn: boolean) => void;
 };
 
 export default function Switch(props: SignInProps) {
-  const handleCreateAccount = () => {
-    props.setSignIn(false);
+  const handleLeftNav = () => {
+    props.setRightNav(false);
   };
-
-  const handleSignIn = () => {
-    props.setSignIn(true);
+  const handleRightNav = () => {
+    props.setRightNav(true);
   };
 
   return (
@@ -22,23 +21,26 @@ export default function Switch(props: SignInProps) {
         style={[
           styles.button,
           {
-            marginRight: 10,
-            backgroundColor: props.signIn ? "#FFFFFF" : "#F3CC91",
+            marginRight: 5,
+            backgroundColor: props.rightNav ? "#FFFFFF" : "#F3CC91",
           },
         ]}
-        onPress={handleCreateAccount}
+        onPress={handleLeftNav}
       >
-        <Text style={styles.buttonText}>Create Account</Text>
+        <Text style={styles.buttonText}>{props.leftNavText}</Text>
       </Pressable>
 
       <Pressable
         style={[
           styles.button,
-          { backgroundColor: props.signIn ? "#F3CC91" : "#FFFFFF" },
+          {
+            marginLeft: 5,
+            backgroundColor: props.rightNav ? "#F3CC91" : "#FFFFFF",
+          },
         ]}
-        onPress={handleSignIn}
+        onPress={handleRightNav}
       >
-        <Text style={styles.buttonText}>Sign In</Text>
+        <Text style={styles.buttonText}>{props.rightNavText}</Text>
       </Pressable>
     </View>
   );
@@ -47,18 +49,17 @@ export default function Switch(props: SignInProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 5,
+    paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 12,
   },
   button: {
     width: 162,
-    justifyContent: "center",
     alignItems: "center",
     paddingVertical: 10,
-    borderRadius: 12,
+    borderRadius: 10,
   },
   buttonText: {
     fontSize: 16,
