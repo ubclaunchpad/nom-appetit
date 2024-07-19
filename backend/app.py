@@ -91,5 +91,8 @@ def loginRoute():
 # returns: [TODO]
 # function: [TODO]
 def homeRoute():
-    return ('', 400)
-    
+    try:
+        return ('', 400)
+    except:
+        if str(e) == "USER_NOT_FOUND":
+            return { "user_not_found": True }

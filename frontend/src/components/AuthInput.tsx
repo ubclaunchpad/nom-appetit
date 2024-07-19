@@ -1,15 +1,15 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-type InputFormProps = {
+type AuthInputProps = {
   title: string;
   value: string;
-  onChangeText: (type:string) => void;
+  onChangeText: (type: string) => void;
   placeholder: string;
   autoCapitalize: "none" | "sentences" | "words" | "characters" | undefined;
   secureTextEntry: boolean;
 };
 
-export default function InputForm(props: InputFormProps) {
+export default function InputForm(props: AuthInputProps) {
   return (
     <View>
       <Text style={styles.title}>{props.title}</Text>

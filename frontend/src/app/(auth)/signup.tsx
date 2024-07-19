@@ -7,11 +7,11 @@ import {
   Text,
   View,
 } from "react-native";
-import { Link, router } from "expo-router";
-import InputForm from "@components/InputForm";
+import { router } from "expo-router";
+import axios from "axios";
+import InputForm from "@components/AuthInput";
 import AuthButton from "@components/AuthButton";
 import Images from "@assets/images";
-import axios from "axios";
 
 export default function SignIn() {
   const [name, setName] = useState("");
@@ -53,7 +53,7 @@ export default function SignIn() {
 
   return (
     <ScrollView>
-      <View style={{ paddingTop: 20 }}>
+      <View>
         <InputForm
           title="Full Name"
           onChangeText={setName}
@@ -143,15 +143,15 @@ const styles = StyleSheet.create({
     fontFamily: "Lato",
   },
   signInOptions: {
-    alignItems: "center",
+    justifyContent: "center",
     flexDirection: "row",
     gap: 10,
   },
   optionButtons: {
     justifyContent: "center",
     alignItems: "center",
-    width: 108,
-    height: 61,
+    width: 104,
+    height: 60,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#80A29E",

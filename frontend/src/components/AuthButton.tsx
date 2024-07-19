@@ -17,7 +17,7 @@ export default function SignInButton(props: SignInButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center", // Center horizontally
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#F3CC91",
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontFamily: "Lato-Regular", // Make sure to specify the correct font family name
+    fontFamily: "Lato-Regular",
     color: "#004643",
     textAlign: "center",
   },
