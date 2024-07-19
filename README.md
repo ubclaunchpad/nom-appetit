@@ -2,7 +2,7 @@
 <div>
   <p align="center">
     <a href="">
-      <img src="frontend/assets/logo.png" alt="Logo" width="100" height="100">
+      <img src="./frontend/assets/logo.png" alt="Logo" width="100" height="100">
     </a>
   </p>
   <h3 align="center">Nom Appetit</h3>
@@ -14,6 +14,7 @@
 + [About The Project](#abouttheproject)
 + [Getting Started](#getting-started)
 + [Deployment](#deployment)
++ [Contributing](#contributing)
 
 ## About The Project
 Nom Appetit is a social restaurant tracking and recommendation app with the purpose of helping users pick a place to eat for both individuals and groups. It is designed to finally answer the question of “So… where do you want to eat?”
@@ -31,7 +32,6 @@ To get a local copy up and running follow these simple example steps.
 - [Expo Go](https://docs.expo.dev/)
 
 ### API Credentials
-- [Google Cloud](https://cloud.google.com/docs)
 - [Firebase](https://firebase.google.com/docs/functions/get-started?gen=2nd)
 
 ### Installation
@@ -50,8 +50,7 @@ npx expo start
 #### Backend
 1. Navigate to the `backend` folder.
 2. Create a `secrets` folder in the `services` folder.
-3. Create `.env` file in `secrets` folder and assign Google Cloud API key to `GOOGLE_KEY`.
-4. Generate & download Firebase Admin SDK key and place in `secrets` folder.
+4. Generate & download Firebase Admin SDK private key and place in `secrets` folder.
 5. Install the required Python modules.
 ```
 pip install -r requirements.txt
@@ -63,3 +62,13 @@ flask run
 
 ## Deployment
 Currently in progress!
+
+## Contributing
+
+Contributions are what make the community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+2. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+3. Push to the Branch (`git push origin feature/AmazingFeature`)
+4. Open a Pull Request
+
