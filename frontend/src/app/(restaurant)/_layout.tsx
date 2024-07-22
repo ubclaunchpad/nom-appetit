@@ -7,6 +7,9 @@ const RestaurantLayout = () => {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="restaurantDisplay" />
+      <Stack.Screen name="reviews" />
+      <Stack.Screen name="menu" />
     </Stack>
   );
 };

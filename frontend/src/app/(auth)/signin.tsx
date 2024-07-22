@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import axios from "axios";
 import InputForm from "@components/AuthInput";
 import AuthButton from "@components/AuthButton";
@@ -81,6 +81,9 @@ export default function SignIn() {
         <View style={styles.line} />
         <View style={styles.textContainer}>
           <Text style={styles.text}>or sign in with</Text>
+          <Link href="(restaurant)/restaurantDisplay" style={{ fontSize: 5 }}>
+            Restaurant
+          </Link>
         </View>
         <View style={styles.line} />
       </View>
