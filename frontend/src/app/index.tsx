@@ -1,6 +1,11 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
+import {
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+} from "@expo-google-fonts/montserrat";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -13,6 +18,9 @@ const RootPage = () => {
     "Lato-Regular": require("@assets/fonts/Lato-Regular.ttf"),
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
   });
 
   const [rightNav, setRightNav] = useState(true);

@@ -82,7 +82,6 @@ export const ReviewInfo = (props: ReviewProps) => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     minHeight: 150,
@@ -93,8 +92,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   image: {
-    width: 110,
-    height: 75,
+    maxWidth: 110,
+    maxHeight: 75,
     marginRight: 20,
     borderRadius: 12,
   },
