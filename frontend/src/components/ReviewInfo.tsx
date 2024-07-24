@@ -25,7 +25,13 @@ export const ReviewInfo = (props: ReviewProps) => {
     const stars = [];
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <Icon name="star" type="font-awesome" color="#F9BC60" size={12} />
+        <Icon
+          key={i}
+          name="star"
+          type="font-awesome"
+          color="#F9BC60"
+          size={12}
+        />
       );
     }
     return stars;
