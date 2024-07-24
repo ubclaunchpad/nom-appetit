@@ -5,6 +5,7 @@ import {
   Montserrat_400Regular,
   Montserrat_500Medium,
   Montserrat_600SemiBold,
+  Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import { Link } from "expo-router";
 import { useState } from "react";
@@ -21,6 +22,7 @@ const RootPage = () => {
     Montserrat_400Regular,
     Montserrat_500Medium,
     Montserrat_600SemiBold,
+    Montserrat_700Bold,
   });
 
   const [rightNav, setRightNav] = useState(true);
