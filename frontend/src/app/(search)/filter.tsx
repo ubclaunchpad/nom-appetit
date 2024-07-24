@@ -3,7 +3,6 @@ import SearchInput from "@components/SearchInput";
 import StarRating from "@components/StarRating";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import { Slider } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -72,18 +71,6 @@ export default function Filter() {
         <View style={styles.cuisineContainer}>
           <Text style={styles.header}>Type of Cuisine</Text>
 
-          <DropDownPicker
-            open={open}
-            value={cuisine}
-            items={cuisineOptions}
-            setOpen={setOpen}
-            setValue={setCuisine}
-            setItems={setCuisineOptions}
-            placeholder="Select cuisine..."
-            style={styles.dropdown}
-            dropDownContainerStyle={styles.dropdownContainer}
-            textStyle={styles.dropdownText}
-          />
         </View>
 
         <View style={styles.ratingContainer}>
