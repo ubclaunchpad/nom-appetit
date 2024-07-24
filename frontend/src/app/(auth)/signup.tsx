@@ -1,17 +1,14 @@
+import AuthButton from "@components/AuthButton";
+import InputForm from "@components/InputForm";
+import OAuthButtons from "@components/OAuthButtons";
+import axios from "axios";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
-  Image,
-  Pressable,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
+  View
 } from "react-native";
-import { router } from "expo-router";
-import axios from "axios";
-import InputForm from "@components/AuthInput";
-import AuthButton from "@components/AuthButton";
-import Images from "@assets/images";
 
 export default function SignIn() {
   const [name, setName] = useState("");
@@ -53,116 +50,58 @@ export default function SignIn() {
 
   return (
     <ScrollView>
-      <View>
+      <View style={styles.inputItem}>
         <InputForm
-          title="Full Name"
-          onChangeText={setName}
+          label="Your name"
           value={name}
-          placeholder="Full Name"
+          onChangeText={setName}
+          placeholder="Your name"
           autoCapitalize="words"
           secureTextEntry={false}
         />
       </View>
-
-      <View style={{ paddingTop: 20 }}>
+      <View style={styles.inputItem}>
         <InputForm
-          title="Email"
-          onChangeText={setEmail}
+          label="Email address"
           value={email}
-          placeholder="Email"
+          onChangeText={setEmail}
+          placeholder="Email address"
+          errorMessage={emailValidation}
           autoCapitalize="none"
           secureTextEntry={false}
         />
-        {emailValidation !== "" && (
-          <Text style={styles.validation}>{emailValidation}</Text>
-        )}
       </View>
-
-      <View style={{ paddingTop: 20 }}>
+      <View style={styles.inputItem}>
         <InputForm
-          title="Password"
-          onChangeText={setPassword}
+          label="Create password"
           value={password}
-          placeholder="Password"
+          onChangeText={setPassword}
+          placeholder="Create password"
+          errorMessage={passwordValidation}
           autoCapitalize="none"
           secureTextEntry={true}
         />
-        {passwordValidation !== "" && (
-          <Text style={styles.validation}>{passwordValidation}</Text>
-        )}
       </View>
-
-      <View style={{ paddingTop: 30 }}>
-        <AuthButton title="Sign Up" onPress={postData} />
+      <View style={styles.submitContainer}>
+        <AuthButton title="Create account" onPress={postData} />
       </View>
-
-      <View style={[styles.lineContainer, { paddingTop: 30 }]}>
-        <View style={styles.line} />
-
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>or sign up with</Text>
-        </View>
-
-        <View style={styles.line} />
-      </View>
-
-      <View
-        style={[styles.signInOptions, { paddingTop: 30, paddingBottom: 30 }]}
-      >
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.facebook} style={styles.image} />
-        </Pressable>
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.google} style={styles.image} />
-        </Pressable>
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.apple} style={styles.image} />
-        </Pressable>
+      <View style={styles.oAuthContainer}>
+        <OAuthButtons message="or sign up with"/>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  lineContainer: {
-    flexDirection: "row",
+  inputItem: {
+    marginTop: 15,
+  },
+  submitContainer: {
     alignItems: "center",
-    paddingHorizontal: 30,
+    marginTop: 30,
   },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#004643",
-  },
-  textContainer: {
-    paddingHorizontal: 10,
-  },
-  text: {
-    color: "#004643",
-    fontSize: 16,
-    fontFamily: "Lato",
-  },
-  signInOptions: {
-    justifyContent: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-  optionButtons: {
-    justifyContent: "center",
+  oAuthContainer: {
     alignItems: "center",
-    width: 104,
-    height: 60,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#80A29E",
-    backgroundColor: "white",
-  },
-  image: {
-    width: 20,
-    height: 20,
-  },
-  validation: {
-    color: "red",
-    paddingTop: 5,
+    marginTop: 30,
   },
 });

@@ -1,5 +1,5 @@
 import AuthButton from "@components/AuthButton";
-import InputForm from "@components/AuthInput";
+import InputForm from "@components/InputForm";
 import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";

@@ -1,0 +1,72 @@
+import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import Images from "@assets/images";
+
+type OAuthButtonsProps = {
+  message: string;
+};
+
+export default function OAuthButtons(props: OAuthButtonsProps) {
+  return (
+    <View>
+      <View style={styles.lineContainer}>
+        <View style={styles.line} />
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{props.message}</Text>
+        </View>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.signInOptions}>
+        <Pressable style={styles.optionButton} onPress={() => {}}>
+          <Image source={Images.facebook} style={styles.image} />
+        </Pressable>
+        <Pressable style={styles.optionButton} onPress={() => {}}>
+          <Image source={Images.google} style={styles.image} />
+        </Pressable>
+        <Pressable style={styles.optionButton} onPress={() => {}}>
+          <Image source={Images.apple} style={styles.image} />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  lineContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  line: {
+    flex: 1,
+    height: 1.5,
+    backgroundColor: "#004643",
+  },
+  textContainer: {
+    marginHorizontal: 12,
+  },
+  text: {
+    color: "#004643",
+    fontSize: 16,
+    fontFamily: "Lato-SemiBold",
+  },
+  signInOptions: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 16,
+    marginTop: 20,
+  },
+  image: {
+    width: 25,
+    height: 25,
+    resizeMode: "contain"
+  },
+  optionButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 104,
+    height: 60,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#80A29E",
+    backgroundColor: "white",
+  },
+});
