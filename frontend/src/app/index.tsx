@@ -1,7 +1,7 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
-import { SplashScreen } from "expo-router";
+import { Link, SplashScreen } from "expo-router";
 import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,6 +26,8 @@ const RootPage = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
+          <View style={styles.innerMain}>
+        {/* <Link href="/profile">About</Link> */}
           <View style={styles.headerContainer}>
             <Header />
           </View>
@@ -41,6 +43,7 @@ const RootPage = () => {
           <View>
             {rightNav ? <SignIn /> : <SignUp />}
           </View>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -50,10 +53,14 @@ const RootPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
     backgroundColor: "#E6EFD9",
   },
   main: {
+    width: "100%",
+  },
+  innerMain: {
     marginHorizontal: 40,
   },
   headerContainer: {

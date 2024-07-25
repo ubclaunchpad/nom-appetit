@@ -4,17 +4,14 @@ import OAuthButtons from "@components/OAuthButtons";
 import axios from "axios";
 import { router } from "expo-router";
 import { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  View
-} from "react-native";
+import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userNotFoundMessage, setUserNotFoundMessage] = useState("");
   const [invalidPasswordMessage, setInvalidPasswordMessage] = useState("");
+  const paddedWindowWidth = Dimensions.get("window").width - 80;
 
   const postData = async () => {
     const response = await axios.post("http://127.0.0.1:5000/login", {
@@ -67,7 +64,10 @@ export default function SignIn() {
         <AuthButton title="Sign In" onPress={postData} />
       </View>
       <View style={styles.oAuthContainer}>
-        <OAuthButtons message="or sign in with"/>
+        <OAuthButtons
+          message="or sign in with"
+          paddedWindowWidth={paddedWindowWidth}
+        />
       </View>
     </ScrollView>
   );

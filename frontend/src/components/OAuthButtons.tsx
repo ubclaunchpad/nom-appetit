@@ -3,9 +3,12 @@ import Images from "@assets/images";
 
 type OAuthButtonsProps = {
   message: string;
+  paddedWindowWidth: number;
 };
 
 export default function OAuthButtons(props: OAuthButtonsProps) {
+  const buttonWidth = (props.paddedWindowWidth / 3) - 10;
+
   return (
     <View>
       <View style={styles.lineContainer}>
@@ -16,13 +19,13 @@ export default function OAuthButtons(props: OAuthButtonsProps) {
         <View style={styles.line} />
       </View>
       <View style={styles.signInOptions}>
-        <Pressable style={styles.optionButton} onPress={() => {}}>
+        <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>
           <Image source={Images.facebook} style={styles.image} />
         </Pressable>
-        <Pressable style={styles.optionButton} onPress={() => {}}>
+        <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>
           <Image source={Images.google} style={styles.image} />
         </Pressable>
-        <Pressable style={styles.optionButton} onPress={() => {}}>
+        <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>
           <Image source={Images.apple} style={styles.image} />
         </Pressable>
       </View>
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   signInOptions: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 16,
+    gap: 10,
     marginTop: 20,
   },
   image: {
@@ -60,10 +63,9 @@ const styles = StyleSheet.create({
     resizeMode: "contain"
   },
   optionButton: {
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
-    width: 104,
-    height: 60,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#80A29E",
