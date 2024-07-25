@@ -58,7 +58,7 @@ export default function menu() {
         </View>
 
         <View style={[styles.headerContainer, { marginTop: 20 }]}>
-          <Text style={styles.header}>Reviews</Text>
+          <Text style={styles.header}>Restaurant Name</Text>
         </View>
 
         <View style={[styles.categories, { marginTop: 20 }]}>

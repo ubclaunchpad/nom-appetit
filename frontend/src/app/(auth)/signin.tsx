@@ -81,7 +81,7 @@ export default function SignIn() {
         <View style={styles.line} />
         <View style={styles.textContainer}>
           <Text style={styles.text}>or sign in with</Text>
-          <Link href="(restaurant)/restaurantDisplay" style={{ fontSize: 5 }}>
+          <Link href="(restaurant)/restaurant_display" style={{ fontSize: 5 }}>
             Restaurant
           </Link>
         </View>

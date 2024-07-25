@@ -6,6 +6,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,7 +24,7 @@ const restaurantDisplay = () => {
   type dish = {
     name: string;
     description: string;
-    image: string;
+    image: ImageSourcePropType;
   };
 
   const boilerReview = {
@@ -36,7 +37,7 @@ const restaurantDisplay = () => {
       "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
   };
 
-  const featuredDishes = [
+  const featuredDishes: dish[] = [
     {
       name: "Poke",
       description: "Description",
