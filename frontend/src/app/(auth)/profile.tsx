@@ -32,20 +32,19 @@ export default function Profile() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.innerContainer}>
+      <View style={styles.main}>
+        <View style={styles.innerMain}>
         <Text style={styles.header}>Create Username</Text>
-        <View style={{ paddingTop: 10 }}>
+        <View style={styles.inputItem}>
           <InputForm
-            title=""
-            onChangeText={setUsername}
+            label=""
             value={username}
+            onChangeText={setUsername}
             placeholder="Username"
+            errorMessage={usernameValidation}
             autoCapitalize="none"
             secureTextEntry={false}
           />
-          {usernameValidation !== "" && (
-            <Text style={styles.validation}>{usernameValidation}</Text>
-          )}
         </View>
         <Text style={[styles.text, { paddingTop: 10 }]}>
           • Can include letters (a-z), numbers (0-9), underscores (_), and
@@ -54,8 +53,9 @@ export default function Profile() {
         <Text style={[styles.text, { paddingTop: 5 }]}>
           • Spaces, emojis, and other special characters are not allowed
         </Text>
-        <View style={{ paddingTop: 30 }}>
+        <View style={styles.submitContainer}>
           <AuthButton title="Submit" onPress={postData} />
+        </View>
         </View>
       </View>
     </SafeAreaView>
@@ -69,26 +69,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#E6EFD9",
   },
-  innerContainer: {
-    width: 344,
+  main: {
+    width: "100%",
+    backgroundColor: "pink",
+  },
+  innerMain: {
+    marginHorizontal: 40,
+    backgroundColor: "lightblue",
   },
   header: {
     fontSize: 24,
-    fontFamily: "Lato",
+    fontFamily: "Lato-SemiBold",
     color: "#004643",
     textAlign: "center",
   },
+  inputItem: {
+    marginTop: 30,
+  },
   text: {
     fontSize: 16,
-    fontFamily: "Lato",
+    fontFamily: "Lato-Regular",
     color: "#004643",
   },
-  validation: {
-    color: "red",
-    paddingTop: 5,
-  },
-  image: {
-    flex: 1,
-    justifyContent: "center",
+  submitContainer: {
+    alignItems: "center",
+    marginTop: 30,
   },
 });

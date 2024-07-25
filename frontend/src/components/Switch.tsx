@@ -15,7 +15,7 @@ export default function Switch(props: SignInProps) {
   const handleRightNav = () => {
     props.setRightNav(true);
   };
-  const buttonWidth = props.paddedWindowWidth / 2;
+  const buttonWidth = (props.paddedWindowWidth / 2) - 5;
 
   return (
     <View style={styles.container}>
