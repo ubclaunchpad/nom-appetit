@@ -1,15 +1,15 @@
-import { Stack } from "expo-router";
+// import { Stack } from "expo-router";
 
-const SearchLayout = () => {
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="search" />
-    </Stack>
-  );
-};
+// const SearchLayout = () => {
+//   return (
+//     <Stack
+//       screenOptions={{
+//         headerShown: false,
+//       }}
+//     >
+//       <Stack.Screen name="search" />
+//     </Stack>
+//   );
+// };
 
-export default SearchLayout;
+// export default SearchLayout;

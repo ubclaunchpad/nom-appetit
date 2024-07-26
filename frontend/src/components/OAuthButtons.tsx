@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   line: {
     flex: 1,
-    height: 1.5,
+    height: 1,
     backgroundColor: "#004643",
   },
   textContainer: {
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   image: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     resizeMode: "contain"
   },
   optionButton: {

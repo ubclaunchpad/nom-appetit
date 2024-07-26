@@ -3,10 +3,11 @@ import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
 import { Link, SplashScreen } from "expo-router";
 import { useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignIn from "./(auth)/signin";
 import SignUp from "./(auth)/signup";
+import Images from "@assets/images";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,7 +17,7 @@ const RootPage = () => {
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
   });
-  const paddedWindowWidth = Dimensions.get('window').width - 80;
+  const paddedWindowWidth = Dimensions.get("window").width - 80;
   const [rightNav, setRightNav] = useState(false);
 
   if (!fontsLoaded) {
@@ -27,23 +28,25 @@ const RootPage = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <View style={styles.innerMain}>
-        {/* <Link href="/profile">About</Link> */}
-          <View style={styles.headerContainer}>
-            <Header />
+            {/* <Link href="/home">Home</Link>
+            <Link href="(auth)/profile">Profile</Link> */}
+            <View style={styles.headerContainer}>
+              <Header />
+            </View>
+            <View style={styles.switchContainer}>
+              <Switch
+                rightNav={rightNav}
+                setRightNav={setRightNav}
+                leftNavText="Create Account"
+                rightNavText="Sign In"
+                paddedWindowWidth={paddedWindowWidth}
+              />
+            </View>
+            <View>{rightNav ? <SignIn /> : <SignUp />}</View>
           </View>
-          <View style={styles.switchContainer}>
-            <Switch
-              rightNav={rightNav}
-              setRightNav={setRightNav}
-              leftNavText="Create Account"
-              rightNavText="Sign In"
-              paddedWindowWidth={paddedWindowWidth} 
-            />
-          </View>
-          <View>
-            {rightNav ? <SignIn /> : <SignUp />}
-          </View>
-          </View>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image source={Images.bambooRight} style={styles.image} />
         </View>
       </SafeAreaView>
     );
@@ -64,10 +67,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   headerContainer: {
-    marginTop: 60,
+    marginTop: 30,
   },
   switchContainer: {
     marginTop: 30,
+  },
+  imageContainer: {
+    position: "absolute",
+    bottom: -50,
+    right: -50,
+    zIndex: -1,
+  },
+  image: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain"
   },
 });
 
