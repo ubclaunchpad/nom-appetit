@@ -33,104 +33,102 @@ export default function Filter() {
         </View>
 
         <View style={styles.filters}>
-        <View style={styles.locationContainer}>
-          <Text style={styles.header}>Location</Text>
+          <View style={styles.locationContainer}>
+            <Text style={styles.header}>Location</Text>
 
-          <View style={{ marginBottom: 1 }}>
-            <SearchInput
-              value={location}
-              onChangeText={setLocation}
-              placeholder="Search location..."
-              autoCapitalize="words"
-              width="100%"
-            />
-          </View>
+            <View style={{ marginBottom: 1 }}>
+              <SearchInput
+                value={location}
+                onChangeText={setLocation}
+                placeholder="Search location..."
+                autoCapitalize="words"
+                width="100%"
+              />
+            </View>
 
-          <View style={styles.sliderContainer}>
-            <Text style={styles.sliderText}>Within</Text>
+            <View style={styles.sliderContainer}>
+              <Text style={styles.sliderText}>Within</Text>
 
-            <Slider
-              style={{ width: 190, height: 40 }}
-              minimumValue={1}
-              maximumValue={50}
-              value={distance}
-              minimumTrackTintColor="#008781"
-              maximumTrackTintColor="#008781"
-              thumbTintColor="#004643"
-              thumbStyle={styles.thumb}
-              onValueChange={(value) => {
-                setDistance(Math.round(value));
-              }}
-            />
+              <Slider
+                style={{ width: 190, height: 40 }}
+                minimumValue={1}
+                maximumValue={50}
+                value={distance}
+                minimumTrackTintColor="#008781"
+                maximumTrackTintColor="#008781"
+                thumbTintColor="#004643"
+                thumbStyle={styles.thumb}
+                onValueChange={(value) => {
+                  setDistance(Math.round(value));
+                }}
+              />
 
-            <View style={styles.distanceContainer}>
-              <Text style={styles.sliderText}>{distance} km</Text>
+              <View style={styles.distanceContainer}>
+                <Text style={styles.sliderText}>{distance} km</Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.cuisineContainer}>
-          <Text style={styles.header}>Type of Cuisine</Text>
+          <View style={styles.cuisineContainer}>
+            <Text style={styles.header}>Type of Cuisine</Text>
 
-          <DropDownPicker
-            open={open}
-            value={cuisine}
-            items={cuisineOptions}
-            setOpen={setOpen}
-            setValue={setCuisine}
-            setItems={setCuisineOptions}
-            placeholder="Select cuisine..."
-            style={styles.dropdown}
-            dropDownContainerStyle={styles.dropdownContainer}
-            textStyle={styles.dropdownText}
-          />
-        </View>
+            <DropDownPicker
+              open={open}
+              value={cuisine}
+              items={cuisineOptions}
+              setOpen={setOpen}
+              setValue={setCuisine}
+              setItems={setCuisineOptions}
+              placeholder="Select cuisine..."
+              style={styles.dropdown}
+              dropDownContainerStyle={styles.dropdownContainer}
+              textStyle={styles.dropdownText}
+            />
+          </View>
 
-        <View style={styles.ratingContainer}>
-          <Text style={styles.header}>Rating</Text>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.header}>Rating</Text>
 
-          <View style={styles.stars}>
-            <StarRating maxRating={5} onChange={setRating} />
+            <View style={styles.stars}>
+              <StarRating maxRating={5} onChange={setRating} size={48} />
+            </View>
+          </View>
+
+          <View style={styles.priceContainer}>
+            <Text style={styles.header}>Price</Text>
+
+            <View style={styles.innerPriceContainer}>
+              <Pressable
+                style={styles.individualPriceCategory}
+                onPress={() => updatePrice("$")}
+              >
+                <Text>$</Text>
+              </Pressable>
+              <Pressable
+                style={styles.individualPriceCategory}
+                onPress={() => updatePrice("$$")}
+              >
+                <Text>$$</Text>
+              </Pressable>
+              <Pressable
+                style={styles.individualPriceCategory}
+                onPress={() => updatePrice("$$$")}
+              >
+                <Text>$$$</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.submitContainer}>
+            <Pressable style={styles.resetContainer}>
+              <Text style={styles.resetText}>Reset</Text>
+            </Pressable>
+
+            <Pressable style={styles.applyContainer}>
+              <Text style={styles.applyText}>Apply</Text>
+            </Pressable>
           </View>
         </View>
-
-        <View style={styles.priceContainer}>
-          <Text style={styles.header}>Price</Text>
-
-          <View style={styles.innerPriceContainer}>
-            <Pressable
-              style={styles.individualPriceCategory}
-              onPress={() => updatePrice("$")}
-            >
-              <Text>$</Text>
-            </Pressable>
-            <Pressable
-              style={styles.individualPriceCategory}
-              onPress={() => updatePrice("$$")}
-            >
-              <Text>$$</Text>
-            </Pressable>
-            <Pressable
-              style={styles.individualPriceCategory}
-              onPress={() => updatePrice("$$$")}
-            >
-              <Text>$$$</Text>
-            </Pressable>
-          </View>
-        </View>
-
-        <View style={styles.submitContainer}>
-          <Pressable style={styles.resetContainer}>
-            <Text style={styles.resetText}>Reset</Text>
-          </Pressable>
-
-          <Pressable style={styles.applyContainer}>
-            <Text style={styles.applyText}>Apply</Text>
-          </Pressable>
-        </View>
-        </View>
-
-
       </View>
     </SafeAreaView>
   );
@@ -150,7 +148,7 @@ const styles = StyleSheet.create({
   filters: {
     flex: 1,
     justifyContent: "center",
-    paddingVertical: 10, 
+    paddingVertical: 10,
     // backgroundColor: "lightblue",
   },
   exitNavigation: {
@@ -273,4 +271,3 @@ const styles = StyleSheet.create({
     fontFamily: "Lato",
   },
 });
-

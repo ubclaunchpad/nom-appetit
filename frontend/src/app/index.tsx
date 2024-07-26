@@ -1,6 +1,12 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
+import {
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -13,6 +19,10 @@ const RootPage = () => {
     "Lato-Regular": require("@assets/fonts/Lato-Regular.ttf"),
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
   });
 
   const [rightNav, setRightNav] = useState(true);
@@ -20,8 +30,12 @@ const RootPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
-        <Link href="(search)/search" style={{ fontSize: 5}}>Search</Link> 
-        <Link href="(search)/modal" style={{ fontSize: 5}}>Modal</Link> 
+        <Link href="(search)/search" style={{ fontSize: 5 }}>
+          Search
+        </Link>
+        <Link href="(search)/modal" style={{ fontSize: 5 }}>
+          Modal
+        </Link>
 
         <View style={{ paddingTop: 30 }}>
           <Header />
