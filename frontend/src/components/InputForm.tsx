@@ -1,13 +1,14 @@
 import { Input } from 'react-native-elements';
 
 type AuthInputProps = {
-  label: string;
+  label?: string;
   value: string;
   onChangeText: (type: string) => void;
   placeholder: string;
   errorMessage?: string;
   autoCapitalize: "none" | "sentences" | "words" | "characters" | undefined;
-  secureTextEntry: boolean;
+  secureTextEntry?: boolean;
+  searchInput?: boolean;
 };
 
 export default function InputForm(props: AuthInputProps) {
@@ -55,6 +56,9 @@ export default function InputForm(props: AuthInputProps) {
         color: 'red', 
       }}
       renderErrorMessage={renderErrorMessage}
+      // ===== left icon =====
+      leftIconContainerStyle= {props.searchInput ? { marginRight: 5 } : undefined }
+      leftIcon={props.searchInput ? { type: 'font-awesome', name: 'search', size: 16, color: "#457874" } : undefined }
       // ===== extras =====
       autoCapitalize={props.autoCapitalize}
       secureTextEntry={props.secureTextEntry}
