@@ -28,8 +28,6 @@ const RootPage = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <View style={styles.innerMain}>
-            {/* <Link href="/home">Home</Link>
-            <Link href="(auth)/profile">Profile</Link> */}
             <View style={styles.headerContainer}>
               <Header />
             </View>
@@ -79,8 +77,8 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   image: {
-    width: 300,
-    height: 300,
+    width: 275,
+    height: 275,
     resizeMode: "contain"
   },
 });

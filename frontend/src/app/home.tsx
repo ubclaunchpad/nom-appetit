@@ -1,15 +1,49 @@
+import Images from "@assets/images";
 import HomeButton from "@components/HomeButton";
 import HomeProfile from "@components/HomeProfile";
 import InputForm from "@components/InputForm";
-import Images from "@assets/images";
-import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import axios from "axios";
+import { Link, router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
-  const [password, setPassword] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [name, setName] = useState(""); 
   const { token } = useLocalSearchParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/home', null, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        const { missing_token, invalid_token, name } = response.data;
+        if (missing_token || invalid_token) {
+          Alert.alert('Session Expired', 'You will be redirected to the Login page', [
+            {text: 'Continue', onPress: () => router.push('/')},
+          ]);
+        } else {
+          setName(name);
+        }
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const testFunc = () => {
+    router.push({
+      pathname: "home",
+      params: {
+        token: token,
+      },
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,7 +51,7 @@ export default function Home() {
         <View style={styles.innerMain}>
           <View style={styles.profileContainer}>
             <HomeProfile
-              name="John Doe"
+              name={name}
               notifcationCount={3}
               profilePicture="https://randomuser.me/api/portraits/men/41.jpg"
             />
@@ -27,8 +61,8 @@ export default function Home() {
           </View>
           <View style={styles.searchContainer}>
             <InputForm
-              value={password}
-              onChangeText={setPassword}
+              value={searchText}
+              onChangeText={setSearchText}
               placeholder="Search for a restaurant..."
               autoCapitalize="none"
               secureTextEntry={false}
@@ -70,7 +104,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   profileContainer: {
-    marginTop: 10,
+    marginTop: 30,
   },
   headerContainer: {
     marginTop: 125,
@@ -91,7 +125,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "absolute",
-    bottom: -150,
+    bottom: -175,
     zIndex: -1,
   },
   image: {

@@ -14,6 +14,7 @@ export default function HomeProfile(props: HomeProfileProps) {
         <Text
           style={{
             fontFamily: "Lato-SemiBold",
+            fontSize: 14,
             color: "#004643",
             textAlign: "right",
           }}
@@ -22,7 +23,12 @@ export default function HomeProfile(props: HomeProfileProps) {
         </Text>
         <Pressable onPress={() => {}}>
           <Text
-            style={{ fontFamily: "Lato", color: "#004643", textAlign: "right" }}
+            style={{
+              fontFamily: "Lato",
+              fontSize: 14,
+              color: "#004643",
+              textAlign: "right",
+            }}
           >
             View Profile
           </Text>
