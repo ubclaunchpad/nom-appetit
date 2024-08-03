@@ -20,9 +20,15 @@ const RootPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
-        <Link href="(search)/search" style={{ fontSize: 5}}>Search</Link> 
-        <Link href="(search)/modal" style={{ fontSize: 5}}>Modal</Link> 
-
+        <Link href="(search)/search" style={{ fontSize: 5 }}>
+          Search
+        </Link>
+        <Link href="(search)/modal" style={{ fontSize: 5 }}>
+          Modal
+        </Link>
+        <Link href="(profile)/profile" style={{ fontSize: 5 }}>
+          Profile
+        </Link>
         <View style={{ paddingTop: 30 }}>
           <Header />
         </View>
