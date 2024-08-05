@@ -17,7 +17,7 @@ const RootPage = () => {
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
   });
-  const paddedWindowWidth = Dimensions.get("window").width - 80;
+  const paddedWindowWidth = Dimensions.get("window").width - 60;
   const [rightNav, setRightNav] = useState(false);
 
   if (!fontsLoaded) {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   innerMain: {
-    marginHorizontal: 40,
+    marginHorizontal: 30,
   },
   headerContainer: {
     marginTop: 30,

@@ -1,215 +1,200 @@
-// import Navigation from "@components/Navigation";
-// import { RestaurantInfoComponent } from "@components/RestaurantInfo";
-// import SearchInput from "@components/SearchInput";
-// import { router } from "expo-router";
-// import { useState } from "react";
-// import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-// import { Icon } from "react-native-elements";
-// import { SafeAreaView } from "react-native-safe-area-context";
+import Images from "@assets/images";
+import InputForm from "@components/InputForm";
+import Navigation from "@components/Navigation";
+import RestaurantInfo from "@components/RestaurantInfo";
+import RestaurantSearchFilter from "@components/RestaurantSearchFilter";
+import axios from "axios";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Icon } from "react-native-elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// type Restaurant = {
-//   type: string;
-//   price: string;
-//   name: string;
-//   rating: number;
-//   distance: string;
-// };
+export default function Search() {
+  const [searchText, setSearchText] = useState("");
+  const [restaurants, setRestaurants] = useState([]);
+  const [popularIsPressed, setPopularIsPressed] = useState(true);
+  const [recentlyViewedIsPressed, setRecentlyViewedIsPressed] = useState(false);
+  const [nearYouIsPressed, setNearYouIsPressed] = useState(false);
+  const { token, longitude, latitude, initialSearchText } = useLocalSearchParams();
 
-// const restaurants: Restaurant[] = [
-//   {
-//     type: "Chinese",
-//     price: "$$",
-//     name: "Lin's Chinese Cuisine",
-//     rating: 4.1,
-//     distance: "1.2 km away",
-//   },
-//   {
-//     type: "Italian",
-//     price: "$$$",
-//     name: "Trattoria",
-//     rating: 3.4,
-//     distance: "1.2 km away",
-//   },
-//   {
-//     type: "Mexican",
-//     price: "$",
-//     name: "Taqueria",
-//     rating: 3.6,
-//     distance: "1.2 km away",
-//   },
-//   {
-//     type: "Japanese",
-//     price: "$$",
-//     name: "Koi Sushi",
-//     rating: 2.4,
-//     distance: "1.2 km away",
-//   },
-// ];
+  const searchRestaurants = async (textVariable: string) => {
+    try {
+      const data = {
+        longitude: longitude,
+        latitude: latitude,
+        keywords: textVariable,
+      };
+      const response = await axios.post("http://127.0.0.1:5000/searchRestaurants", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { missing_token, invalid_token, restaurants } = response.data;
+      if (missing_token || invalid_token) {
+        Alert.alert('Session Expired', 'You will be redirected to the Login page', [
+          {text: 'Continue', onPress: () => router.push('/')},
+        ]);
+      } else {
+        console.log(token)
+        setRestaurants(restaurants);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-// export default function Search() {
-//   const [restaurant, setRestaurant] = useState("");
-//   const [popularIsPressed, setPopularIsPressed] = useState(true);
-//   const [recentlyViewedIsPressed, setRecentlyViewedIsPressed] = useState(false);
-//   const [nearYouIsPressed, setNearYouIsPressed] = useState(false);
+  const handlePopular = () => {
+    setPopularIsPressed(true);
+    setRecentlyViewedIsPressed(false);
+    setNearYouIsPressed(false);
+  };
+  const handleRecentlyViewed = () => {
+    setPopularIsPressed(false);
+    setRecentlyViewedIsPressed(true);
+    setNearYouIsPressed(false);
+  };
+  const handleNearYou = () => {
+    setPopularIsPressed(false);
+    setRecentlyViewedIsPressed(false);
+    setNearYouIsPressed(true);
+  };
 
-//   const handlePopular = () => {
-//     setPopularIsPressed(true);
-//     setRecentlyViewedIsPressed(false);
-//     setNearYouIsPressed(false);
-//   };
-//   const handleRecentlyViewed = () => {
-//     setPopularIsPressed(false);
-//     setRecentlyViewedIsPressed(true);
-//     setNearYouIsPressed(false);
-//   };
-//   const handleNearYou = () => {
-//     setPopularIsPressed(false);
-//     setRecentlyViewedIsPressed(false);
-//     setNearYouIsPressed(true);
-//   };
+  useEffect(() => {
+    searchRestaurants(initialSearchText as string);
+  }, []);
 
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <View style={styles.main}>
-//         <View style={[styles.navigation, { marginTop: 10 }]}>
-//           <Navigation backNavigation="home"/>
-//         </View>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.main}>
+        <View style={styles.innerMain}>
+          <View style={styles.navigationContainer}>
+            <Navigation
+              leftIcon="arrow-left"
+              leftNavigationOnPress={() => router.back()}
+              rightIcon="home"
+              rightNavigationOnPress={() =>
+                router.push({
+                  pathname: "home",
+                  params: {
+                    token: token,
+                  },
+                })
+              }
+            />
+          </View>
+          <View style={styles.headerContainer}>
+            <Text style={styles.header}>Search Results</Text>
+            <Image source={Images.pandaPizza} style={styles.image} />
+          </View>
+          <View style={styles.searchContainer}>
+            <InputForm
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholder="Search for a restaurant..."
+              autoCapitalize="none"
+              secureTextEntry={false}
+              searchInput={true}
+              width={"82%"}
+              onSubmitEditing={() => searchRestaurants(searchText as string)}
+            />
+            <Pressable
+              style={styles.filterButton}
+              onPress={() =>
+                router.push({
+                  pathname: "(search)/filter",
+                  params: {
+                    token: token,
+                  },
+                })
+              }
+            >
+              <Icon name="filter" type="font-awesome" color="#004643" size={25} />
+            </Pressable>
+          </View>
+          <View style={styles.categories}>
+            <RestaurantSearchFilter buttonPressed={popularIsPressed} handleButton={handlePopular} text="Popular" />
+            <RestaurantSearchFilter buttonPressed={recentlyViewedIsPressed} handleButton={handleRecentlyViewed} text="Recently Viewed" />
+            <RestaurantSearchFilter buttonPressed={nearYouIsPressed} handleButton={handleNearYou} text="Near You" />
+          </View>
+          <View style={styles.restaurantContainer}>
+            <FlatList
+              data={restaurants}
+              renderItem={({ item }) => (
+                <RestaurantInfo
+                  name={item.name}
+                  category={item.category}
+                  price={item.price}
+                  rating={item.rating}
+                  distance={item.distance}
+                  image_url={item.image_url}
+                />
+              )}
+            />
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
 
-//         <View style={[styles.headerContainer, { marginTop: 20 }]}>
-//           <Text style={styles.header}>Search Restaurants</Text>
-//         </View>
-
-//         <Pressable
-//           style={[styles.form, { marginTop: 30 }]}
-//           onPress={() => router.push("(search)/filter")}
-//         >
-//           <SearchInput
-//             value={restaurant}
-//             onChangeText={setRestaurant}
-//             autoCapitalize="words"
-//             width="82%"
-//             placeholder="Search for a restaurant..."
-//           />
-//           <View style={styles.filterButton}>
-//             <Icon name="filter" type="font-awesome" color="#004643" size={25} />
-//           </View>
-//         </Pressable>
-
-//         <View style={[styles.categories, { marginTop: 20 }]}>
-//           <Pressable
-//             style={[
-//               styles.individualCategory,
-//               { backgroundColor: popularIsPressed ? "#FFFFFF" : "#F3CC91" },
-//             ]}
-//             onPress={handlePopular}
-//           >
-//             <Text style={styles.categoryText}>Popular</Text>
-//           </Pressable>
-
-//           <Pressable
-//             style={[
-//               styles.individualCategory,
-//               {
-//                 backgroundColor: recentlyViewedIsPressed
-//                   ? "#FFFFFF"
-//                   : "#F3CC91",
-//               },
-//             ]}
-//             onPress={handleRecentlyViewed}
-//           >
-//             <Text style={styles.categoryText}>Recently Viewed</Text>
-//           </Pressable>
-
-//           <Pressable
-//             style={[
-//               styles.individualCategory,
-//               { backgroundColor: nearYouIsPressed ? "#FFFFFF" : "#F3CC91" },
-//             ]}
-//             onPress={handleNearYou}
-//           >
-//             <Text style={styles.categoryText}>Near You</Text>
-//           </Pressable>
-//         </View>
-
-//         <View style={[styles.restaurantContainer, { marginTop: 20, marginBottom: 20}]}>
-//           <FlatList
-//             data={restaurants}
-//             renderItem={({ item }) => <RestaurantInfoComponent {...item} />}
-//           />
-//         </View>
-//       </View>
-//     </SafeAreaView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     backgroundColor: "#E6EFD9",
-//   },
-//   main: {
-//     width: 334,
-//     flex: 1,
-//     backgroundColor: "pink",
-//   },
-//   navigation: {
-//     // backgroundColor: "red",
-//   },
-//   headerContainer: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   header: {
-//     fontSize: 24,
-//     fontWeight: "600",
-//     fontFamily: "Lato",
-//     color: "#004643",
-//     // backgroundColor: "yellow",
-//   },
-//   form: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     // backgroundColor: "red",
-//   },
-//   filterButton: {
-//     width: 48,
-//     height: 48,
-//     borderRadius: 12,
-//     backgroundColor: "#F3CC91",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 3,
-//   },
-//   categories: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     // backgroundColor: "green",
-//   },
-//   individualCategory: {
-//     paddingVertical: 10,
-//     paddingHorizontal: 18,
-//     borderRadius: 12,
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 3,
-//   },
-//   categoryText: {
-//     fontFamily: "Lato",
-//     color: "#004643",
-//   },
-//   restaurantContainer: {
-//     flex: 1,
-//     // backgroundColor: "blue",
-//   },
-//   restaurant: {
-//     backgroundColor: "white",
-//     width: "100%",
-//     height: 115,
-//     borderRadius: 12,
-//   }
-// });
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "#E6EFD9",
+  },
+  main: {
+    flex: 1,
+    width: "100%",
+  },
+  innerMain: {
+    flex: 1,
+    marginHorizontal: 30,
+  },
+  navigationContainer: {
+    marginTop: 20,
+  },
+  headerContainer: {
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "600",
+    fontFamily: "Lato",
+    color: "#004643",
+    marginRight: 5,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 30,
+  },
+  filterButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: "#F3CC91",
+  },
+  categories: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  restaurantContainer: {
+    flex: 1,
+    marginTop: 20,
+  },
+  image: {
+    width: 45,
+    height: 45,
+    resizeMode: "contain",
+  },
+});

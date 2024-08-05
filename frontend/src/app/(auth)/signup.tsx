@@ -39,7 +39,7 @@ export default function SignIn() {
       setPasswordValidation("ⓘ Password is too short");
       return;
     }
-    router.push({
+    router.replace({
       pathname: "(auth)/profile",
       params: { user_id: user_id, password: password },
     });

@@ -4,17 +4,18 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
 
 interface RestaurantProps {
-  type: string;
+  category: string;
   price: string;
   name: string;
   rating: number;
   distance: string;
+  image_url: string;
 }
 
-export const RestaurantInfoComponent = (props: RestaurantProps) => {
+export default function RestaurantInfo(props: RestaurantProps) {
   const truncateName = (name: string) => {
-    if (name.length > 25) {
-      return name.substring(0, 25 - 3) + "...";
+    if (name.length > 22) {
+      return name.substring(0, 22 - 3) + "...";
     }
     return name;
   };
@@ -24,7 +25,13 @@ export const RestaurantInfoComponent = (props: RestaurantProps) => {
     const stars = [];
     for (let i = 0; i < fullStars; i++) {
       stars.push(
-        <Icon name="star" type="font-awesome" color="#F9BC60" size={16} />
+        <Icon
+          key={`full-star-${i}`}
+          name="star"
+          type="font-awesome"
+          color="#F9BC60"
+          size={16}
+        />
       );
     }
     return stars;
@@ -36,6 +43,7 @@ export const RestaurantInfoComponent = (props: RestaurantProps) => {
     if (halfStar == 0.4 || halfStar == 0.5) {
       return (
         <Icon
+          key="half-star"
           name="star-half-o"
           type="font-awesome"
           color="#F9BC60"
@@ -45,35 +53,42 @@ export const RestaurantInfoComponent = (props: RestaurantProps) => {
     } else if (halfStar < 0.4) {
       return;
     } else if (halfStar > 0.5) {
-      return <Icon name="star" type="font-awesome" color="#F9BC60" size={16} />;
+      return (
+        <Icon
+          key="full-star"
+          name="star"
+          type="font-awesome"
+          color="#F9BC60"
+          size={16}
+        />
+      );
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={Images.dummyImage} style={styles.image} />
-
+      <Image
+        source={{
+          uri: props.image_url ? props.image_url : "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
+        }}
+        style={styles.image}
+      />
       <View>
-        <Text style={styles.name}>{truncateName(props.name)}</Text>
-
-        <View style={[styles.typesAndPrice, { paddingTop: 6 }]}>
-          <Text style={styles.typesAndPriceText}>{props.type} </Text>
-          <Text style={styles.typesAndPriceText}>·</Text>
-          <Text style={styles.typesAndPriceText}> {props.price}</Text>
+        <Text style={styles.nameContainer}>{truncateName(props.name)}</Text>
+        <View style={styles.categoryAndPriceContainer}>
+          <Text style={styles.categoryAndPriceText}>{props.category} </Text>
+          <Text style={styles.categoryAndPriceText}>·</Text>
+          <Text style={styles.categoryAndPriceText}> {props.price}</Text>
         </View>
-
-        <View style={[styles.stars, { paddingTop: 6 }]}>
+        <View style={styles.starsContainer}>
           {generateFullStars(props.rating)}
           {generateHalfStar(props.rating)}
         </View>
-
-        <Text style={[styles.distance, { paddingTop: 6 }]}>
-          {props.distance}
-        </Text>
+        <Text style={styles.distanceContainer}>{props.distance}km away</Text>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-    height: 150,
+    height: 140,
     backgroundColor: "#FFFFFF",
     marginBottom: 20,
     paddingLeft: 30,
@@ -93,27 +108,31 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 12,
   },
-  name: {
+  nameContainer: {
     fontFamily: "Lato",
     color: "#004643",
+    marginTop: 5,
   },
-  typesAndPrice: {
+  categoryAndPriceContainer: {
     display: "flex",
     flexDirection: "row",
+    marginTop: 5,
   },
-  typesAndPriceText: {
+  categoryAndPriceText: {
     fontFamily: "Lato",
     fontSize: 10,
     color: "#004643",
   },
-  stars: {
+  starsContainer: {
     justifyContent: "flex-start",
     flexDirection: "row",
     gap: 5,
+    marginTop: 5,
   },
-  distance: {
+  distanceContainer: {
     fontFamily: "Lato",
     fontSize: 10,
     color: "#004643",
+    marginTop: 5,
   },
 });

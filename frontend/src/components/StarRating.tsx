@@ -20,10 +20,10 @@ const StarRating = ({ maxRating = 5, onChange }) => {
           onPress={() => handleClick(index + 1)}
         >
           <Icon
-            name={index < rating ? 'star' : 'star-o'}
-            type='font-awesome'
+            name={index < rating ? 'star-fill' : 'star'}
+            type='octicon'
             color='#F9BC60'
-            size={48}
+            size={54}
             containerStyle={styles.icon}
           />
         </TouchableOpacity>
@@ -35,6 +35,7 @@ const StarRating = ({ maxRating = 5, onChange }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   icon: {
     marginHorizontal: 4,
