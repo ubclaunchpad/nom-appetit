@@ -1,6 +1,12 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
+import {
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
 import { Link, SplashScreen } from "expo-router";
 import { useState } from "react";
 import { Dimensions, Image, StyleSheet, View } from "react-native";
@@ -16,6 +22,10 @@ const RootPage = () => {
     "Lato-Regular": require("@assets/fonts/Lato-Regular.ttf"),
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
   });
   const paddedWindowWidth = Dimensions.get("window").width - 60;
   const [rightNav, setRightNav] = useState(false);
