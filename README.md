@@ -33,6 +33,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### API Credentials
 - [Firebase](https://firebase.google.com/docs/functions/get-started?gen=2nd)
+- [Yelp Fusion API](https://docs.developer.yelp.com/docs/fusion-intro)
 
 ### Installation
 
@@ -50,12 +51,14 @@ npx expo start
 #### Backend
 1. Navigate to the `backend` folder.
 2. Create a `secrets` folder in the `services` folder.
-4. Generate & download Firebase Admin SDK private key and place in `secrets` folder.
-5. Install the required Python modules.
+3. Generate & download Firebase Admin SDK private key.
+4. Generate Yelp Fusion API key and set it as the `YELP_API` variable in a `.env` file.
+5. Place both the Firebase Admin SDK private key & `.env` file in the `secrets` directory.
+6. Install the required Python modules.
 ```
 pip install -r requirements.txt
 ```
-6. Run the server.
+7. Run the server.
 ```
 flask run
 ```
