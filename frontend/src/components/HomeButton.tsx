@@ -9,7 +9,7 @@ type HomeButtonProps = {
 
 export default function HomeButton(props: HomeButtonProps) {
   return (
-    <Pressable>
+    <Pressable onPress={props.onPress}>
       <View style={styles.square}>
         <Text style={styles.iconText}>{props.headerText}</Text>
         <Icon name={props.icon} size={50} color="#004643" type="material-community"/>
@@ -20,8 +20,9 @@ export default function HomeButton(props: HomeButtonProps) {
 
 const styles = StyleSheet.create({
   square: {
-    width: 142,
-    height: 142,
+    width: 152,
+    height: 152,
+    padding: 10,
     backgroundColor: "#F3CC91",
     borderRadius: 12,
     justifyContent: "center",

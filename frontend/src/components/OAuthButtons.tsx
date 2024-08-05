@@ -7,7 +7,7 @@ type OAuthButtonsProps = {
 };
 
 export default function OAuthButtons(props: OAuthButtonsProps) {
-  const buttonWidth = (props.paddedWindowWidth / 3) - 10;
+  const buttonWidth = (props.paddedWindowWidth / 3);
 
   return (
     <View>

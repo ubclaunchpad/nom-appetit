@@ -1,4 +1,5 @@
 import { Input } from 'react-native-elements';
+import { DimensionValue } from 'react-native';
 
 type AuthInputProps = {
   label?: string;
@@ -9,6 +10,9 @@ type AuthInputProps = {
   autoCapitalize: "none" | "sentences" | "words" | "characters" | undefined;
   secureTextEntry?: boolean;
   searchInput?: boolean;
+  fontSize?: number;
+  width?: DimensionValue;
+  onSubmitEditing?: () => void;
 };
 
 export default function InputForm(props: AuthInputProps) {
@@ -35,7 +39,7 @@ export default function InputForm(props: AuthInputProps) {
       placeholder={props.placeholder}
       inputStyle={{
         fontFamily: "Lato-Regular",
-        fontSize: 16,
+        fontSize: props.fontSize ? props.fontSize : 16,
       }}
       inputContainerStyle={{
         backgroundColor: "white",
@@ -48,6 +52,7 @@ export default function InputForm(props: AuthInputProps) {
       // ===== container =====
       containerStyle={{
         paddingHorizontal: 0,
+        width: props.width,
       }}
       // ===== error message =====
       errorMessage={props.errorMessage}
@@ -62,6 +67,8 @@ export default function InputForm(props: AuthInputProps) {
       // ===== extras =====
       autoCapitalize={props.autoCapitalize}
       secureTextEntry={props.secureTextEntry}
+      // ===== on submit =====
+      onSubmitEditing={props.onSubmitEditing}
     />
   );
 }

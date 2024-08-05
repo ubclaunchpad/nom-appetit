@@ -28,7 +28,7 @@ export default function SignIn() {
       setUserNotFoundMessage("");
       return;
     }
-    router.push({
+    router.replace({
       pathname: "home",
       params: {
         token: token,

@@ -5,8 +5,9 @@ import InputForm from "@components/InputForm";
 import axios from "axios";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from 'expo-location';
 
 export default function Home() {
   const [searchText, setSearchText] = useState("");
@@ -27,6 +28,7 @@ export default function Home() {
             {text: 'Continue', onPress: () => router.push('/')},
           ]);
         } else {
+          console.log(token)
           setName(name);
         }
       } catch (error) {
@@ -34,15 +36,30 @@ export default function Home() {
       }
     };
     fetchData();
-  }, []);
+  }, []); 
 
-  const testFunc = () => {
-    router.push({
-      pathname: "home",
-      params: {
-        token: token,
-      },
-    });
+  const searchRestaurant = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission to access location was denied');
+        setSearchText("");
+      }
+      const location = await Location.getCurrentPositionAsync({});
+      const longitude = location["coords"]["longitude"];
+      const latitude = location["coords"]["latitude"];
+      router.push({
+        pathname: "(search)/search",
+        params: {
+          token: token,
+          longitude: longitude,
+          latitude: latitude,
+          initialSearchText: searchText,
+        },
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
   }
 
   return (
@@ -64,9 +81,10 @@ export default function Home() {
               value={searchText}
               onChangeText={setSearchText}
               placeholder="Search for a restaurant..."
-              autoCapitalize="none"
+              autoCapitalize="words"
               secureTextEntry={false}
               searchInput={true}
+              onSubmitEditing={searchRestaurant}
             />
           </View>
           <View style={styles.buttonContainer}>
@@ -101,10 +119,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   innerMain: {
-    marginHorizontal: 40,
+    marginHorizontal: 30,
   },
   profileContainer: {
-    marginTop: 30,
+    marginTop: 20,
   },
   headerContainer: {
     marginTop: 125,

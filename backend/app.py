@@ -4,6 +4,7 @@ from flask import request, g
 from functools import wraps
 from services.database import *
 from services.authentication import *
+from services.yelp import *
 import jwt
 
 # ===== flask config =====
@@ -83,6 +84,14 @@ def loginRoute():
             return { "user_not_found": True }
         if str(e) == "INVALID_PASSWORD":
             return { "invalid_password": True }
+        
+@app.route("/verifyToken", methods=['POST'])
+# params: token (header)
+# returns: json message 
+# function: verifies jwt token 
+@token_required
+def authenticate_token():
+    return { 'valid_token': True }
 
 # ===== routing: home page =====
 @app.route("/home", methods=['POST'])
@@ -100,3 +109,44 @@ def homeRoute():
             return { "user_not_found": True }
         if str(e) == "PROFILE_NOT_FOUND":
             return { "profile_not_found": True }
+        
+# ===== routing: yelp access =====
+@app.route("/searchRestaurants", methods=['POST'])
+@token_required
+# params: longitude, latitude, keywords
+# returns: [list of restaurants]
+# function: searches for restaurants given coordinates and keywords
+def searchRestaurantsRoute(): 
+    try:
+        data = request.get_json()
+        longitude = data.get("longitude")
+        latitude = data.get("latitude")
+        keywords = data.get("keywords")
+        restaurants = searchRestaurants(longitude, latitude, keywords)
+        return { "restaurants":restaurants }
+
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
+        
+@app.route("/filterSearchRestaurants", methods=['POST'])
+@token_required
+# params: longitude (required), latitude (required), location, distance, cuisine, rating, price
+# returns: [list of restaurants]
+# function: searches restaurants based on filters
+def filterSearchRestaurantsRoute():
+    try: 
+        data = request.get_json()
+        longitude = data.get("longitude")
+        latitude = data.get("latitude")
+        location = data.get("location")
+        distance = data.get("distance")
+        cuisine = data.get("cuisine")
+        rating = data.get("rating")
+        price = data.get("price")
+        restaurants = filterSearchRestaurants(longitude, latitude, location, distance, cuisine, rating, price)
+        return { "restaurants": restaurants } 
+    
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
