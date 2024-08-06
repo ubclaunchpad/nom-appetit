@@ -64,6 +64,15 @@ def createProfileRoute():
     except Exception as e:
         if str(e) == "USERNAME_EXISTS":
             return { "username_exists": True }
+
+# ===== routing: profile display =====
+@app.route("/getProfile", methods=['GET'])
+# params: token
+# returns: user information
+# function: retrieves user information based on token given
+def getProfileRoute():
+    token = request.args.get('token')
+    return {"hi" : token}
         
 # ===== routing: user authentication =====
 @app.route("/login", methods=['POST'])

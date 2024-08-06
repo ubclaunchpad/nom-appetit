@@ -1,61 +1,74 @@
-import { Text, View, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import { Text, View, Pressable, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 export const Profile = () => {
+  const getUserData = async () => {
+    const { data } = await axios.get("http://127.0.0.1:5000/getProfile", {
+      params: {
+        token: 123123,
+      },
+    });
+
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.containerBackground}>
-        <View style={styles.imageBackground}>
-          <FontAwesome name="user" size={52} color="white" />
-        </View>
-        <Text style={styles.fullName}>Name</Text>
-        <Text style={styles.userName}>Username</Text>
-        <Text>Bio</Text>
-        <View style={styles.infoBox}>
-          <Pressable onPress={() => router.push("/profiles")}>
-            <View style={styles.innerInfoBox}>
-              <Text>Friends</Text>
-              <Text style={styles.profileStat}>100</Text>
-            </View>
-          </Pressable>
-          <Text>|</Text>
-          <Pressable onPress={() => router.push("/savedRestaurants")}>
-            <View style={styles.innerInfoBox}>
-              <Text>Saved</Text>
-              <Text style={styles.profileStat}>100</Text>
-            </View>
-          </Pressable>
-        </View>
-        <View style={styles.buttonMenu}>
-          <Pressable
-            style={styles.editProfile}
-            onPress={() => router.push("/editProfile")}
-          >
-            <FontAwesome5 name="pencil-alt" size={14} color="#004643" />
-            <Text style={{ color: "#004643" }}>Edit Profile</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => router.push("/findFriends")}
-            style={styles.findFriends}
-          >
-            <MaterialCommunityIcons
-              name="account-search"
-              size={24}
-              color="#004643"
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => router.push("/friendRequests")}
-            style={styles.notifcation}
-          >
-            <Ionicons name="notifications" size={24} color="#004643" />
-          </Pressable>
-        </View>
+    <SafeAreaView style={styles.containerBackground}>
+      <View style={styles.imageBackground}>
+        <FontAwesome name="user" size={52} color="white" />
+      </View>
+      <Text style={styles.fullName}>Name</Text>
+      <Text style={styles.userName}>Username</Text>
+      <Text>Bio</Text>
+      <View style={styles.infoBox}>
+        <Pressable onPress={() => router.push("/profiles")}>
+          <View style={styles.innerInfoBox}>
+            <Text>Friends</Text>
+            <Text style={styles.profileStat}>100</Text>
+          </View>
+        </Pressable>
+        <Text>|</Text>
+        <Pressable onPress={() => router.push("/savedRestaurants")}>
+          <View style={styles.innerInfoBox}>
+            <Text>Saved</Text>
+            <Text style={styles.profileStat}>100</Text>
+          </View>
+        </Pressable>
+      </View>
+      <View style={styles.buttonMenu}>
+        <Pressable
+          style={styles.editProfile}
+          onPress={() => router.push("/editProfile")}
+        >
+          <FontAwesome5 name="pencil-alt" size={14} color="#004643" />
+          <Text style={{ color: "#004643" }}>Edit Profile</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/findFriends")}
+          style={styles.findFriends}
+        >
+          <MaterialCommunityIcons
+            name="account-search"
+            size={24}
+            color="#004643"
+          />
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/friendRequests")}
+          style={styles.notifcation}
+        >
+          <Ionicons name="notifications" size={24} color="#004643" />
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -120,6 +133,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
   },
+
   findFriends: {
     backgroundColor: "#F3CC91",
     paddingRight: 8,
