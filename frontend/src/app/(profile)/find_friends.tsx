@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const friendsList = () => {
+const FindFriends = () => {
   return (
     <View>
-      <Text>FriendScreen</Text>
+      <Text>findFriends</Text>
     </View>
   );
 };
 
-export default friendsList;
+export default FindFriends;

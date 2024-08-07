@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, View, StyleSheet, Text, TextInput } from "react-native";
 
-export default function SearchFriendsScreen() {
+export default function SearchFriends() {
   return (
     <View style={style.container}>
       <Text>Search Friends Screen</Text>

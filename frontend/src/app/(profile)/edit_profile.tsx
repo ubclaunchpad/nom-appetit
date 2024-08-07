@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
@@ -26,9 +26,15 @@ const EditProfile = () => {
     <SafeAreaView style={styles.containerBackground}>
       <Text style={styles.title}>Edit Profile</Text>
       <Pressable onPress={() => pickImage()}>
-        <View style={styles.imageBackground}>
-          <FontAwesome name="user" size={52} color="white" />
-        </View>
+        {image ? (
+          <>
+            <Image source={{ uri: image }} style={styles.image} />
+          </>
+        ) : (
+          <View style={styles.imageBackground}>
+            <FontAwesome name="user" size={52} color="white" />
+          </View>
+        )}
       </Pressable>
 
       <View style={styles.inputContent}>
@@ -52,7 +58,12 @@ const EditProfile = () => {
           multiline
         />
       </View>
-      <Pressable style={styles.saveContainer}>
+      <Pressable
+        style={styles.saveContainer}
+        onPress={() => {
+          router.push("(profile)/profile");
+        }}
+      >
         <Text style={styles.saveText}>Save</Text>
       </Pressable>
     </SafeAreaView>
@@ -77,6 +88,11 @@ const styles = StyleSheet.create({
     borderRadius: 125 / 2,
     width: 125,
     height: 125,
+  },
+  image: {
+    width: 125,
+    height: 125,
+    borderRadius: 125 / 2,
   },
 
   title: {

@@ -31,14 +31,14 @@ export const Profile = () => {
       <Text style={styles.userName}>Username</Text>
       <Text>Bio</Text>
       <View style={styles.infoBox}>
-        <Pressable onPress={() => router.push("/profiles")}>
+        <Pressable onPress={() => router.push("/friends_list")}>
           <View style={styles.innerInfoBox}>
             <Text>Friends</Text>
             <Text style={styles.profileStat}>100</Text>
           </View>
         </Pressable>
         <Text>|</Text>
-        <Pressable onPress={() => router.push("/savedRestaurants")}>
+        <Pressable onPress={() => router.push("/saved_restaurants")}>
           <View style={styles.innerInfoBox}>
             <Text>Saved</Text>
             <Text style={styles.profileStat}>100</Text>
@@ -48,13 +48,13 @@ export const Profile = () => {
       <View style={styles.buttonMenu}>
         <Pressable
           style={styles.editProfile}
-          onPress={() => router.push("/editProfile")}
+          onPress={() => router.push("/edit_profile")}
         >
           <FontAwesome5 name="pencil-alt" size={14} color="#004643" />
           <Text style={{ color: "#004643" }}>Edit Profile</Text>
         </Pressable>
         <Pressable
-          onPress={() => router.push("/findFriends")}
+          onPress={() => router.push("/find_friends")}
           style={styles.findFriends}
         >
           <MaterialCommunityIcons
@@ -64,7 +64,7 @@ export const Profile = () => {
           />
         </Pressable>
         <Pressable
-          onPress={() => router.push("/friendRequests")}
+          onPress={() => router.push("/friend_requests")}
           style={styles.notifcation}
         >
           <Ionicons name="notifications" size={24} color="#004643" />

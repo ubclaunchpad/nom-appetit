@@ -13,7 +13,7 @@ import InputForm from "@components/AuthInput";
 import AuthButton from "@components/AuthButton";
 import Images from "@assets/images";
 
-export default function SignIn() {
+export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

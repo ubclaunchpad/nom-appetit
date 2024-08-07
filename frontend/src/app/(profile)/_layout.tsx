@@ -7,13 +7,13 @@ const ProfileLayout = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="editProfile" />
-      <Stack.Screen name="findFriends" />
-      <Stack.Screen name="friendRequests" />
-      <Stack.Screen name="friendsList" />
+      <Stack.Screen name="edit_profile" />
+      <Stack.Screen name="find_friends" />
+      <Stack.Screen name="friend_requests" />
+      <Stack.Screen name="friends_list" />
       <Stack.Screen name="profile" />
-      <Stack.Screen name="savedRestaurants" />
-      <Stack.Screen name="searchFriends" />
+      <Stack.Screen name="saved_restaurants" />
+      <Stack.Screen name="search_friends" />
     </Stack>
   );
 };
