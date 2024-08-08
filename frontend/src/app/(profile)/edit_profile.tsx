@@ -35,6 +35,12 @@ const EditProfile = () => {
             <FontAwesome name="user" size={52} color="white" />
           </View>
         )}
+        <FontAwesome
+          name="camera"
+          size={32}
+          color="#004643"
+          style={{ position: "absolute", bottom: 10, left: 90 }}
+        />
       </Pressable>
 
       <View style={styles.inputContent}>
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
   imageBackground: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#6F846E",
+    backgroundColor: "#6F846E8F",
     borderRadius: 125 / 2,
     width: 125,
     height: 125,

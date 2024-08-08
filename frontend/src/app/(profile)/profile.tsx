@@ -7,6 +7,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import axios from "axios";
+import { Badge } from "@rneui/themed";
 
 export const Profile = () => {
   const getUserData = async () => {
@@ -35,6 +36,19 @@ export const Profile = () => {
           <View style={styles.innerInfoBox}>
             <Text>Friends</Text>
             <Text style={styles.profileStat}>100</Text>
+            <Badge
+              status="primary"
+              containerStyle={{
+                width: 2,
+                height: 2,
+                position: "absolute",
+                top: 0,
+                left: 53,
+              }}
+              badgeStyle={{
+                backgroundColor: "red",
+              }}
+            />
           </View>
         </Pressable>
         <Text>|</Text>
@@ -68,6 +82,20 @@ export const Profile = () => {
           style={styles.notifcation}
         >
           <Ionicons name="notifications" size={24} color="#004643" />
+          <Badge
+            status="primary"
+            value={2}
+            containerStyle={{
+              maxWidth: 1,
+              maxHeight: 1,
+              position: "absolute",
+              top: 2,
+              left: 33,
+            }}
+            badgeStyle={{
+              backgroundColor: "red",
+            }}
+          />
         </Pressable>
       </View>
     </SafeAreaView>
@@ -91,7 +119,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#6F846E",
+    backgroundColor: "#6F846E8F",
     borderRadius: 125 / 2,
     width: 125,
     height: 125,

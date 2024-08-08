@@ -4,16 +4,17 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Input } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import SearchInput from "@components/SearchInput";
+import { Badge } from "@rneui/themed";
 
-type MenuItem = {
+type User = {
   name: string;
   username: string;
   image: string;
 };
 
-const items: MenuItem[] = [
+const items: User[] = [
   {
     name: "Bryan Tao",
     username: "b.tao",
@@ -43,7 +44,7 @@ export default function FriendsList() {
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
         <View style={{ marginTop: 10 }}>
-          <Navigation backNavigation="home" />
+          <Navigation backNavigation="(profile)/profile" />
         </View>
 
         <View style={[styles.headerContainer, { marginVertical: 20 }]}>
@@ -51,23 +52,31 @@ export default function FriendsList() {
         </View>
 
         <View style={styles.search}>
-          <Input
-            placeholder="Search for a user..."
-            placeholderTextColor="#0046434D"
-            inputStyle={styles.input}
-            inputContainerStyle={styles.inputContainer}
-            containerStyle={{
-              maxWidth: 280,
-              maxHeight: 48,
-              backgroundColor: "white",
-              borderRadius: 12,
-            }}
-            leftIcon={<FontAwesome name="search" size={20} color="#004643" />}
+          <SearchInput
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+            placeholder="Search for user..."
+            autoCapitalize="none"
+            width={275}
           />
-
-          <View style={styles.friendRequestsButton}>
-            <FontAwesome name="envelope" size={20} color="#004643" />
-          </View>
+          <Pressable onPress={() => router.push("/friend_requests")}>
+            <View style={styles.friendRequestsButton}>
+              <FontAwesome name="envelope" size={24} color="#004643" />
+              <Badge
+                status="primary"
+                containerStyle={{
+                  width: 7,
+                  height: 7,
+                  position: "absolute",
+                  top: 0,
+                  left: 40,
+                }}
+                badgeStyle={{
+                  backgroundColor: "red",
+                }}
+              />
+            </View>
+          </Pressable>
         </View>
 
         <View style={{ flex: 1, marginBottom: 10 }}>
@@ -106,17 +115,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 15,
     gap: 10,
-  },
-  inputContainer: {
-    borderBottomWidth: 0,
-    borderRadius: 12,
-    backgroundColor: "white",
-  },
-  input: {
-    fontSize: 16,
-    fontWeight: 400,
-    fontFamily: "Lato",
-    paddingLeft: 10,
   },
   friendRequestsButton: {
     backgroundColor: "#F3CC91",
