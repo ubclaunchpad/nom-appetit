@@ -5,6 +5,7 @@ type SignInProps = {
   rightNavText: string;
   rightNav: boolean;
   setRightNav: (signIn: boolean) => void;
+  paddedWindowWidth: number;
 };
 
 export default function Switch(props: SignInProps) {
@@ -14,6 +15,7 @@ export default function Switch(props: SignInProps) {
   const handleRightNav = () => {
     props.setRightNav(true);
   };
+  const buttonWidth = (props.paddedWindowWidth / 2) - 5;
 
   return (
     <View style={styles.container}>
@@ -21,6 +23,7 @@ export default function Switch(props: SignInProps) {
         style={[
           styles.button,
           {
+            width: buttonWidth,
             marginRight: 5,
             backgroundColor: props.rightNav ? "#FFFFFF" : "#F3CC91",
           },
@@ -29,11 +32,11 @@ export default function Switch(props: SignInProps) {
       >
         <Text style={styles.buttonText}>{props.leftNavText}</Text>
       </Pressable>
-
       <Pressable
         style={[
           styles.button,
           {
+            width: buttonWidth,
             marginLeft: 5,
             backgroundColor: props.rightNav ? "#F3CC91" : "#FFFFFF",
           },
@@ -56,14 +59,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   button: {
-    width: 162,
     alignItems: "center",
     paddingVertical: 10,
     borderRadius: 10,
   },
   buttonText: {
     fontSize: 16,
-    fontFamily: "Lato",
+    fontFamily: "Lato-Regular",
     color: "#004643",
   },
 });

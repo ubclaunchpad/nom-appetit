@@ -1,47 +1,59 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
-import { Link } from "expo-router";
+import { Montserrat_400Regular, Montserrat_500Medium, Montserrat_600SemiBold, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
+import { Link, router, SplashScreen } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignIn from "./(auth)/signin";
 import SignUp from "./(auth)/signup";
+import Images from "@assets/images";
+
+SplashScreen.preventAutoHideAsync();
 
 const RootPage = () => {
   const [fontsLoaded] = useFonts({
     "Lato-Regular": require("@assets/fonts/Lato-Regular.ttf"),
     "Lato-SemiBold": require("@assets/fonts/Lato-Semibold.ttf"),
     "Lato-Bold": require("@assets/fonts/Lato-Bold.ttf"),
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
   });
+  const paddedWindowWidth = Dimensions.get("window").width - 60;
+  const [rightNav, setRightNav] = useState(false);
 
-  const [rightNav, setRightNav] = useState(true);
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.main}>
-        <Link href="(search)/search" style={{ fontSize: 5}}>Search</Link> 
-        <Link href="(search)/modal" style={{ fontSize: 5}}>Modal</Link> 
-
-        <View style={{ paddingTop: 30 }}>
-          <Header />
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    SplashScreen.hideAsync();
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.main}>
+          <View style={styles.innerMain}>
+            <Pressable onPress={() => router.push('(restaurant)/restaurant_display')}>
+              <Text>Restaurants</Text>
+            </Pressable>
+            <Pressable onPress={() => router.push('(search)/search')}>
+              <Text>Search</Text>
+            </Pressable>
+            <View style={styles.headerContainer}>
+              <Header />
+            </View>
+            <View style={styles.switchContainer}>
+              <Switch rightNav={rightNav} setRightNav={setRightNav} leftNavText="Create Account" rightNavText="Sign In" paddedWindowWidth={paddedWindowWidth} />
+            </View>
+            <View>{rightNav ? <SignIn /> : <SignUp />}</View>
+          </View>
         </View>
-
-        <View style={{ paddingTop: 30 }}>
-          <Switch
-            rightNav={rightNav}
-            setRightNav={setRightNav}
-            leftNavText="Create Account"
-            rightNavText="Sign In"
-          />
+        <View style={styles.imageContainer}>
+          <Image source={Images.bambooRight} style={styles.image} />
         </View>
-
-        <View style={{ paddingTop: 20 }}>
-          {rightNav ? <SignIn /> : <SignUp />}
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -51,7 +63,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#E6EFD9",
   },
   main: {
-    width: 334,
+    width: "100%",
+  },
+  innerMain: {
+    marginHorizontal: 30,
+  },
+  headerContainer: {
+    marginTop: 30,
+  },
+  switchContainer: {
+    marginTop: 30,
+  },
+  imageContainer: {
+    position: "absolute",
+    bottom: -50,
+    right: -50,
+    zIndex: -1,
+  },
+  image: {
+    width: 275,
+    height: 275,
+    resizeMode: "contain",
   },
 });
 

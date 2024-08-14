@@ -3,19 +3,19 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
 
-interface RestaurantProps {
-  category: string;
-  price: string;
+interface ReviewProps {
   name: string;
+  reviews: number;
+  photos: number;
   rating: number;
-  distance: string;
-  image_url: string;
+  time: string;
+  description: string;
 }
 
-export default function RestaurantInfo(props: RestaurantProps) {
+export const ReviewInfo = (props: ReviewProps) => {
   const truncateName = (name: string) => {
-    if (name.length > 22) {
-      return name.substring(0, 22 - 3) + "...";
+    if (name.length > 25) {
+      return name.substring(0, 25 - 3) + "...";
     }
     return name;
   };
@@ -26,11 +26,11 @@ export default function RestaurantInfo(props: RestaurantProps) {
     for (let i = 0; i < fullStars; i++) {
       stars.push(
         <Icon
-          key={`full-star-${i}`}
+          key={i}
           name="star"
           type="font-awesome"
           color="#F9BC60"
-          size={16}
+          size={12}
         />
       );
     }
@@ -43,7 +43,6 @@ export default function RestaurantInfo(props: RestaurantProps) {
     if (halfStar == 0.4 || halfStar == 0.5) {
       return (
         <Icon
-          key="half-star"
           name="star-half-o"
           type="font-awesome"
           color="#F9BC60"
@@ -53,86 +52,91 @@ export default function RestaurantInfo(props: RestaurantProps) {
     } else if (halfStar < 0.4) {
       return;
     } else if (halfStar > 0.5) {
-      return (
-        <Icon
-          key="full-star"
-          name="star"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
+      return <Icon name="star" type="font-awesome" color="#F9BC60" size={16} />;
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: props.image_url ? props.image_url : "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
-        }}
-        style={styles.image}
-      />
       <View>
-        <Text style={styles.nameContainer}>{truncateName(props.name)}</Text>
-        <View style={styles.categoryAndPriceContainer}>
-          <Text style={styles.categoryAndPriceText}>{props.category} </Text>
-          <Text style={styles.categoryAndPriceText}>·</Text>
-          <Text style={styles.categoryAndPriceText}> {props.price}</Text>
+        <Text style={styles.name}>{truncateName(props.name)}</Text>
+
+        <View style={[styles.typesAndPrice, { paddingTop: 6 }]}>
+          <Text style={styles.typesAndPriceText}>{props.reviews} reviews </Text>
+          <Text style={styles.typesAndPriceText}>·</Text>
+          <Text style={styles.typesAndPriceText}> {props.photos} photos</Text>
         </View>
-        <View style={styles.starsContainer}>
+
+        <View style={[styles.stars, { paddingTop: 6 }]}>
           {generateFullStars(props.rating)}
           {generateHalfStar(props.rating)}
+          <Text style={[styles.distance, { paddingTop: 6 }]}>{props.time}</Text>
         </View>
-        <Text style={styles.distanceContainer}>{props.distance}km away</Text>
+        <View style={{ width: "50%" }}>
+          <Text numberOfLines={2}>{props.description}</Text>
+        </View>
+
+        <View style={styles.imageContainer}>
+          <Image source={Images.dummyFood1} style={styles.foodImage} />
+          <Image source={Images.dummyFood2} style={styles.foodImage} />
+        </View>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
-    height: 140,
+    minHeight: 150,
     backgroundColor: "#FFFFFF",
     marginBottom: 20,
+    paddingVertical: 15,
     paddingLeft: 30,
     borderRadius: 12,
   },
   image: {
-    width: 110,
-    height: 75,
+    maxWidth: 110,
+    maxHeight: 75,
     marginRight: 20,
     borderRadius: 12,
   },
-  nameContainer: {
+  name: {
     fontFamily: "Lato",
     color: "#004643",
-    marginTop: 5,
   },
-  categoryAndPriceContainer: {
+  typesAndPrice: {
     display: "flex",
     flexDirection: "row",
-    marginTop: 5,
   },
-  categoryAndPriceText: {
+  typesAndPriceText: {
     fontFamily: "Lato",
     fontSize: 10,
     color: "#004643",
   },
-  starsContainer: {
+  stars: {
     justifyContent: "flex-start",
     flexDirection: "row",
+    alignItems: "center",
+    textAlign: "center",
     gap: 5,
-    marginTop: 5,
   },
-  distanceContainer: {
+  distance: {
     fontFamily: "Lato",
     fontSize: 10,
     color: "#004643",
-    marginTop: 5,
+    marginBottom: 7,
+  },
+  foodImage: {
+    borderRadius: 12,
+    maxHeight: 80,
+    maxWidth: 112,
+  },
+  imageContainer: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    gap: 5,
   },
 });
