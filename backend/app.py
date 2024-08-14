@@ -1,6 +1,6 @@
 # ===== imports =====
 from flask import Flask
-from flask import request, g
+from flask import request, g, jsonify
 from functools import wraps
 from services.database import *
 from services.authentication import *
@@ -110,7 +110,7 @@ def homeRoute():
         if str(e) == "PROFILE_NOT_FOUND":
             return { "profile_not_found": True }
         
-# ===== routing: yelp access =====
+# ===== routing: yelp =====
 @app.route("/searchRestaurants", methods=['POST'])
 @token_required
 # params: longitude, latitude, keywords
@@ -146,6 +146,25 @@ def filterSearchRestaurantsRoute():
         price = data.get("price")
         restaurants = filterSearchRestaurants(longitude, latitude, location, distance, cuisine, rating, price)
         return { "restaurants": restaurants } 
+    
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
+        
+@app.route("/getRestaurantDetails", methods=['POST'])
+# params: restaurant_id, date
+# returns: restaurant details (json)
+# function: retrieves restaurant details
+def getRestaurantDetailsRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        current_day = data.get("current_day")
+        print("ID: " + restaurant_id)
+        print("DATE: " + str(current_day))
+        restaurant_info = getRestaurantDetails(restaurant_id, current_day)
+        print(restaurant_info)
+        return { "restaurant_details": restaurant_info }
     
     except Exception as e:
         if str(e) == "API_KEY_MISSING":

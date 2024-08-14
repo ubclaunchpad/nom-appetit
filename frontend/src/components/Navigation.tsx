@@ -7,6 +7,7 @@ type NavigationProps = {
   leftNavigationOnPress?: () => void;
   rightIcon?: string;
   rightNavigationOnPress?: () => void;
+  color?: string;
 };
 
 export default function Navigation(props: NavigationProps) {
@@ -16,7 +17,7 @@ export default function Navigation(props: NavigationProps) {
         <Icon
           name={props.leftIcon}
           type="font-awesome"
-          color="#004643"
+          color={props.color || "#004643"}
           size={26}
           onPress={props.leftNavigationOnPress}
         />
@@ -25,7 +26,7 @@ export default function Navigation(props: NavigationProps) {
         <Icon
           name={props.rightIcon}
           type="font-awesome"
-          color="#004643"
+          color={props.color || "#004643"}
           size={30}
           onPress={props.rightNavigationOnPress}
         />

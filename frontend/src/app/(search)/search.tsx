@@ -32,11 +32,9 @@ export default function Search() {
       });
       const { missing_token, invalid_token, restaurants } = response.data;
       if (missing_token || invalid_token) {
-        Alert.alert('Session Expired', 'You will be redirected to the Login page', [
-          {text: 'Continue', onPress: () => router.push('/')},
-        ]);
+        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.navigate("/") }]);
       } else {
-        console.log(token)
+        console.log(token);
         setRestaurants(restaurants);
       }
     } catch (error) {
@@ -74,7 +72,7 @@ export default function Search() {
               leftNavigationOnPress={() => router.back()}
               rightIcon="home"
               rightNavigationOnPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "home",
                   params: {
                     token: token,
@@ -121,14 +119,26 @@ export default function Search() {
             <FlatList
               data={restaurants}
               renderItem={({ item }) => (
-                <RestaurantInfo
-                  name={item.name}
-                  category={item.category}
-                  price={item.price}
-                  rating={item.rating}
-                  distance={item.distance}
-                  image_url={item.image_url}
-                />
+                <Pressable
+                  onPress={() =>
+                    router.push({
+                      pathname: "(restaurant)/restaurant_display",
+                      params: {
+                        token: token,
+                        id: item.id
+                      },
+                    })
+                  }
+                >
+                  <RestaurantInfo
+                    name={item.name}
+                    category={item.category}
+                    price={item.price}
+                    rating={item.rating}
+                    distance={item.distance}
+                    image_url={item.image_url}
+                  />
+                </Pressable>
               )}
             />
           </View>

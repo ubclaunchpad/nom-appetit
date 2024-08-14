@@ -185,7 +185,7 @@ export default function Filter() {
             <View style={styles.ratingContainer}>
               <Text style={styles.header}>Rating</Text>
               <View style={styles.stars}>
-                <StarRating maxRating={5} onChange={setRating} />
+                <StarRating maxRating={5} onChangeValue={rating} onChange={setRating} size={48}/>
               </View>
             </View>
             <View style={styles.priceContainer}>
