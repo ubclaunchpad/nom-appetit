@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements';
+import React, { useState } from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Icon } from "react-native-elements";
 
-const StarRating = ({ maxRating = 5, onChange }) => {
-  const [rating, setRating] = useState(0);
+type Props = {
+  maxRating: number;
+  onChangeValue?: number;
+  onChange?: Function;
+  size: number;
+};
 
-  const handleClick = (value) => {
-    setRating(value);
-    if (onChange) {
-      onChange(value);
-    }
-  };
+const StarRating = (props: Props) => {
+  const { maxRating, onChangeValue, onChange, size } = props;
 
   return (
     <View style={styles.container}>
       {[...Array(maxRating)].map((_, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleClick(index + 1)}
-        >
+        <TouchableOpacity key={index} onPress={() => onChange(index + 1)}>
           <Icon
-            name={index < rating ? 'star' : 'star-o'}
-            type='font-awesome'
+            name={index < onChangeValue ? 'star-fill' : 'star'}
+            type='octicon'
             color='#F9BC60'
-            size={48}
+            size={size}
             containerStyle={styles.icon}
           />
         </TouchableOpacity>
@@ -35,6 +32,7 @@ const StarRating = ({ maxRating = 5, onChange }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   icon: {
     marginHorizontal: 4,

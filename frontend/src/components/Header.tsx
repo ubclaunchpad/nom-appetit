@@ -8,7 +8,6 @@ export default function Header() {
         <Text style={styles.textSmall}> Welcome to</Text>
         <Text style={styles.textLarge}> Nom Appetit</Text>
       </View>
-
       <Image source={Images.pandaBamboo} style={styles.image} />
     </View>
   );
@@ -26,13 +25,12 @@ const styles = StyleSheet.create({
   textSmall: {
     fontSize: 16,
     color: "#004643",
-    fontFamily: "Lato",
+    fontFamily: "Lato-Regular",
   },
   textLarge: {
     fontSize: 30,
     color: "#004643",
-    fontWeight: "600",
-    fontFamily: "Lato",
+    fontFamily: "Lato-SemiBold",
   },
   image: {
     width: 110,

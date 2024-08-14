@@ -82,8 +82,19 @@ def validateUser(username, password):
     print("HASHED_PASSWORD: " + hashed_password)
     print("CORRECT_PASSWORD: " + str(bcrypt.checkpw(password.encode('UTF-8'), hashed_password.encode('UTF-8'))))
     return user_id
-            
-        
+
+# ===== retrieving user information ===== 
+def getUserInfo(user_id):
+    user = db.collection("users").document(user_id).get().to_dict()
+    if not user:
+        raise Exception("USER_NOT_FOUND")
+    return user 
+
+def getProfileInfo(user_id):
+    profile = db.collection("profiles").document(user_id).get().to_dict()
+    if not profile:
+        raise Exception("PROFILE_NOT_FOUND")
+    return profile
         
 
 

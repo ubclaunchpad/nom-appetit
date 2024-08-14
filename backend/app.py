@@ -1,28 +1,29 @@
 # ===== imports =====
 from flask import Flask
-from flask import request, g
+from flask import request, g, jsonify
 from functools import wraps
 from services.database import *
 from services.authentication import *
+from services.yelp import *
 import jwt
 
 # ===== flask config =====
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_hex(8)
 
-def token_required(f):
-    @wraps(f)
+app.config['SECRET_KEY'] = '1234'
+
+def token_required(func):
+    @wraps(func)
     def decorated(*args, **kwargs):
-        token = request.args['token']
+        token = request.headers['Authorization'].split()[1]
         if not token:
-            return { "token_missing": True }
+            return {'missing_token': True}
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-            g.decoded_token = data
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+            g.user_id = data['user_id']
         except:
-            return { "token_invalid": True }
-        
-        return f(*args, **kwargs)
+            return {'invalid_token': True}
+        return func(*args, **kwargs)
     return decorated
 
 # ===== routing: user & profile initialization =====
@@ -49,7 +50,7 @@ def createUserRoute():
         
 @app.route("/createProfile", methods=['POST'])
 # params: user_id, (unique) username
-# returns: None
+# returns: none
 # function: creates user profile in firebase
 def createProfileRoute():
     try:
@@ -75,7 +76,7 @@ def loginRoute():
         data = request.get_json()
         username = data.get("username")
         password = data.get("password")
-        token = createToken(username, password, app.config['SECRET_KEY'])
+        token = createToken(username, password, "1234")
         return { "token": token }
     
     except Exception as e:
@@ -83,16 +84,88 @@ def loginRoute():
             return { "user_not_found": True }
         if str(e) == "INVALID_PASSWORD":
             return { "invalid_password": True }
+        
+@app.route("/verifyToken", methods=['POST'])
+# params: token (header)
+# returns: json message 
+# function: verifies jwt token 
+@token_required
+def authenticate_token():
+    return { 'valid_token': True }
 
 # ===== routing: home page =====
-@app.route("/home", methods=['POST', 'GET'])
+@app.route("/home", methods=['POST'])
 @token_required
-# params: [TODO]
-# returns: [TODO]
-# function: [TODO]
+# params: none
+# returns: name
+# function: retrives user's name
 def homeRoute():
-    try:
-        return ('', 400)
-    except:
+    try: 
+        user_info = getUserInfo(g.user_id)
+        return { "name": user_info['name'] } 
+    
+    except Exception as e:
         if str(e) == "USER_NOT_FOUND":
             return { "user_not_found": True }
+        if str(e) == "PROFILE_NOT_FOUND":
+            return { "profile_not_found": True }
+        
+# ===== routing: yelp =====
+@app.route("/searchRestaurants", methods=['POST'])
+@token_required
+# params: longitude, latitude, keywords
+# returns: [list of restaurants]
+# function: searches for restaurants given coordinates and keywords
+def searchRestaurantsRoute(): 
+    try:
+        data = request.get_json()
+        longitude = data.get("longitude")
+        latitude = data.get("latitude")
+        keywords = data.get("keywords")
+        restaurants = searchRestaurants(longitude, latitude, keywords)
+        return { "restaurants":restaurants }
+
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
+        
+@app.route("/filterSearchRestaurants", methods=['POST'])
+@token_required
+# params: longitude (required), latitude (required), location, distance, cuisine, rating, price
+# returns: [list of restaurants]
+# function: searches restaurants based on filters
+def filterSearchRestaurantsRoute():
+    try: 
+        data = request.get_json()
+        longitude = data.get("longitude")
+        latitude = data.get("latitude")
+        location = data.get("location")
+        distance = data.get("distance")
+        cuisine = data.get("cuisine")
+        rating = data.get("rating")
+        price = data.get("price")
+        restaurants = filterSearchRestaurants(longitude, latitude, location, distance, cuisine, rating, price)
+        return { "restaurants": restaurants } 
+    
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
+        
+@app.route("/getRestaurantDetails", methods=['POST'])
+# params: restaurant_id, date
+# returns: restaurant details (json)
+# function: retrieves restaurant details
+def getRestaurantDetailsRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        current_day = data.get("current_day")
+        print("ID: " + restaurant_id)
+        print("DATE: " + str(current_day))
+        restaurant_info = getRestaurantDetails(restaurant_id, current_day)
+        print(restaurant_info)
+        return { "restaurant_details": restaurant_info }
+    
+    except Exception as e:
+        if str(e) == "API_KEY_MISSING":
+            return { "api_key_missing": True }
