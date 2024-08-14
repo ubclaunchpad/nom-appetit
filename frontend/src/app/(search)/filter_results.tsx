@@ -15,6 +15,7 @@ export default function Search() {
   const [searchText, setSearchText] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const [filterKeyArray, setFilterKeyArray] = useState([]);
+  const initialFilterCount = [location, distance, cuisine, rating, price].filter((item) => item !== "").length
   const locationTitle = location as string;
   const distanceTitle = "Within " + (distance as string) + "km";
   const cuisineTitle = cuisine ? cuisine[0].toUpperCase() + cuisine.slice(1) : "";
@@ -149,7 +150,7 @@ export default function Search() {
               <Icon name="filter" type="font-awesome" color="#004643" size={25} />
             </Pressable>
           </View>
-          {filterKeyArray.length != 5 && (
+          {filterKeyArray.length !== initialFilterCount && (
             <ScrollView horizontal style={styles.categoriesContainer} showsHorizontalScrollIndicator={false}>
               <View style={styles.categories}>
                 <FilterPressable filter={locationTitle} title={"location"} filterFunction={reducedFilterSearch} />

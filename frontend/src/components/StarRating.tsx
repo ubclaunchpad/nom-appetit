@@ -4,27 +4,20 @@ import { Icon } from "react-native-elements";
 
 type Props = {
   maxRating: number;
-  onChange: Function;
+  onChangeValue?: number;
+  onChange?: Function;
   size: number;
 };
 
 const StarRating = (props: Props) => {
-  const { maxRating, onChange, size } = props;
-  const [rating, setRating] = useState(0);
-
-  const handleClick = (value) => {
-    setRating(value);
-    if (onChange) {
-      onChange(value);
-    }
-  };
+  const { maxRating, onChangeValue, onChange, size } = props;
 
   return (
     <View style={styles.container}>
       {[...Array(maxRating)].map((_, index) => (
-        <TouchableOpacity key={index} onPress={() => handleClick(index + 1)}>
+        <TouchableOpacity key={index} onPress={() => onChange(index + 1)}>
           <Icon
-            name={index < rating ? 'star-fill' : 'star'}
+            name={index < onChangeValue ? 'star-fill' : 'star'}
             type='octicon'
             color='#F9BC60'
             size={size}

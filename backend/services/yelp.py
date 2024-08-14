@@ -1,7 +1,9 @@
 # ===== imports =====
 from dotenv import load_dotenv
+from datetime import datetime
 import requests
 import os
+import json
 
 # ===== api configuration =====
 load_dotenv('./services/secrets/.env')
@@ -79,6 +81,32 @@ def parseRestaurant(restaurant):
         parsed_restaurant["price"] = "N/A"
     return parsed_restaurant
     
-def getRestaurantDetails(restaurant_id):
-    response = requests.get(DETAILS_URL + restaurant_id)
-    return response.json()
+def getRestaurantDetails(restaurant_id, current_day):
+    response = requests.get(DETAILS_URL + restaurant_id, headers=headers)
+    response_json = response.json()
+    restaurant_info = {
+        "id": response_json["id"],
+        "name": response_json["name"],
+        "rating": response_json["rating"],
+        "latitude": response_json["coordinates"]["latitude"],
+        "longitude": response_json["coordinates"]["longitude"],
+        "address": response_json["location"]["address1"],
+        "city": response_json["location"]["city"],
+        "state": response_json["location"]["state"],
+        "imageURL": response_json["image_url"],
+        "open": response_json["hours"][0]["is_open_now"]
+    }
+    hours_open_array = response_json["hours"][0]["open"]
+    if restaurant_info["open"]:
+        for day in hours_open_array:
+            print(current_day)
+            print(day)
+            if day["day"] == current_day:
+                start_time = day["start"]
+                end_time = day["end"]
+                start_datetime = datetime.strptime(start_time, "%H%M")
+                end_datetime = datetime.strptime(end_time, "%H%M")
+                restaurant_info["startTime"] = start_datetime.strftime("%I:%M %p")
+                restaurant_info["endTime"] = end_datetime.strftime("%I:%M %p")
+    return restaurant_info
+

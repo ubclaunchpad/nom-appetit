@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-=======
-import { useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { Link, router } from "expo-router";
-import axios from "axios";
-import InputForm from "@components/AuthInput";
->>>>>>> origin/restaurantScreens
 import AuthButton from "@components/AuthButton";
 import InputForm from "@components/InputForm";
 import OAuthButtons from "@components/OAuthButtons";
@@ -78,36 +63,11 @@ export default function SignIn() {
       <View style={styles.submitContainer}>
         <AuthButton title="Sign In" onPress={postData} />
       </View>
-<<<<<<< HEAD
       <View style={styles.oAuthContainer}>
         <OAuthButtons
           message="or sign in with"
           paddedWindowWidth={paddedWindowWidth}
         />
-=======
-
-      <View style={[styles.lineContainer, { paddingTop: 30 }]}>
-        <View style={styles.line} />
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>or sign in with</Text>
-          <Link href="(restaurant)/restaurant_display" style={{ fontSize: 5 }}>
-            Restaurant
-          </Link>
-        </View>
-        <View style={styles.line} />
-      </View>
-
-      <View style={[styles.signInOptions, { paddingTop: 30 }]}>
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.facebook} style={styles.image} />
-        </Pressable>
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.google} style={styles.image} />
-        </Pressable>
-        <Pressable style={styles.optionButtons}>
-          <Image source={Images.apple} style={styles.image} />
-        </Pressable>
->>>>>>> origin/restaurantScreens
       </View>
     </ScrollView>
   );

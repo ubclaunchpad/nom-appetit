@@ -1,15 +1,10 @@
 import Header from "@components/Header";
 import Switch from "@components/Switch";
 import { useFonts } from "expo-font";
-import {
-  Montserrat_400Regular,
-  Montserrat_500Medium,
-  Montserrat_600SemiBold,
-  Montserrat_700Bold,
-} from "@expo-google-fonts/montserrat";
-import { Link, SplashScreen } from "expo-router";
+import { Montserrat_400Regular, Montserrat_500Medium, Montserrat_600SemiBold, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
+import { Link, router, SplashScreen } from "expo-router";
 import { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SignIn from "./(auth)/signin";
 import SignUp from "./(auth)/signup";
@@ -38,17 +33,17 @@ const RootPage = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <View style={styles.innerMain}>
+            <Pressable onPress={() => router.push('(restaurant)/restaurant_display')}>
+              <Text>Restaurants</Text>
+            </Pressable>
+            <Pressable onPress={() => router.push('(search)/search')}>
+              <Text>Search</Text>
+            </Pressable>
             <View style={styles.headerContainer}>
               <Header />
             </View>
             <View style={styles.switchContainer}>
-              <Switch
-                rightNav={rightNav}
-                setRightNav={setRightNav}
-                leftNavText="Create Account"
-                rightNavText="Sign In"
-                paddedWindowWidth={paddedWindowWidth}
-              />
+              <Switch rightNav={rightNav} setRightNav={setRightNav} leftNavText="Create Account" rightNavText="Sign In" paddedWindowWidth={paddedWindowWidth} />
             </View>
             <View>{rightNav ? <SignIn /> : <SignUp />}</View>
           </View>
@@ -64,7 +59,6 @@ const RootPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
     alignItems: "center",
     backgroundColor: "#E6EFD9",
   },
@@ -89,7 +83,7 @@ const styles = StyleSheet.create({
   image: {
     width: 275,
     height: 275,
-    resizeMode: "contain"
+    resizeMode: "contain",
   },
 });
 
