@@ -1,25 +1,21 @@
-import Images from "@assets/images";
 import Navigation from "@components/Navigation";
-import { ReviewInfo } from "@components/ReviewInfo";
 import { ReviewInfoPreview } from "@components/ReviewInfoPreview";
-import StarRating from "@components/StarRating";
 import axios from "axios";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, Dimensions, Pressable } from "react-native";
-import { Image, ImageSourcePropType, ScrollView, StyleSheet, Text, View, ImageBackground } from "react-native";
+import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RestaurantDisplay() {
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState("2529 Alexander Street, Duncan BC");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [name, setName] = useState("");
-  const [open, setOpen] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [name, setName] = useState("McDonald's");
+  const [open, setOpen] = useState(true);
+  const [rating, setRating] = useState(4.5);
+  const [startTime, setStartTime] = useState("10:00 AM");
+  const [endTime, setEndTime] = useState("6:00 PM");
   const [imageURL, setImageURL] = useState("https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png");
   const { id, token } = useLocalSearchParams();
   const date = new Date();
@@ -65,15 +61,7 @@ export default function RestaurantDisplay() {
     const fullStars = Math.floor(rating);
     const stars = [];
     for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Icon
-          key={`full-star-${i}`}
-          name="star"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
+      stars.push(<Icon key={`full-star-${i}`} name="star" type="font-awesome" color="#F9BC60" size={20} />);
     }
     return stars;
   };
@@ -82,14 +70,7 @@ export default function RestaurantDisplay() {
     const fullStars = Math.floor(rating);
     const halfStar = Number((rating - fullStars).toFixed(1));
     if (halfStar == 0.4 || halfStar == 0.5) {
-      return (
-        <Icon
-          name="star-half-o"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
+      return <Icon name="star-half-o" type="font-awesome" color="#F9BC60" size={20} />;
     } else if (halfStar < 0.4) {
       return;
     } else if (halfStar > 0.5) {
@@ -98,13 +79,6 @@ export default function RestaurantDisplay() {
   };
 
   // =====
-  const [location, setLocation] = useState("45 W 17 St, Vancouver, BC");
-  const [times, setTimes] = useState("10am - 9pm");
-  type dish = {
-    name: string;
-    description: string;
-    image: ImageSourcePropType;
-  };
   const boilerReview = {
     name: "Bryan Tao",
     profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
@@ -115,23 +89,6 @@ export default function RestaurantDisplay() {
     description:
       "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
   };
-  const featuredDishes: dish[] = [
-    {
-      name: "Poke",
-      description: "Description",
-      image: Images.dummyFood1,
-    },
-    {
-      name: "Bento Box",
-      description: "Description",
-      image: Images.dummyFood2,
-    },
-    {
-      name: "Salmon",
-      description: "Description",
-      image: Images.dummyFood2,
-    },
-  ];
   // =====
 
   return (
@@ -142,9 +99,22 @@ export default function RestaurantDisplay() {
         }}
         style={styles.backgroundImage}
       >
-        <SafeAreaView style={styles.headerSafeContainer}>
-          <View style={styles.headerContainer}>
-            <Navigation leftIcon="arrow-left" rightIcon="home" color="#FFFEFA" />
+        <SafeAreaView style={styles.backgroundImageContainer}>
+          <View style={styles.navigationContainer}>
+            <Navigation
+              leftIcon="arrow-left"
+              leftNavigationOnPress={() => router.back()}
+              rightIcon="home"
+              rightNavigationOnPress={() =>
+                router.navigate({
+                  pathname: "home",
+                  params: {
+                    token: token,
+                  },
+                })
+              }
+              color="#FFFEFA"
+            />
           </View>
         </SafeAreaView>
       </ImageBackground>
@@ -156,27 +126,36 @@ export default function RestaurantDisplay() {
           <Icon name="heart-outline" type="material-community" color="#FFFEFA" size={24} />
         </View>
       </View>
-      <View style={styles.scrollableContainer}>
+      <View style={styles.contentContainer}>
         <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-          <View style={styles.restaurantHeader}>
+          <View style={styles.headerContainer}>
             <Text style={styles.restaurantText}>{name}</Text>
             <View style={styles.stars}>
-            {generateFullStars(rating)}
-            {generateHalfStar(rating)}
+              {generateFullStars(rating)}
+              {generateHalfStar(rating)}
             </View>
           </View>
-          <View style={styles.location}>
+          <View style={styles.locationContainer}>
             <Image
               source={{
-                uri: "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=15&size=600x300&maptype=roadmap&markers=color:red|" + latitude + "," + longitude + "&key=" + process.env.EXPO_PUBLIC_GOOGLE_KEY,
+                uri:
+                  "https://maps.googleapis.com/maps/api/staticmap?center=" +
+                  latitude +
+                  "," +
+                  longitude +
+                  "&zoom=15&size=600x300&maptype=roadmap&markers=color:red" +
+                  latitude +
+                  "," +
+                  longitude +
+                  "&key=" +
+                  process.env.EXPO_PUBLIC_GOOGLE_KEY,
               }}
               style={styles.locationImage}
             />
             <View style={styles.locationDetails}>
-                <Icon name="location-pin" type="material" color="#7F7E78" size={18} />
-                <Text style={styles.locationText}>{address}</Text>
+              <Icon name="location-pin" type="material" color="#7F7E78" size={18} />
+              <Text style={styles.locationText}>{address}</Text>
             </View>
-
             <View style={styles.timeDetails}>
               <Icon name="clock-outline" type="material-community" color="#7F7E78" size={18} />
               {open ? (
@@ -188,37 +167,16 @@ export default function RestaurantDisplay() {
               )}
             </View>
           </View>
-          <View>
-            {/* <View style={styles.spacedHeader}>
-              <Text style={styles.headerText}>Popular Dishes</Text>
-              <Pressable style={styles.rightViewAll}>
+          <View style={styles.reviewsContainer}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.reviewsText}>Reviews</Text>
+              <Pressable style={styles.rightViewAll} onPress={() => {}}>
                 <Text style={styles.viewAllText}>View All</Text>
                 <Icon name="chevron-forward-outline" type="ionicon" color={"#004643"} size={20} />
               </Pressable>
             </View>
-            <View style={styles.featuredDishes}>
-              {featuredDishes.map((dish, i) => {
-                return (
-                  <View key={i} style={styles.featuredDish}>
-                    <Image source={dish.image} style={styles.image} />
-                    <View style={styles.dishTextContainer}>
-                      <Text style={styles.dishName}>{dish.name}</Text>
-                      <Text numberOfLines={1} style={styles.dishDescription}>
-                        {dish.description}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View> */}
-            <View style={styles.spacedHeader}>
-              <Text style={styles.headerText}>Reviews</Text>
-              <Pressable style={styles.rightViewAll}>
-                <Text style={styles.viewAllText}>View All</Text>
-                <Icon name="chevron-forward-outline" type="ionicon" color={"#004643"} size={20} />
-              </Pressable>
-            </View>
-            <View style={styles.reviewContainer}>
+            <View style={styles.individualReviewsContainer}>
+              <ReviewInfoPreview {...boilerReview} />
               <ReviewInfoPreview {...boilerReview} />
             </View>
           </View>
@@ -237,24 +195,21 @@ const styles = StyleSheet.create({
     height: 350,
     resizeMode: "contain",
   },
-  headerSafeContainer: {
+  backgroundImageContainer: {
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
   },
-  headerContainer: {
+  navigationContainer: {
     marginHorizontal: 30,
     marginTop: 20,
   },
   buttonsContainer: {
-    zIndex: 1,
+    zIndex: 5,
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 30,
     marginTop: -125,
-  },
-  stars: {
-    flexDirection: "row",
-    alignItems: "center"
+    gap: 10,
   },
   button: {
     backgroundColor: "#004643",
@@ -263,9 +218,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 12,
-    marginLeft: 10,
   },
-  scrollableContainer: {
+  stars: {
+    flexDirection: "row",
+    gap: 5,
+  },
+  contentContainer: {
     flex: 1,
     marginTop: -25,
     borderTopLeftRadius: 30,
@@ -273,31 +231,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFEFA",
   },
   scrollContentContainer: {
-    paddingHorizontal: 30,
-    paddingTop: 45,
+    marginHorizontal: 30,
+    marginVertical: 45,
   },
-  restaurantHeader: {
+  headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   restaurantText: {
-    fontFamily: "Lato",
-    fontWeight: "600",
+    fontFamily: "Lato-SemiBold",
     fontSize: 20,
     color: "#004643",
   },
-  location: {
-    marginTop: 20,
+  locationContainer: {
+    marginTop: 15,
   },
   locationImage: {
     width: "100%",
     height: 150,
-    backgroundColor: "red",
-    marginVertical: 0,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#6F846E"
+    borderColor: "#6F846E",
   },
   locationDetails: {
     marginTop: 10,
@@ -306,7 +261,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timeDetails: {
-    marginTop: 2,
+    marginTop: 2.5,
     flexDirection: "row",
     gap: 5,
     alignItems: "center",
@@ -316,55 +271,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#7F7E78",
   },
-  spacedHeader: {
+  reviewsContainer: {
     marginTop: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
-  headerText: {
-    fontFamily: "Montserrat_500Medium",
-    fontSize: 18,
+  reviewsText: {
+    fontFamily: "Lato-SemiBold",
+    fontSize: 20,
     color: "#004643",
   },
   viewAllText: {
-    fontFamily: "Montserrat_600SemiBold",
-    fontSize: 16,
+    fontFamily: "Lato-SemiBold",
+    fontSize: 20,
     color: "#004643",
   },
   rightViewAll: {
     flexDirection: "row",
     alignItems: "center",
   },
-  featuredDishes: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 10,
-    marginTop: 10,
-  },
-  featuredDish: {
-    alignItems: "center",
-  },
-  dishTextContainer: {
-    marginTop: 5,
-    alignItems: "center",
-  },
-  dishName: {
-    fontFamily: "Montserrat_500Medium",
-    fontSize: 14,
-    color: "#004643",
-  },
-  dishDescription: {
-    fontFamily: "Montserrat_400Regular",
-    fontSize: 10,
-    color: "#004643",
-  },
-  image: {
-    width: 100,
-    height: 70,
-    borderRadius: 12,
-  },
-  reviewContainer: {
-    marginTop: 10,
-    marginBottom: 45,
+  individualReviewsContainer: {
+    marginTop: 15,
+    flexDirection: "column",
+    gap: 15,
   },
 });

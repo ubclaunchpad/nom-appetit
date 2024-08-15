@@ -21,9 +21,7 @@ export const ReviewInfoPreview = (props: ReviewProps) => {
     const fullStars = Math.floor(rating);
     return Array(fullStars)
       .fill(null)
-      .map((_, i) => (
-        <Icon key={i} name="star" type="font-awesome" color="#F9BC60" size={12} />
-      ));
+      .map((_, i) => <Icon key={i} name="star" type="font-awesome" color="#F9BC60" size={12} />);
   };
 
   const generateHalfStar = (rating: number) => {
@@ -39,26 +37,26 @@ export const ReviewInfoPreview = (props: ReviewProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Avatar
-          rounded
-          source={{ uri: props.profilePicture }}
-          size={32}
-        />
+        <Avatar rounded source={{ uri: props.profilePicture }} size={32} />
         <View style={styles.rightProfile}>
           <Text style={styles.name}>{truncateName(props.name)}</Text>
           <View style={styles.infoTextContainer}>
-            <Text style={styles.infoText}>{props.reviews} reviews</Text>
-            <Text style={styles.dot}>·</Text>
-            <Text style={styles.infoText}>{props.photos} photos</Text>
+            <Text style={styles.infoText}>
+              {props.reviews} reviews · {props.photos} photos
+            </Text>
           </View>
         </View>
       </View>
-      <View style={styles.starsContainer}>
-        {generateFullStars(props.rating)}
-        {generateHalfStar(props.rating)}
+      <View style={styles.starsTimeContainer}>
+        <View style={styles.starsContainer}>
+          {generateFullStars(props.rating)}
+          {generateHalfStar(props.rating)}
+        </View>
         <Text style={styles.timeText}>{props.time}</Text>
       </View>
-      <Text numberOfLines={2} style={styles.reviewText}>{props.description}</Text>
+      <Text numberOfLines={2} style={styles.reviewText}>
+        {props.description}
+      </Text>
     </View>
   );
 };
@@ -75,35 +73,34 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   name: {
-    fontFamily: "Lato",
+    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
   },
   infoTextContainer: {
     flexDirection: "row",
-    paddingTop: 3,
+    marginTop: 2,
   },
   infoText: {
-    fontFamily: "Lato",
+    fontFamily: "Montserrat_400Regular",
     fontSize: 12,
   },
-  dot: {
-    paddingHorizontal: 5,
-    fontFamily: "Lato",
-    fontSize: 10,
+  starsTimeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5,
+    gap: 5
   },
   starsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 7,
-    gap: 5,
+    gap: 2.5,
   },
   timeText: {
-    fontFamily: "Lato",
-    fontSize: 10,
+    fontFamily: "Montserrat_400Regular",
+    fontSize: 12,
   },
   reviewText: {
     fontFamily: "Montserrat_400Regular",
     fontSize: 14,
-    marginTop: 10,
   },
 });
