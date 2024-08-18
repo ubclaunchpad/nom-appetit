@@ -36,8 +36,8 @@ const RootPage = () => {
             <Pressable onPress={() => router.push('(restaurant)/restaurant_display')}>
               <Text>Restaurants</Text>
             </Pressable>
-            <Pressable onPress={() => router.push('(search)/search')}>
-              <Text>Search</Text>
+            <Pressable onPress={() => router.push('(restaurant)/reviews')}>
+              <Text>Reviews</Text>
             </Pressable>
             <View style={styles.headerContainer}>
               <Header />
