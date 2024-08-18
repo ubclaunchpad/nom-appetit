@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 
-interface ReviewProps {
+interface ReviewInfoPreviewProps {
   name: string;
   reviews: number;
   photos: number;
@@ -12,7 +12,7 @@ interface ReviewProps {
   profilePicture: string;
 }
 
-export const ReviewInfoPreview = (props: ReviewProps) => {
+export const ReviewInfoPreview = (props: ReviewInfoPreviewProps) => {
   const truncateName = (name: string) => {
     return name.length > 25 ? `${name.substring(0, 22)}...` : name;
   };
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   name: {
-    fontFamily: "Montserrat_400Regular",
+    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
   },
   infoTextContainer: {

@@ -57,6 +57,13 @@ export default function RestaurantDisplay() {
     fetchData();
   }, []);
 
+  const truncateName = (name: string) => {
+    if (name.length > 22) {
+      return name.substring(0, 22 - 3) + "...";
+    }
+    return name;
+  };
+
   const generateFullStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const stars = [];
@@ -74,7 +81,7 @@ export default function RestaurantDisplay() {
     } else if (halfStar < 0.4) {
       return;
     } else if (halfStar > 0.5) {
-      return <Icon name="star" type="font-awesome" color="#F9BC60" size={16} />;
+      return <Icon name="star" type="font-awesome" color="#F9BC60" size={20} />;
     }
   };
 
@@ -129,7 +136,7 @@ export default function RestaurantDisplay() {
       <View style={styles.contentContainer}>
         <ScrollView contentContainerStyle={styles.scrollContentContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.restaurantText}>{name}</Text>
+            <Text style={styles.restaurantText}>{truncateName(name)}</Text>
             <View style={styles.stars}>
               {generateFullStars(rating)}
               {generateHalfStar(rating)}
@@ -143,7 +150,7 @@ export default function RestaurantDisplay() {
                   latitude +
                   "," +
                   longitude +
-                  "&zoom=15&size=600x300&maptype=roadmap&markers=color:red" +
+                  "&zoom=15&size=600x300&maptype=roadmap&markers=color:red|" +
                   latitude +
                   "," +
                   longitude +
@@ -170,7 +177,7 @@ export default function RestaurantDisplay() {
           <View style={styles.reviewsContainer}>
             <View style={styles.headerContainer}>
               <Text style={styles.reviewsText}>Reviews</Text>
-              <Pressable style={styles.rightViewAll} onPress={() => {}}>
+              <Pressable style={styles.rightViewAll} onPress={() => router.push('(restaurant)/reviews')}>
                 <Text style={styles.viewAllText}>View All</Text>
                 <Icon name="chevron-forward-outline" type="ionicon" color={"#004643"} size={20} />
               </Pressable>
