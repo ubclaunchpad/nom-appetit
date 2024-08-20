@@ -43,7 +43,8 @@ To get a local copy up and running follow these simple example steps.
 ```
 npm install
 ```
-3. Start the application and follow the instructions in the terminal.
+3. Generate Google Developer API key and set it as the `EXPO_PUBLIC_GOOGLE_KEY` variable in a `.env` file.
+4. Start the application and follow the instructions in the terminal.
 ```
 npx expo start
 ```
