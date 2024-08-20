@@ -78,15 +78,6 @@ const listReview: Review[] = [
 
 export const Profile = () => {
   const numberOfReviews = 4;
-  const getUserData = async () => {
-    const { data } = await axios.get("http://127.0.0.1:5000/getProfile", {
-      params: {
-        token: 123123,
-      },
-    });
-
-    console.log(data);
-  };
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -100,7 +91,6 @@ export const Profile = () => {
   }, []);
 
   useEffect(() => {
-    getUserData();
     bottomSheetModalRef.current?.present();
   }, []);
 
