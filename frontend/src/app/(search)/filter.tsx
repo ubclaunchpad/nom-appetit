@@ -36,6 +36,11 @@ export default function Filter() {
     { label: "American", value: "american" },
   ]);
 
+  const authRedirect = () => {
+    router.dismissAll();
+    router.replace("/"); 
+  }
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -47,7 +52,7 @@ export default function Filter() {
         });
         const { missing_token, invalid_token, valid_token } = response.data;
         if (missing_token || invalid_token) {
-          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.push("/") }]);
+          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect }]);
         } else {
           console.log(token);
           console.log(valid_token);
