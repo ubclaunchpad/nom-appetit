@@ -161,7 +161,7 @@ def getRestaurantDetailsRoute():
         restaurant_id = data.get("restaurant_id")
         current_day = data.get("current_day")
         print("ID: " + restaurant_id)
-        print("DATE: " + str(current_day))
+        print("CURRENT DAY: " + str(current_day))
         restaurant_info = getRestaurantDetails(restaurant_id, current_day)
         print(restaurant_info)
         return { "restaurant_details": restaurant_info }

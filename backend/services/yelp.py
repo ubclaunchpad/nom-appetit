@@ -94,19 +94,26 @@ def getRestaurantDetails(restaurant_id, current_day):
         "city": response_json["location"]["city"],
         "state": response_json["location"]["state"],
         "imageURL": response_json["image_url"],
-        "open": response_json["hours"][0]["is_open_now"]
+        "hours_na": True,
+        "hours_24": False
     }
-    hours_open_array = response_json["hours"][0]["open"]
-    if restaurant_info["open"]:
+    if 'hours' in response_json and 'open' in response_json["hours"][0]:
+        print("HOURS EXIST")
+        restaurant_info["hours_na"] = False
+        restaurant_info["open"] = response_json["hours"][0]["is_open_now"]
+        hours_open_array = response_json["hours"][0]["open"]
         for day in hours_open_array:
-            print(current_day)
-            print(day)
+            print("SEARCHING FOR MATCHING DAY")
             if day["day"] == current_day:
+                print("MATCHING DAY FOUND")
                 start_time = day["start"]
                 end_time = day["end"]
                 start_datetime = datetime.strptime(start_time, "%H%M")
                 end_datetime = datetime.strptime(end_time, "%H%M")
                 restaurant_info["startTime"] = start_datetime.strftime("%I:%M %p")
                 restaurant_info["endTime"] = end_datetime.strftime("%I:%M %p")
+                if restaurant_info["startTime"] == "12:00 AM" and restaurant_info["endTime"] == "12:00 AM":
+                    restaurant_info["hours_24"] = True
+    print(restaurant_info)
     return restaurant_info
 

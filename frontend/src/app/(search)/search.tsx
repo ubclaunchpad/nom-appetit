@@ -18,13 +18,20 @@ export default function Search() {
   const [nearYouIsPressed, setNearYouIsPressed] = useState(false);
   const { token, longitude, latitude, initialSearchText } = useLocalSearchParams();
 
+  const authRedirect = () => {
+    router.dismissAll();
+    router.replace("/"); 
+  }
+ 
   const searchRestaurants = async (textVariable: string) => {
     try {
+      const cleanedText = textVariable.replace(/’/, "");
       const data = {
         longitude: longitude,
         latitude: latitude,
-        keywords: textVariable,
+        keywords: cleanedText,
       };
+      console.log(data)
       const response = await axios.post("http://127.0.0.1:5000/searchRestaurants", data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,7 +39,7 @@ export default function Search() {
       });
       const { missing_token, invalid_token, restaurants } = response.data;
       if (missing_token || invalid_token) {
-        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.navigate("/") }]);
+        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect}]);
       } else {
         console.log(token);
         setRestaurants(restaurants);

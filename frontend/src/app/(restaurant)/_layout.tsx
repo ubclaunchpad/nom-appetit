@@ -9,7 +9,6 @@ const RestaurantLayout = () => {
     >
       <Stack.Screen name="restaurant_display" />
       <Stack.Screen name="reviews" />
-      <Stack.Screen name="menu" />
     </Stack>
   );
 };

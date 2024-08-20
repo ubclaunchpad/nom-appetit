@@ -22,6 +22,11 @@ export default function Search() {
   const ratingTitle = parseInt(rating as string) != 0 ? "Greater than " + (rating as string) + " stars" : "";
   const priceTitle = price as string;
 
+  const authRedirect = () => {
+    router.dismissAll();
+    router.replace("/"); 
+  }
+
   const searchRestaurants = async () => {
     try {
       const data = {
@@ -36,7 +41,7 @@ export default function Search() {
       });
       const { missing_token, invalid_token, restaurants } = response.data;
       if (missing_token || invalid_token) {
-        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.push("/") }]);
+        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect }]);
       } else {
         console.log(token);
         setRestaurants(restaurants);
