@@ -30,13 +30,25 @@ type Review = {
   rating: number;
   time: string;
   description: string;
+  profilePicture: string;
 };
 
 const listReview: Review[] = [
   {
-    name: "Bryan Tao",
+    name: "Bryan Taoaaaaaaaaasdasdasdasdaasdasdasdasdasdasdasdasdasdaasdasdasdasdsd",
     reviews: 10,
     photos: 5,
+    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
+    rating: 4,
+    time: "1w",
+    description:
+      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
+  },
+  {
+    name: "Rafael Park",
+    reviews: 10,
+    photos: 5,
+    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
     rating: 4,
     time: "1w",
     description:
@@ -47,6 +59,7 @@ const listReview: Review[] = [
     reviews: 10,
     photos: 5,
     rating: 4,
+    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
     time: "1w",
     description:
       "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
@@ -56,15 +69,7 @@ const listReview: Review[] = [
     reviews: 10,
     photos: 5,
     rating: 4,
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  },
-  {
-    name: "Name",
-    reviews: 10,
-    photos: 5,
-    rating: 4,
+    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
     time: "1w",
     description:
       "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
@@ -87,7 +92,7 @@ export const Profile = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ["42.5%", "90%"], []);
+  const snapPoints = useMemo(() => ["42.5%", "87.5%"], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {

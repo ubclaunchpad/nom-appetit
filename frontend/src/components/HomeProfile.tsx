@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Avatar, Badge } from "react-native-elements";
 
@@ -21,7 +22,11 @@ export default function HomeProfile(props: HomeProfileProps) {
         >
           {props.name}
         </Text>
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            router.push("(profile)/profile");
+          }}
+        >
           <Text
             style={{
               fontFamily: "Lato",
