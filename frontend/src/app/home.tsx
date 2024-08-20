@@ -14,6 +14,11 @@ export default function Home() {
   const [name, setName] = useState("");
   const { token } = useLocalSearchParams();
 
+  const authRedirect = () => {
+    router.dismissAll();
+    router.replace("/"); 
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +29,7 @@ export default function Home() {
         });
         const { missing_token, invalid_token, name } = response.data;
         if (missing_token || invalid_token) {
-          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.push("/") }]);
+          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect}]);
         } else {
           console.log(token);
           setName(name);
@@ -52,7 +57,7 @@ export default function Home() {
           token: token,
           longitude: longitude,
           latitude: latitude,
-          initialSearchText: searchText,
+          initialSearchText: searchText.replace(/’/, ""),
         },
       });
     } catch (error) {

@@ -33,12 +33,6 @@ const RootPage = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.main}>
           <View style={styles.innerMain}>
-            <Pressable onPress={() => router.push('(restaurant)/restaurant_display')}>
-              <Text>Restaurants</Text>
-            </Pressable>
-            <Pressable onPress={() => router.push('(restaurant)/reviews')}>
-              <Text>Reviews</Text>
-            </Pressable>
             <View style={styles.headerContainer}>
               <Header />
             </View>

@@ -8,17 +8,24 @@ import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RestaurantDisplay() {
-  const [address, setAddress] = useState("2529 Alexander Street, Duncan BC");
+  const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [name, setName] = useState("McDonald's");
-  const [open, setOpen] = useState(true);
-  const [rating, setRating] = useState(4.5);
-  const [startTime, setStartTime] = useState("10:00 AM");
-  const [endTime, setEndTime] = useState("6:00 PM");
+  const [name, setName] = useState("");
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [hoursNA, setHoursNA] = useState(true);
+  const [hours24, setHours24] = useState(false);
   const [imageURL, setImageURL] = useState("https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png");
   const { id, token } = useLocalSearchParams();
   const date = new Date();
+
+  const authRedirect = () => {
+    router.dismissAll();
+    router.replace("/");
+  };
 
   useEffect(() => {
     console.log(date.toLocaleString());
@@ -34,10 +41,25 @@ export default function RestaurantDisplay() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const { missing_token, invalid_token, address, city, endTime, imageURL, latitude, longitude, name, open, rating, startTime, state } =
-          response.data.restaurant_details;
+        const {
+          missing_token,
+          invalid_token,
+          address,
+          city,
+          endTime,
+          imageURL,
+          latitude,
+          longitude,
+          name,
+          open,
+          rating,
+          startTime,
+          state,
+          hours_na,
+          hours_24,
+        } = response.data.restaurant_details;
         if (missing_token || invalid_token) {
-          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: () => router.navigate("/") }]);
+          Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect }]);
         } else {
           console.log(token);
           setAddress(address + ", " + city + " " + state);
@@ -49,6 +71,8 @@ export default function RestaurantDisplay() {
           setOpen(open);
           setRating(rating);
           setStartTime(startTime);
+          setHoursNA(hours_na);
+          setHours24(hours_24);
         }
       } catch (error) {
         console.error(error.message);
@@ -165,7 +189,11 @@ export default function RestaurantDisplay() {
             </View>
             <View style={styles.timeDetails}>
               <Icon name="clock-outline" type="material-community" color="#7F7E78" size={18} />
-              {open ? (
+              {hoursNA ? (
+                <Text style={styles.locationText}>Not Available</Text>
+              ) : hours24 ? (
+                <Text style={styles.locationText}>Open 24 hours</Text>
+              ) : open ? (
                 <Text style={styles.locationText}>
                   {startTime} - {endTime}
                 </Text>
@@ -177,7 +205,7 @@ export default function RestaurantDisplay() {
           <View style={styles.reviewsContainer}>
             <View style={styles.headerContainer}>
               <Text style={styles.reviewsText}>Reviews</Text>
-              <Pressable style={styles.rightViewAll} onPress={() => router.push('(restaurant)/reviews')}>
+              <Pressable style={styles.rightViewAll} onPress={() => router.push("(restaurant)/reviews")}>
                 <Text style={styles.viewAllText}>View All</Text>
                 <Icon name="chevron-forward-outline" type="ionicon" color={"#004643"} size={20} />
               </Pressable>
