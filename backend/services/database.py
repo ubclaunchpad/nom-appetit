@@ -1,15 +1,23 @@
 # ===== imports  =====
+import os
 import re
 import secrets
 
 import bcrypt
 import firebase_admin as fb
-from firebase_admin import credentials, firestore
+from dotenv import load_dotenv
+from firebase_admin import credentials, firestore, storage
 from google.cloud.firestore_v1.base_query import FieldFilter
+
+load_dotenv("./services/secrets/.env")
 
 # ===== firebase config =====
 cred = credentials.Certificate("./services/secrets/serviceAccountKey.json")
-fb.initialize_app(cred)
+fb.initialize_app(
+    cred,
+    {"storageBucket": os.getenv("FIREBASE_STORAGE_LINK")},
+)
+bucket = storage.bucket()
 db = firestore.client()
 
 
@@ -112,6 +120,8 @@ def getProfileInfo(user_id):
 # ===== editing user information =====
 def editProfileInfo(user_id, data):
     db.collection("users").document(user_id).update({"name": data["name"]})
+    blob = bucket.blob("test")
+    blob.upload_from_string(data["profile_pic"])
     db.collection("profiles").document(user_id).update(
         {
             "bio": data["bio"],
@@ -120,3 +130,7 @@ def editProfileInfo(user_id, data):
         }
     )
     return True
+
+
+def uploadProfilePicture(profile_pic):
+    return
