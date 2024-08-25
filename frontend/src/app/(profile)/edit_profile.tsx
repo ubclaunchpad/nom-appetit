@@ -11,9 +11,17 @@ import axios from "axios";
 const EditProfile = () => {
   const { token } = useLocalSearchParams();
   const [image, setImage] = useState(null);
+  const [buffer, setBuffer] = useState(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+
+  const convertToBytes = async (uri: string) => {
+    const response = await fetch(uri);
+    const buffer = await response.arrayBuffer();
+    const view = new Uint8Array(buffer);
+    setBuffer(view);
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -24,6 +32,7 @@ const EditProfile = () => {
     });
 
     if (!result.canceled) {
+      convertToBytes(result.assets[0].uri);
       setImage(result.assets[0].uri);
     }
   };
@@ -32,7 +41,7 @@ const EditProfile = () => {
     try {
       const { data } = await axios.post(
         "http://127.0.0.1:5000/editUserInfo",
-        { name: name, username: username, bio: bio, profile_pic: image },
+        { name: name, username: username, bio: bio, profile_pic: buffer },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,8 +55,6 @@ const EditProfile = () => {
       console.error(error.message);
     }
   };
-
-  console.log(token);
 
   return (
     <SafeAreaView style={styles.containerBackground}>
