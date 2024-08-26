@@ -5,23 +5,17 @@ import React, { useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Input } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import Navigation from "@components/Navigation";
 import axios from "axios";
 
 const EditProfile = () => {
-  const { token } = useLocalSearchParams();
+  const { token, oldName, oldBio, oldUsername } = useLocalSearchParams();
   const [image, setImage] = useState(null);
   const [buffer, setBuffer] = useState(null);
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-
-  const convertToBytes = async (uri: string) => {
-    const response = await fetch(uri);
-    const buffer = await response.arrayBuffer();
-    const view = new Uint8Array(buffer);
-    setBuffer(view);
-  };
+  const [name, setName] = useState(oldName);
+  const [username, setUsername] = useState(oldUsername);
+  const [bio, setBio] = useState(oldBio);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,7 +26,6 @@ const EditProfile = () => {
     });
 
     if (!result.canceled) {
-      convertToBytes(result.assets[0].uri);
       setImage(result.assets[0].uri);
     }
   };
@@ -86,6 +79,7 @@ const EditProfile = () => {
 
       <View style={styles.inputContent}>
         <Input
+          value={name as string}
           onChangeText={(text) => setName(text)}
           placeholder="Name"
           placeholderTextColor="#0046434D"
@@ -93,6 +87,7 @@ const EditProfile = () => {
           inputContainerStyle={styles.inputContainer}
         />
         <Input
+          value={username as string}
           onChangeText={(text) => setUsername(text)}
           placeholder="Username"
           placeholderTextColor="#0046434D"
@@ -100,6 +95,7 @@ const EditProfile = () => {
           inputContainerStyle={styles.inputContainer}
         />
         <Input
+          value={bio as string}
           onChangeText={(text) => setBio(text)}
           placeholder="Bio"
           placeholderTextColor="#0046434D"
