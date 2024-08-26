@@ -189,6 +189,9 @@ export const Profile = () => {
                   pathname: "edit_profile",
                   params: {
                     token: token,
+                    oldName: profile.name,
+                    oldUsername: profile.username,
+                    oldBio: profile.bio,
                   },
                 });
               }}
