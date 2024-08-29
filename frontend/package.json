@@ -21,6 +21,7 @@
     "expo-location": "~17.0.1",
     "expo-router": "~3.5.18",
     "expo-splash-screen": "~0.27.5",
+    "firebase": "^10.13.1",
     "moment": "^2.30.1",
     "react": "18.2.0",
     "react-native": "0.74.3",
