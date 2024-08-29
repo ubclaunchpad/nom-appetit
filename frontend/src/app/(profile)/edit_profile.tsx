@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Input } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { firebase } from "firebaseConfig";
 import Navigation from "@components/Navigation";
 import axios from "axios";
 
@@ -34,7 +35,7 @@ const EditProfile = () => {
     try {
       const { data } = await axios.post(
         "http://127.0.0.1:5000/editUserInfo",
-        { name: name, username: username, bio: bio, profile_pic: buffer },
+        { name: name, username: username, bio: bio },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,6 +45,25 @@ const EditProfile = () => {
       if (data["result"]) {
         router.back();
       }
+
+      const { uri } = await FileSystem.getInfoAsync(image);
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          resolve(xhr.response);
+        };
+        xhr.onerror = (e) => {
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", uri, true);
+        xhr.send(null);
+      });
+
+      const filename = image.substring(image.lastIndexOf("/") + 1);
+      const ref = firebase.storage().ref().child(filename);
+
+      await ref.put(blob);
     } catch (error) {
       console.error(error.message);
     }
