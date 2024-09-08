@@ -115,12 +115,10 @@ export const Profile = () => {
           }
         );
         setProfile(data);
-        const url = await getDownloadURL(
-          ref(FIREBASE_STORAGE, "users/" + data.user_id)
-        );
-        setUrl(url);
+        getDownloadURL(ref(FIREBASE_STORAGE, "users/" + data.user_id))
+          .then((url) => setUrl(url))
+          .catch((e) => setUrl(null));
         setLoaded(true);
-        console.log(url);
       } catch (error) {
         console.error(error.message);
       }
@@ -209,7 +207,6 @@ export const Profile = () => {
                     oldName: profile.name,
                     oldUsername: profile.username,
                     oldBio: profile.bio,
-                    oldPhoto: url,
                   },
                 });
               }}
