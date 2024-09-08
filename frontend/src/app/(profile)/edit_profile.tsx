@@ -11,8 +11,7 @@ import { FIREBASE_STORAGE } from "firebaseConfig";
 import { ref, uploadBytesResumable } from "firebase/storage";
 
 const EditProfile = () => {
-  const { token, id, oldName, oldBio, oldUsername, oldPhoto } =
-    useLocalSearchParams();
+  const { token, id, oldName, oldBio, oldUsername } = useLocalSearchParams();
 
   const [image, setImage] = useState(null);
   const [name, setName] = useState(oldName);
@@ -71,7 +70,7 @@ const EditProfile = () => {
       <Pressable onPress={() => pickImage()}>
         {image ? (
           <>
-            <Image source={{ uri: oldPhoto as string }} style={styles.image} />
+            <Image source={{ uri: image }} style={styles.image} />
           </>
         ) : (
           <View style={styles.imageBackground}>
