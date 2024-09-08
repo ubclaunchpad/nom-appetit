@@ -15,9 +15,7 @@ load_dotenv("./services/secrets/.env")
 cred = credentials.Certificate("./services/secrets/serviceAccountKey.json")
 fb.initialize_app(
     cred,
-    {"storageBucket": os.getenv("FIREBASE_STORAGE_LINK")},
 )
-bucket = storage.bucket()
 db = firestore.client()
 
 
@@ -120,17 +118,10 @@ def getProfileInfo(user_id):
 # ===== editing user information =====
 def editProfileInfo(user_id, data):
     db.collection("users").document(user_id).update({"name": data["name"]})
-    blob = bucket.blob("test")
-    blob.upload_from_string(data["profile_pic"])
     db.collection("profiles").document(user_id).update(
         {
             "bio": data["bio"],
             "username": data["username"],
-            "profile_pic": data["profile_pic"],
         }
     )
     return True
-
-
-def uploadProfilePicture(profile_pic):
-    return
