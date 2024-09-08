@@ -6,6 +6,7 @@ import {
   Button,
   FlatList,
   Alert,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
@@ -29,6 +30,9 @@ import {
 } from "@gorhom/bottom-sheet";
 import Navigation from "@components/Navigation";
 import { ReviewInfo } from "@components/ReviewInfo";
+
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { FIREBASE_STORAGE } from "firebaseConfig";
 
 type Review = {
   name: string;
@@ -85,6 +89,7 @@ const listReview: Review[] = [
 
 type profile_info = {
   name: string;
+  user_id: string;
   username: string;
   bio: string;
   friends: string[];
@@ -96,6 +101,7 @@ export const Profile = () => {
   const { token } = useLocalSearchParams();
   const [loaded, setLoaded] = useState(false);
   const [profile, setProfile] = useState<profile_info>();
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,9 +114,13 @@ export const Profile = () => {
             },
           }
         );
-        console.log(data);
         setProfile(data);
+        const url = await getDownloadURL(
+          ref(FIREBASE_STORAGE, "users/" + data.user_id)
+        );
+        setUrl(url);
         setLoaded(true);
+        console.log(url);
       } catch (error) {
         console.error(error.message);
       }
@@ -118,8 +128,6 @@ export const Profile = () => {
 
     fetchData();
   }, []);
-
-  console.log(token);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -148,7 +156,15 @@ export const Profile = () => {
           </View>
 
           <View style={styles.imageBackground}>
-            <FontAwesome name="user" size={52} color="white" />
+            {url ? (
+              <>
+                <Image source={{ uri: url }} style={styles.image} />
+              </>
+            ) : (
+              <>
+                <FontAwesome name="user" size={52} color="white" />
+              </>
+            )}
           </View>
           <Text style={styles.fullName}>{profile.name}</Text>
           <Text style={styles.userName}>{profile.username}</Text>
@@ -189,9 +205,11 @@ export const Profile = () => {
                   pathname: "edit_profile",
                   params: {
                     token: token,
+                    id: profile.user_id,
                     oldName: profile.name,
                     oldUsername: profile.username,
                     oldBio: profile.bio,
+                    oldPhoto: url,
                   },
                 });
               }}
@@ -289,6 +307,11 @@ const styles = StyleSheet.create({
     borderRadius: 125 / 2,
     width: 125,
     height: 125,
+  },
+  image: {
+    width: 125,
+    height: 125,
+    borderRadius: 125 / 2,
   },
   fullName: {
     fontSize: 24,

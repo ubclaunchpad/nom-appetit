@@ -194,10 +194,10 @@ def getUserInformationRoute():
         profile_info = getProfileInfo(g.user_id)
         return {
             "name": user_info["name"],
+            "user_id": g.user_id,
             "username": profile_info["username"],
             "bio": profile_info["bio"],
             "friends": profile_info["friends"],
-            "profile_pic": profile_info["profile_pic"],
             "reviews": profile_info["reviews"],
             "saved": profile_info["saved"],
         }

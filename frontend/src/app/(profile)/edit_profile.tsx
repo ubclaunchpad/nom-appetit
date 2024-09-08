@@ -5,15 +5,16 @@ import React, { useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Input } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
-import { firebase } from "firebaseConfig";
 import Navigation from "@components/Navigation";
 import axios from "axios";
+import { FIREBASE_STORAGE } from "firebaseConfig";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 const EditProfile = () => {
-  const { token, oldName, oldBio, oldUsername } = useLocalSearchParams();
+  const { token, id, oldName, oldBio, oldUsername, oldPhoto } =
+    useLocalSearchParams();
+
   const [image, setImage] = useState(null);
-  const [buffer, setBuffer] = useState(null);
   const [name, setName] = useState(oldName);
   const [username, setUsername] = useState(oldUsername);
   const [bio, setBio] = useState(oldBio);
@@ -42,28 +43,16 @@ const EditProfile = () => {
           },
         }
       );
-      if (data["result"]) {
-        router.back();
-      }
 
-      const { uri } = await FileSystem.getInfoAsync(image);
-      const blob: Blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = () => {
-          resolve(xhr.response);
-        };
-        xhr.onerror = (e) => {
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
+      const response = await fetch(image);
+      const blob = await response.blob();
+
+      const storageRef = ref(FIREBASE_STORAGE, "users/" + id);
+      uploadBytesResumable(storageRef, blob).then((snapshot) => {
+        router.back();
       });
 
-      const filename = image.substring(image.lastIndexOf("/") + 1);
-      const ref = firebase.storage().ref().child(filename);
-
-      await ref.put(blob);
+      console.log(data);
     } catch (error) {
       console.error(error.message);
     }
@@ -82,7 +71,7 @@ const EditProfile = () => {
       <Pressable onPress={() => pickImage()}>
         {image ? (
           <>
-            <Image source={{ uri: image }} style={styles.image} />
+            <Image source={{ uri: oldPhoto as string }} style={styles.image} />
           </>
         ) : (
           <View style={styles.imageBackground}>
