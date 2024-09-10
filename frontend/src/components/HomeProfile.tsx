@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Avatar, Badge } from "react-native-elements";
 
@@ -9,6 +9,7 @@ type HomeProfileProps = {
 };
 
 export default function HomeProfile(props: HomeProfileProps) {
+  const { token } = useLocalSearchParams();
   return (
     <View style={styles.container}>
       <View style={styles.profileText}>
@@ -24,7 +25,12 @@ export default function HomeProfile(props: HomeProfileProps) {
         </Text>
         <Pressable
           onPress={() => {
-            router.push("(profile)/profile");
+            router.push({
+              pathname: "(profile)/profile",
+              params: {
+                token: token,
+              },
+            });
           }}
         >
           <Text

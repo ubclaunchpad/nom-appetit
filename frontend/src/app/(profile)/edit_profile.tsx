@@ -2,13 +2,21 @@ import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Input } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
 import Navigation from "@components/Navigation";
+import axios from "axios";
+import { FIREBASE_STORAGE } from "firebaseConfig";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 const EditProfile = () => {
+  const { token, id, oldName, oldBio, oldUsername } = useLocalSearchParams();
+
   const [image, setImage] = useState(null);
+  const [name, setName] = useState(oldName);
+  const [username, setUsername] = useState(oldUsername);
+  const [bio, setBio] = useState(oldBio);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -20,6 +28,32 @@ const EditProfile = () => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+    }
+  };
+
+  const editInfo = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://127.0.0.1:5000/editUserInfo",
+        { name: name, username: username, bio: bio },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const response = await fetch(image);
+      const blob = await response.blob();
+
+      const storageRef = ref(FIREBASE_STORAGE, "users/" + id);
+      uploadBytesResumable(storageRef, blob).then((snapshot) => {
+        router.back();
+      });
+
+      console.log(data);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -53,18 +87,24 @@ const EditProfile = () => {
 
       <View style={styles.inputContent}>
         <Input
+          value={name as string}
+          onChangeText={(text) => setName(text)}
           placeholder="Name"
           placeholderTextColor="#0046434D"
           inputStyle={styles.input}
           inputContainerStyle={styles.inputContainer}
         />
         <Input
+          value={username as string}
+          onChangeText={(text) => setUsername(text)}
           placeholder="Username"
           placeholderTextColor="#0046434D"
           inputStyle={styles.input}
           inputContainerStyle={styles.inputContainer}
         />
         <Input
+          value={bio as string}
+          onChangeText={(text) => setBio(text)}
           placeholder="Bio"
           placeholderTextColor="#0046434D"
           inputStyle={styles.bio}
@@ -72,12 +112,7 @@ const EditProfile = () => {
           multiline
         />
       </View>
-      <Pressable
-        style={styles.saveContainer}
-        onPress={() => {
-          router.push("(profile)/profile");
-        }}
-      >
+      <Pressable style={styles.saveContainer} onPress={() => editInfo()}>
         <Text style={styles.saveText}>Save</Text>
       </Pressable>
     </SafeAreaView>
