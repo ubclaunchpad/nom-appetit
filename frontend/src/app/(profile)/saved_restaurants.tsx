@@ -59,44 +59,7 @@ const visited_restaurants: restaurant[] = [
   },
 ];
 
-const wishlist: restaurant[] = [
-  {
-    name: "Wishlist Town",
-    category: "Burgers",
-    price: "$$",
-    rating: 4,
-    distance: "12",
-    image_url: Images.dummyImage,
-  },
-  {
-    name: "Wishlist Town",
-    category: "Burgers",
-    price: "$$",
-    rating: 4,
-    distance: "12",
-    image_url: Images.dummyImage,
-  },
-  {
-    name: "Wishlist Town",
-    category: "Burgers",
-    price: "$$",
-    rating: 4,
-    distance: "12",
-    image_url: Images.dummyImage,
-  },
-  {
-    name: "Wishlist Town",
-    category: "Burgers",
-    price: "$$",
-    rating: 4,
-    distance: "12",
-    image_url: Images.dummyImage,
-  },
-];
-
 const SavedRestaurants = () => {
-  const paddedWindowWidth = Dimensions.get("window").width - 60;
-  const [rightNav, setRightNav] = useState(false);
   return (
     <SafeAreaView style={styles.containerBackground}>
       <View style={{ width: 334 }}>
@@ -107,49 +70,20 @@ const SavedRestaurants = () => {
         />
       </View>
       <Text style={styles.title}>My Saved Restaurants</Text>
-      <View style={styles.switchContainer}>
-        <Switch
-          rightNav={rightNav}
-          setRightNav={setRightNav}
-          leftNavText="Visited"
-          rightNavText="Wishlist"
-          paddedWindowWidth={paddedWindowWidth}
+      <View style={styles.restaurantContainer}>
+        <FlatList
+          data={visited_restaurants}
+          renderItem={({ item }) => (
+            <RestaurantInfo
+              name={item.name}
+              category={item.category}
+              price={item.price}
+              rating={item.rating}
+              distance={item.distance}
+              image_url={item.image_url}
+            />
+          )}
         />
-      </View>
-      <View>
-        {rightNav ? (
-          <View style={styles.restaurantContainer}>
-            <FlatList
-              data={wishlist}
-              renderItem={({ item }) => (
-                <RestaurantInfo
-                  name={item.name}
-                  category={item.category}
-                  price={item.price}
-                  rating={item.rating}
-                  distance={item.distance}
-                  image_url={item.image_url}
-                />
-              )}
-            />
-          </View>
-        ) : (
-          <View style={styles.restaurantContainer}>
-            <FlatList
-              data={visited_restaurants}
-              renderItem={({ item }) => (
-                <RestaurantInfo
-                  name={item.name}
-                  category={item.category}
-                  price={item.price}
-                  rating={item.rating}
-                  distance={item.distance}
-                  image_url={item.image_url}
-                />
-              )}
-            />
-          </View>
-        )}
       </View>
     </SafeAreaView>
   );
@@ -170,6 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     fontSize: 24,
     color: "#004643",
+    marginBottom: 5,
   },
   switchContainer: {
     marginTop: 10,
