@@ -6,23 +6,32 @@ import RestaurantSearchFilter from "@components/RestaurantSearchFilter";
 import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Search() {
-  const [searchText, setSearchText] = useState("");
+  const { token, longitude, latitude, initialSearchText } =
+    useLocalSearchParams();
+  const [searchText, setSearchText] = useState(initialSearchText as string);
   const [restaurants, setRestaurants] = useState([]);
   const [popularIsPressed, setPopularIsPressed] = useState(true);
   const [recentlyViewedIsPressed, setRecentlyViewedIsPressed] = useState(false);
   const [nearYouIsPressed, setNearYouIsPressed] = useState(false);
-  const { token, longitude, latitude, initialSearchText } = useLocalSearchParams();
 
   const authRedirect = () => {
     router.dismissAll();
-    router.replace("/"); 
-  }
- 
+    router.replace("/");
+  };
+
   const searchRestaurants = async (textVariable: string) => {
     try {
       const cleanedText = textVariable.replace(/’/, "");
@@ -31,15 +40,23 @@ export default function Search() {
         latitude: latitude,
         keywords: cleanedText,
       };
-      console.log(data)
-      const response = await axios.post("http://127.0.0.1:5000/searchRestaurants", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log(data);
+      const response = await axios.post(
+        "http://127.0.0.1:5000/searchRestaurants",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const { missing_token, invalid_token, restaurants } = response.data;
       if (missing_token || invalid_token) {
-        Alert.alert("Session Expired", "You will be redirected to the Login page", [{ text: "Continue", onPress: authRedirect}]);
+        Alert.alert(
+          "Session Expired",
+          "You will be redirected to the Login page",
+          [{ text: "Continue", onPress: authRedirect }]
+        );
       } else {
         console.log(token);
         setRestaurants(restaurants);
@@ -114,13 +131,30 @@ export default function Search() {
                 })
               }
             >
-              <Icon name="filter" type="font-awesome" color="#004643" size={25} />
+              <Icon
+                name="filter"
+                type="font-awesome"
+                color="#004643"
+                size={25}
+              />
             </Pressable>
           </View>
           <View style={styles.categories}>
-            <RestaurantSearchFilter buttonPressed={popularIsPressed} handleButton={handlePopular} text="Popular" />
-            <RestaurantSearchFilter buttonPressed={recentlyViewedIsPressed} handleButton={handleRecentlyViewed} text="Recently Viewed" />
-            <RestaurantSearchFilter buttonPressed={nearYouIsPressed} handleButton={handleNearYou} text="Near You" />
+            <RestaurantSearchFilter
+              buttonPressed={popularIsPressed}
+              handleButton={handlePopular}
+              text="Popular"
+            />
+            <RestaurantSearchFilter
+              buttonPressed={recentlyViewedIsPressed}
+              handleButton={handleRecentlyViewed}
+              text="Recently Viewed"
+            />
+            <RestaurantSearchFilter
+              buttonPressed={nearYouIsPressed}
+              handleButton={handleNearYou}
+              text="Near You"
+            />
           </View>
           <View style={styles.restaurantContainer}>
             <FlatList
@@ -132,7 +166,7 @@ export default function Search() {
                       pathname: "(restaurant)/restaurant_display",
                       params: {
                         token: token,
-                        id: item.id
+                        id: item.id,
                       },
                     })
                   }
