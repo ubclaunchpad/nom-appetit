@@ -46,7 +46,7 @@ type Review = {
 
 const listReview: Review[] = [
   {
-    name: "Bryan Taoaaaaaaaaasdasdasdasdaasdasdasdasdasdasdasdasdasdaasdasdasdasdsd",
+    name: "Bryan Tao",
     reviews: 10,
     photos: 5,
     profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
@@ -92,7 +92,6 @@ type profile_info = {
   user_id: string;
   username: string;
   bio: string;
-  friends: string[];
   saved: string[];
   reviews: string[];
 };
@@ -168,29 +167,9 @@ export const Profile = () => {
           <Text style={styles.userName}>{profile.username}</Text>
           <Text>{profile.bio}</Text>
           <View style={styles.infoBox}>
-            <Pressable onPress={() => router.push("/friends_list")}>
-              <View style={styles.innerInfoBox}>
-                <Text>Friends</Text>
-                <Text style={styles.profileStat}>{profile.friends.length}</Text>
-                <Badge
-                  status="primary"
-                  containerStyle={{
-                    width: 2,
-                    height: 2,
-                    position: "absolute",
-                    top: 0,
-                    left: 53,
-                  }}
-                  badgeStyle={{
-                    backgroundColor: "red",
-                  }}
-                />
-              </View>
-            </Pressable>
-            <Text>|</Text>
             <Pressable onPress={() => router.push("/saved_restaurants")}>
               <View style={styles.innerInfoBox}>
-                <Text>Saved</Text>
+                <Text style={{ fontSize: 16 }}>Saved Restaurants</Text>
                 <Text style={styles.profileStat}>{profile.saved.length}</Text>
               </View>
             </Pressable>
@@ -213,36 +192,6 @@ export const Profile = () => {
             >
               <FontAwesome5 name="pencil-alt" size={14} color="#004643" />
               <Text style={{ color: "#004643" }}>Edit Profile</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => router.push("/find_friends")}
-              style={styles.findFriends}
-            >
-              <MaterialCommunityIcons
-                name="account-search"
-                size={24}
-                color="#004643"
-              />
-            </Pressable>
-            <Pressable
-              onPress={() => router.push("/notifications")}
-              style={styles.notifcation}
-            >
-              <Ionicons name="notifications" size={24} color="#004643" />
-              <Badge
-                status="primary"
-                value={2}
-                containerStyle={{
-                  maxWidth: 1,
-                  maxHeight: 1,
-                  position: "absolute",
-                  top: 2,
-                  left: 33,
-                }}
-                badgeStyle={{
-                  backgroundColor: "red",
-                }}
-              />
             </Pressable>
           </View>
           <BottomSheetModalProvider>
@@ -346,14 +295,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 8,
     paddingHorizontal: 20,
-  },
-
-  findFriends: {
-    backgroundColor: "#F3CC91",
-    paddingRight: 8,
-    paddingLeft: 10,
-    paddingVertical: 6,
-    borderRadius: 12,
   },
   notifcation: {
     backgroundColor: "#F3CC91",

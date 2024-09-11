@@ -58,7 +58,6 @@ def createProfile(user_id, username):
         "username": username,
         "bio": "",
         "profile_pic": "IMG_0000.png",
-        "friends": [],
         "saved": [],
         "reviews": [],
     }
