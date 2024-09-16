@@ -29,7 +29,7 @@ export default function SignIn() {
       return;
     }
     router.replace({
-      pathname: "home",
+      pathname: "(tabs)/home",
       params: {
         token: token,
       },

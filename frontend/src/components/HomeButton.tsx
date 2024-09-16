@@ -12,7 +12,7 @@ export default function HomeButton(props: HomeButtonProps) {
     <Pressable onPress={props.onPress}>
       <View style={styles.square}>
         <Text style={styles.iconText}>{props.headerText}</Text>
-        <Icon name={props.icon} size={50} color="#004643" type="material-community"/>
+        <Icon name={props.icon} size={50} color="#6F846E" type="font-awesome-5"/>
       </View>
     </Pressable>
   );
@@ -23,15 +23,15 @@ const styles = StyleSheet.create({
     width: 152,
     height: 152,
     padding: 10,
-    backgroundColor: "#F3CC91",
-    borderRadius: 12,
+    backgroundColor: "#E6EFD9",
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
   },
   iconText: {
     fontSize: 18,
-    fontFamily: "Lato",
-    color: "#004643",
+    fontFamily: "Lato-Bold",
+    color: "#6F846E",
     marginBottom: 10,
     textAlign: "center",
   },

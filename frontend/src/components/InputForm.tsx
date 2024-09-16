@@ -1,74 +1,61 @@
 import { Input } from 'react-native-elements';
-import { DimensionValue } from 'react-native';
 
-type AuthInputProps = {
-  label?: string;
+type InputFormProps = {
   value: string;
   onChangeText: (type: string) => void;
+  onSubmitEditing?: () => void;
   placeholder: string;
   errorMessage?: string;
-  autoCapitalize: "none" | "sentences" | "words" | "characters" | undefined;
+  iconName?: string;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
   secureTextEntry?: boolean;
-  searchInput?: boolean;
-  fontSize?: number;
-  width?: DimensionValue;
-  onSubmitEditing?: () => void;
 };
 
-export default function InputForm(props: AuthInputProps) {
-  let renderErrorMessage = false;
-
-  if (props.errorMessage) {
-    renderErrorMessage = true;
-  }
-
+export default function InputForm(props: InputFormProps) {
   return (
     <Input
-      // ===== label =====
-      label={props.label}
-      labelStyle={{
-        color: "#004643",
-        marginBottom: 7,
-        fontSize: 16,
-        fontFamily: "Lato-SemiBold",
-        fontWeight: "400",
-      }}
       // ===== input =====
       value={props.value}
       onChangeText={props.onChangeText}
-      placeholder={props.placeholder}
       inputStyle={{
-        fontFamily: "Lato-Regular",
-        fontSize: props.fontSize ? props.fontSize : 16,
+        fontFamily: "GT-America-Standard-Regular",
+        fontSize: 14,
       }}
-      inputContainerStyle={{
-        backgroundColor: "white",
-        height: 48,
-        padding: 15,
-        borderWidth: 1,
-        borderRadius: 12,
-        borderColor: "#80A29E",
-      }}
+
+      // ===== on submit =====
+      onSubmitEditing={props.onSubmitEditing}
+      
+      // ===== placeholder =====
+      placeholder={props.placeholder}
+      placeholderTextColor={"#747474"}
+
       // ===== container =====
       containerStyle={{
-        paddingHorizontal: 0,
-        width: props.width,
+        borderWidth: 1,
+        borderRadius: 12,
+        borderColor: "#E2E2E2",
+        backgroundColor: "#FFFFFF",
+        paddingLeft: 10,
       }}
+      inputContainerStyle={{
+        height: 42,
+        borderBottomWidth: 0,
+      }}
+
       // ===== error message =====
       errorMessage={props.errorMessage}
       errorStyle={{ 
-        fontFamily: "Lato-Regular",
-        color: 'red', 
+        fontFamily: "GT-America-Standard-Regular",
+        color: '#FF0000', 
       }}
-      renderErrorMessage={renderErrorMessage}
+      renderErrorMessage={props.errorMessage ? true : false}
+
       // ===== left icon =====
-      leftIconContainerStyle= {props.searchInput ? { marginRight: 5 } : undefined }
-      leftIcon={props.searchInput ? { type: 'font-awesome', name: 'search', size: 16, color: "#457874" } : undefined }
+      leftIcon={{type: 'material', name: props.iconName, size: 20, color: "#747474" }}
+
       // ===== extras =====
       autoCapitalize={props.autoCapitalize}
       secureTextEntry={props.secureTextEntry}
-      // ===== on submit =====
-      onSubmitEditing={props.onSubmitEditing}
     />
   );
 }

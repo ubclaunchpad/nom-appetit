@@ -4,9 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@assets/*": ["assets/*"],
     }
   },
-  "include": ["src"]
+  "include": ["src", "assets"]
 }
