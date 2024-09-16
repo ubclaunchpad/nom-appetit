@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RestaurantInfo from "@components/RestaurantInfo";
-import Images from "@assets/images";
+import Images from "src/-assets/images";
 import Switch from "@components/Switch";
 
 type restaurant = {

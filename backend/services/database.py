@@ -106,13 +106,27 @@ def getUserInfo(user_id):
         raise Exception("USER_NOT_FOUND")
     return user
 
-
 def getProfileInfo(user_id):
     profile = db.collection("profiles").document(user_id).get().to_dict()
     if not profile:
         raise Exception("PROFILE_NOT_FOUND")
     return profile
 
+def getDetailedUserInfo(user_id):
+    user_info = getUserInfo(user_id)
+    profile_info = getProfileInfo(user_id)
+    detailed_info = {
+        "name": user_info["name"],
+        "email": user_info["email"],
+        "username": profile_info["username"],
+        "bio": profile_info["bio"],
+        "profile_pic": profile_info["profile_pic"],
+        "reviews": profile_info["reviews"],
+        "review_total": len(profile_info["reviews"]),
+        "saved": profile_info["saved"],
+        "saved_total": len(profile_info["saved"]),
+    }
+    return detailed_info
 
 # ===== editing user information =====
 def editProfileInfo(user_id, data):
@@ -121,6 +135,42 @@ def editProfileInfo(user_id, data):
         {
             "bio": data["bio"],
             "username": data["username"],
+        }
+    )
+    return True
+
+def createReview(review_id, restaurant_id, user_id, rating, review):
+    if rating < 0 or rating > 5:
+        raise Exception("INVALID_RATING")
+    else:
+        data = {
+            "rating": float(rating),
+            "review": review,
+            "restaurant_id": restaurant_id,
+            "user_id": user_id,
+        }
+        db.collection("reviews").document(review_id).set(data)
+        db.collection("profiles").document(user_id).update(
+            {
+                "reviews": firestore.ArrayUnion([review_id]),
+            }
+        )
+        return review_id
+
+def getReviews(restaurant_id):
+    total_reviews_array = []
+    total_reviews = db.collection("reviews").stream()
+    for review in total_reviews:
+        review_data = review.to_dict()
+        review_data["review_id"] = review.id
+        if review_data.get("restaurant_id") == restaurant_id:
+            total_reviews_array.append(review_data)
+    return total_reviews_array
+
+def saveRestaurant(user_id, restaurant_id):
+    db.collection("profiles").document(user_id).update(
+        {
+            "saved": firestore.ArrayUnion([restaurant_id]),
         }
     )
     return True

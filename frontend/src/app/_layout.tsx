@@ -1,19 +1,26 @@
-import { Stack } from "expo-router";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Slot } from 'expo-router';
+import { SessionProvider } from '../context/SessionContext';
+import { useFonts } from "expo-font";
+import { useEffect } from 'react';
 
-const RootLayout = () => {
+export default function Root() {
+  const [fontsLoaded] = useFonts({
+    'GT-America-Standard-Regular': require('../../assets/fonts/GT-America-Standard-Regular.ttf'),
+    'GT-America-Standard-Bold': require('../../assets/fonts/GT-America-Standard-Bold.ttf'),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      console.log("LOADED FONTS");
+    } else {
+      return;
+    }
+  });
+
+  // Set up the auth context and render our layout inside of it.
   return (
-    <GestureHandlerRootView>
-      <Stack>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(search)" options={{ headerShown: false }} />
-        <Stack.Screen name="(restaurant)" options={{ headerShown: false }} />
-        <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-    </GestureHandlerRootView>
+    <SessionProvider>
+      <Slot />
+    </SessionProvider>
   );
-};
-
-export default RootLayout;
+}

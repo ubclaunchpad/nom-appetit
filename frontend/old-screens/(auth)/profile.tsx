@@ -1,4 +1,4 @@
-import Images from "@assets/images";
+import Images from "src/-assets/images";
 import AuthButton from "@components/AuthButton";
 import InputForm from "@components/InputForm";
 import axios from "axios";

@@ -1,14 +1,4 @@
-<br>
-<div>
-  <p align="center">
-    <a href="">
-      <img src="./frontend/assets/logo.png" alt="Logo" width="100" height="100">
-    </a>
-  </p>
-  <h3 align="center">Nom Appetit</h3>
-  <p align="center">Restaurant tracking and recommendation app<p>
-</div>
-<br>
+# Nom Appetit
 
 ## Table of Contents
 + [About The Project](#abouttheproject)

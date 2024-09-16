@@ -12,13 +12,20 @@ export default function HomeProfile(props: HomeProfileProps) {
   const { token } = useLocalSearchParams();
   return (
     <View style={styles.container}>
+      <Avatar
+        source={{
+          uri: props.profilePicture,
+        }}
+        size="small"
+        avatarStyle={{ borderRadius: 8 }}
+      />
       <View style={styles.profileText}>
         <Text
           style={{
-            fontFamily: "Lato-SemiBold",
+            fontFamily: "Lato-Bold",
             fontSize: 14,
-            color: "#004643",
-            textAlign: "right",
+            color: "#1A1A1A",
+            textAlign: "left",
           }}
         >
           {props.name}
@@ -35,28 +42,16 @@ export default function HomeProfile(props: HomeProfileProps) {
         >
           <Text
             style={{
-              fontFamily: "Lato",
+              fontFamily: "Lato-Regular",
               fontSize: 14,
-              color: "#004643",
-              textAlign: "right",
+              color: "#777777",
+              textAlign: "left",
             }}
           >
-            View Profile
+            Vancouver, BC
           </Text>
         </Pressable>
       </View>
-      <Avatar
-        rounded
-        source={{
-          uri: props.profilePicture,
-        }}
-        size="small"
-      />
-      <Badge
-        status="error"
-        value={props.notifcationCount}
-        containerStyle={{ position: "absolute", top: -5, right: -5 }}
-      />
     </View>
   );
 }
@@ -64,14 +59,14 @@ export default function HomeProfile(props: HomeProfileProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
   },
   profileText: {
-    marginRight: 10,
+    marginLeft: 8,
   },
   text: {
     fontFamily: "Lato",
     color: "#004643",
-    textAlign: "right",
+    textAlign: "left",
   },
 });

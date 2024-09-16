@@ -6,19 +6,25 @@ from flask import Flask, g, jsonify, request
 from services.authentication import *
 from services.database import *
 from services.yelp import *
+import json
 
 # ===== flask config =====
 app = Flask(__name__)
-
 app.config["SECRET_KEY"] = "1234"
 
+# ===== test files =====
+with open('tests/test-search.json', 'r') as file:
+    test_search = json.load(file)
+with open('tests/test-detailed-search.json', 'r') as file:
+    test_detailed_search = json.load(file)
 
+# ===== jwt =====
 def token_required(func):
     @wraps(func)
     def decorated(*args, **kwargs):
         token = request.headers["Authorization"].split()[1]
         if not token:
-            return {"missing_token": True}
+            return {"invalid_token": True}
         try:
             data = jwt.decode(token, app.config["SECRET_KEY"], algorithms="HS256")
             g.user_id = data["user_id"]
@@ -27,7 +33,6 @@ def token_required(func):
         return func(*args, **kwargs)
 
     return decorated
-
 
 # ===== routing: user & profile initialization =====
 @app.route("/createUser", methods=["POST"])
@@ -70,6 +75,43 @@ def createProfileRoute():
         if str(e) == "USERNAME_EXISTS":
             return {"username_exists": True}
 
+@app.route("/getUserInformation", methods=["GET"])
+@token_required
+# params: none
+# returns: user and profile information
+# function: to retrieve profile information from token
+def getUserInformationRoute():
+    try:
+        user_info = getUserInfo(g.user_id)
+        profile_info = getProfileInfo(g.user_id)
+        return {
+            "name": user_info["name"],
+            "user_id": g.user_id,
+            "username": profile_info["username"],
+            "bio": profile_info["bio"],
+            "reviews": profile_info["reviews"],
+            "saved": profile_info["saved"],
+        }
+
+    except Exception as e:
+        if str(e) == "USER_NOT_FOUND":
+            return {"user_not_found": True}
+        if str(e) == "PROFILE_NOT_FOUND":
+            return {"profile_not_found": True}
+
+
+@app.route("/editUserInfo", methods=["POST"])
+@token_required
+# params: none
+# returns: success or failure message
+# function: to edit user information
+def editUserInfoRoute():
+    try:
+        data = request.get_json()
+        result = editProfileInfo(g.user_id, data)
+        return {"result": result}
+    except Exception as e:
+        return {"error": str(e)}
 
 # ===== routing: user authentication =====
 @app.route("/login", methods=["POST"])
@@ -130,38 +172,12 @@ def searchRestaurantsRoute():
         longitude = data.get("longitude")
         latitude = data.get("latitude")
         keywords = data.get("keywords")
-        restaurants = searchRestaurants(longitude, latitude, keywords)
+        restaurants = test_search
         return {"restaurants": restaurants}
 
     except Exception as e:
         if str(e) == "API_KEY_MISSING":
-            return {"api_key_missing": True}
-
-
-@app.route("/filterSearchRestaurants", methods=["POST"])
-@token_required
-# params: longitude (required), latitude (required), location, distance, cuisine, rating, price
-# returns: [list of restaurants]
-# function: searches restaurants based on filters
-def filterSearchRestaurantsRoute():
-    try:
-        data = request.get_json()
-        longitude = data.get("longitude")
-        latitude = data.get("latitude")
-        location = data.get("location")
-        distance = data.get("distance")
-        cuisine = data.get("cuisine")
-        rating = data.get("rating")
-        price = data.get("price")
-        restaurants = filterSearchRestaurants(
-            longitude, latitude, location, distance, cuisine, rating, price
-        )
-        return {"restaurants": restaurants}
-
-    except Exception as e:
-        if str(e) == "API_KEY_MISSING":
-            return {"api_key_missing": True}
-
+            print("YELP API KEY MISSING OR INVALID")
 
 @app.route("/getRestaurantDetails", methods=["POST"])
 # params: restaurant_id, date
@@ -172,51 +188,67 @@ def getRestaurantDetailsRoute():
         data = request.get_json()
         restaurant_id = data.get("restaurant_id")
         current_day = data.get("current_day")
-        print("ID: " + restaurant_id)
-        print("CURRENT DAY: " + str(current_day))
-        restaurant_info = getRestaurantDetails(restaurant_id, current_day)
-        print(restaurant_info)
-        return {"restaurant_details": restaurant_info}
+        restaurant = test_detailed_search
+        return {"restaurant_details": restaurant}
 
     except Exception as e:
         if str(e) == "API_KEY_MISSING":
-            return {"api_key_missing": True}
+            return {"error": str(e)}
 
 
-@app.route("/getUserInformation", methods=["GET"])
+@app.route("/createReview", methods=["POST"])
 @token_required
-# params: none
-# returns: user and profile information
-# function: to retrieve profile information from token
-def getUserInformationRoute():
+def createReviewRoute():
     try:
-        user_info = getUserInfo(g.user_id)
-        profile_info = getProfileInfo(g.user_id)
+        data = request.get_json()
+        review_id = data.get("review_id")
+        restaurant_id = data.get("restaurant_id")
+        review = data.get("review")
+        rating = data.get("rating")
+        review_id = createReview(review_id, restaurant_id, g.user_id, rating, review)
         return {
-            "name": user_info["name"],
-            "user_id": g.user_id,
-            "username": profile_info["username"],
-            "bio": profile_info["bio"],
-            "reviews": profile_info["reviews"],
-            "saved": profile_info["saved"],
+            "review_id": review_id,
         }
 
     except Exception as e:
-        if str(e) == "USER_NOT_FOUND":
-            return {"user_not_found": True}
-        if str(e) == "PROFILE_NOT_FOUND":
-            return {"profile_not_found": True}
-
-
-@app.route("/editUserInfo", methods=["POST"])
+        return {"error": str(e)}
+    
+@app.route("/getReviews", methods=["POST"])
 @token_required
-# params: none
-# returns: success or failure message
-# function: to edit user information
-def editUserInfoRoute():
+def getReviewsRoute():
     try:
         data = request.get_json()
-        result = editProfileInfo(g.user_id, data)
-        return {"result": result}
+        restaurant_id = data.get("restaurant_id")
+        reviews = getReviews(restaurant_id)
+        return {"reviews": reviews}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
+
+
+
+
+
+
+@app.route("/getDetailedUserInfo", methods=["GET"])
+@token_required
+def getDetailedUserInfoRoute():
+    try:
+        user_info = getDetailedUserInfo(g.user_id)
+        return {"user_info": user_info}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/saveRestaurant", methods=["POST"])
+@token_required
+def saveRestaurantRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        result = saveRestaurant(g.user_id, restaurant_id)
+        return {"success": result}
+
     except Exception as e:
         return {"error": str(e)}

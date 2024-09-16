@@ -1,0 +1,18 @@
+{
+  "id": "qR4rQOC8ewW0PD5KK9Blng",
+  "name": "Casereccio Foods",
+  "rating": 4.7,
+  "latitude": 49.2642,
+  "longitude": -123.15742,
+  "address": "2480 Vine Street",
+  "city": "Vancouver",
+  "state": "BC",
+  "imageURL": "https://s3-media1.fl.yelpcdn.com/bphoto/ViY3jMwK-LNVOnogulQykw/o.jpg",
+  "hours_na": false,
+  "hours_24": false,
+  "open": true,
+  "startTime": "08:00 AM",
+  "endTime": "09:00 PM",
+  "price": "$$",
+  "category": "Italian"
+}

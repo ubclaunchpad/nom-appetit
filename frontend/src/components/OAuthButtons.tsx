@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
-import Images from "@assets/images";
+import Images from "src/-assets/images";
 
 type OAuthButtonsProps = {
   message: string;

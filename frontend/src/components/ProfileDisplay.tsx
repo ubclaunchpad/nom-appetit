@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet } from "react-native";
-import Images from "@assets/images";
+import Images from "src/-assets/images";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 
