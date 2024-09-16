@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     color: "#747474",
   },
   rating: {
-    fontFamily: "Lato-Black",
+    fontFamily: "GT-America-Standard-Bold",
     fontSize: 10,
     color: "#FF462D",
   },

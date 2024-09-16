@@ -7,83 +7,137 @@ import { router, useLocalSearchParams } from "expo-router";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { FIREBASE_STORAGE } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
-import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Divider, Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-interface Review {
-  rating: number;
-  review_id: string;
-  review: string;
-  user_id: string;
-}
-
 export default function RestaurantDisplay() {
+  // ===== restaurant details =====
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(0);
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
   const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [open, setOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [hoursNA, setHoursNA] = useState(true);
   const [hours24, setHours24] = useState(false);
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [rating, setRating] = useState(0);
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [open, setOpen] = useState(false);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
   const [imageURL, setImageURL] = useState("https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png");
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-  const { id } = useLocalSearchParams();
-  const date = new Date();
-  const test = []
+  // ===== reviews =====
+  const [reviews, setReviews] = useState([]);
+  const [reviewsTotalInformation, setReviewsTotalInformation] = useState([]);
+  // ===== local params =====
+  const { restaurant_id } = useLocalSearchParams();
+
+  // ===== functions =====
+  useEffect(() => {
+    const fetchRestaurantData = async () => {
+      try {
+        await searchRestaurantDetails();
+        await getReviews();
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    fetchRestaurantData();
+  }, [restaurant_id]);
 
   useEffect(() => {
-    searchRestaurantDetails();
-    getReviews();
-    for (const review of reviews) {
-      const review_id = review.review_id;
-      console.log(review_id)
+    if (reviews.length > 0) {
+      getDetailedReviews(reviews);
     }
-  }, []);
+  }, [reviews]);
 
   const getAllImages = async (review_id: string) => {
     try {
       const path_ref = ref(FIREBASE_STORAGE, `reviews/${review_id}`);
-      const review_images = await listAll(path_ref)
+      const review_images = await listAll(path_ref);
       const { items } = review_images;
-      const urls = await Promise.all(
-        items.map((item) => getDownloadURL(item))
-      );
-      setImageUrls(urls);
-    } catch {
-      console.error("Error getting images")
+      const urls = await Promise.all(items.map((item) => getDownloadURL(item)));
+      return urls;
+    } catch (error) {
+      console.error(error.message);
     }
-  }
+  };
 
-  console.log(test)
+  const getProfilePicture = async (user_id: string) => {
+    try {
+      const path_ref = ref(FIREBASE_STORAGE, `users/${user_id}`);
+      const profile_picture = await getDownloadURL(path_ref);
+      return profile_picture;
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const getDetailedReviews = async (reviews: any) => {
+    const updatedReviews = await Promise.all(
+      reviews.map(async (review: any) => {
+        const image_urls = await getAllImages(review.review_id);
+        const profile_picture = await getProfilePicture(review.user_id);
+        const detailedUserInfo = await getDetailedUserInfo(review.user_id);
+        return {
+          review_id: review.review_id,
+          user_id: review.user_id,
+          review: review.review,
+          rating: review.rating,
+          date: review.date,
+          images: image_urls,
+          profile_picture: profile_picture,
+          name: detailedUserInfo.name,
+          review_total: detailedUserInfo.review_total,
+          saved_total: detailedUserInfo.saved_total,
+        };
+      })
+    );
+    setReviewsTotalInformation(updatedReviews);
+  };
+
+  const getDetailedUserInfo = async (user_id: string) => {
+    try {
+      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "getDetailedUserInfo";
+      const response = await axios.post(server_url);
+      const { invalid_token, user_info } = response.data;
+      if (invalid_token) {
+        // TODO: logout alert
+        router.replace("/");
+      } else {
+        return user_info;
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const getReviews = async () => {
     try {
       const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "getReviews";
       const data = {
-        restaurant_id: id,
+        restaurant_id: restaurant_id,
       };
       const response = await axios.post(server_url, data);
-      const { reviews } = response.data;
-      setReviews(reviews);
+      const { invalid_token, reviews } = response.data;
+      if (invalid_token) {
+        router.replace("/");
+      } else {
+        // TODO: logout alert
+        setReviews(reviews);
+      }
     } catch (error) {
       console.error(error.message);
     }
-  }
+  };
 
   const searchRestaurantDetails = async () => {
     try {
       const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "getRestaurantDetails";
       const data = {
-        current_day: date.getDay(),
-        restaurant_id: id,
+        current_day: new Date().getDay(),
+        restaurant_id: restaurant_id,
       };
       const response = await axios.post(server_url, data);
       const {
@@ -105,11 +159,11 @@ export default function RestaurantDisplay() {
         price,
       } = response.data.restaurant_details;
       if (invalid_token) {
+        // TODO: logout alert
         router.replace("/");
       } else {
-        setAddress(address + ", " + city + " " + state);
+        setAddress(`${address}, ${city} ${state}`);
         setEndTime(endTime);
-        setImageURL(imageURL);
         setLatitude(latitude);
         setLongitude(longitude);
         setName(name);
@@ -120,24 +174,14 @@ export default function RestaurantDisplay() {
         setHours24(hours_24);
         setCategory(category);
         setPrice(price);
+        setImageURL(imageURL);
       }
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  // =====
-  const boilerReview = {
-    name: "Bryan Tao",
-    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
-    reviews: 10,
-    photos: 5,
-    rating: 4,
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  };
-  // =====
+  console.log(reviewsTotalInformation);
 
   return (
     <View style={styles.container}>
@@ -153,7 +197,7 @@ export default function RestaurantDisplay() {
               leftIcon="arrow-left"
               leftNavigationOnPress={() => router.back()}
               middleIcon="note-edit-outline"
-              middleNavigationOnPress={() => router.navigate({ pathname: "search/add-review", params: {"restaurant_id": id}},)}
+              middleNavigationOnPress={() => router.navigate({ pathname: "search/add-review", params: { restaurant_id: restaurant_id } })}
               rightIcon="heart-outline"
               rightNavigationOnPress={() => router.navigate({ pathname: "/" })}
               color="#FFFEFA"
@@ -177,12 +221,6 @@ export default function RestaurantDisplay() {
             </View>
             <View style={styles.detailsContainer}>
               <View style={styles.iconContainer}>
-                <Icon name="location-pin" type="material" color="#7F7E78" size={16} />
-                <Text style={styles.detailsText}>{address}</Text>
-              </View>
-            </View>
-            <View style={styles.detailsContainer}>
-              <View style={styles.iconContainer}>
                 <Icon name="clock-outline" type="material-community" color="#7F7E78" size={16} />
                 {hoursNA ? (
                   <Text style={styles.detailsText}>Not Available</Text>
@@ -195,6 +233,12 @@ export default function RestaurantDisplay() {
                 ) : (
                   <Text style={styles.detailsText}>Closed</Text>
                 )}
+              </View>
+            </View>
+            <View style={styles.detailsContainer}>
+              <View style={styles.iconContainer}>
+                <Icon name="location-pin" type="material" color="#7F7E78" size={16} />
+                <Text style={styles.detailsText}>{address}</Text>
               </View>
             </View>
             <View style={styles.directionContainer}>
@@ -216,11 +260,15 @@ export default function RestaurantDisplay() {
               />
             </View>
           </View>
-          <Image source={imageUrls[0]}></Image>
           <View style={styles.reviewsContainer}>
             <Text style={styles.reviews}>Reviews</Text>
             <View style={styles.individualReviewsContainer}>
-              {/* <ReviewInfo {...boilerReview} /> */}
+              <FlatList
+                ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
+                scrollEnabled={false}
+                data={reviewsTotalInformation}
+                renderItem={({ item }) => <ReviewInfo {...item} />}
+              />
             </View>
           </View>
         </ScrollView>
@@ -252,7 +300,6 @@ const styles = StyleSheet.create({
   restaurantInfoContainer: {
     flexDirection: "column",
     gap: 1,
-    marginBottom: 20,
   },
   restaurant: {
     fontFamily: "GT-America-Standard-Bold",
@@ -287,7 +334,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   reviewsContainer: {
-    marginTop: 10,
+    marginTop: 15,
   },
   reviews: {
     fontFamily: "GT-America-Standard-Bold",
