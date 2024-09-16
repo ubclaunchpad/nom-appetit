@@ -75,15 +75,7 @@ export default function Search() {
                   router.push({
                     pathname: "search/restaurant",
                     params: {
-                      token: token,
-                      id: item.id,
-                      name: item.name,
-                      category: item.category,
-                      price: item.price,
-                      rating: item.rating,
-                      distance: item.distance,
-                      image_url: item.image_url,
-                      city: item.city,
+                      restaurant_id: item.id
                     },
                   })
                 }

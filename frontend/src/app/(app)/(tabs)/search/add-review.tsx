@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, FlatList, Pressable, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { Image } from "react-native-elements";
+import { Button, Icon, Image } from "react-native-elements";
 import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 import { FIREBASE_STORAGE } from "firebaseConfig";
 import { ref, uploadBytesResumable } from "firebase/storage";
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddReview() {
   const [review, setReview] = useState("");
@@ -53,6 +53,7 @@ export default function AddReview() {
         restaurant_id: restaurant_id,
         review: review,
         rating: rating,
+        date: new Date().toISOString(),
       };
       const response = await axios.post(process.env.EXPO_PUBLIC_SERVER_URL + "createReview", data);
       const { invalid_token } = response.data;
@@ -69,47 +70,40 @@ export default function AddReview() {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <View style={styles.content}>
         <Text style={styles.title}>Add Review</Text>
         <TextInput style={styles.input} placeholder="Write your review here..." value={review} onChangeText={setReview} multiline />
       </View>
 
-      <View style={styles.container}>
+      <Text style={styles.title2}>How would you rate your experience?</Text>
+
+      <View style={styles.ratingContainer}>
         {[...Array(maxRating)].map((_, index) => (
           <TouchableOpacity key={index} onPress={() => setRating(index + 1)}>
-            <Text style={[styles.star, index < rating && styles.filledStar]}>★</Text>
+            <View style={styles.iconContainer}>
+              <Icon name="star" type="font-awesome" color="#FFFFFF" size={23} />
+            </View>
           </TouchableOpacity>
         ))}
-        <Text>{rating}</Text>
       </View>
-
-      <FlatList
-        horizontal
-        data={postImage}
-        keyExtractor={(item, index) => item.uri + index.toString()}
-        renderItem={({ item }) => (
-          <View style={{ display: "flex", justifyContent: "flex-start", alignItems: "flex-start", flexDirection: "row" }}>
-            <Image source={{ uri: item }} style={{ width: 200, height: 200 }} />
-          </View>
-        )}
-      />
 
       <Pressable onPress={pickImage}>
         <Text>Pick Images</Text>
       </Pressable>
-      <Pressable onPress={createReview}>
-        <Text>Submit</Text>
-      </Pressable>
 
-      {/* Conditionally show ActivityIndicator and Text */}
-      {isLoading && (
-        <View style={[styles.container]}>
-          <ActivityIndicator />
-          <ActivityIndicator size="large" />
-          <ActivityIndicator size="small" color="#0000ff" />
-          <ActivityIndicator size="large" color="#00ff00" />
-        </View>
-      )}
+      <Button
+        title="Submit"
+        onPress={createReview}
+        buttonStyle={{ backgroundColor: "rgba(39, 39, 39, 1)" }}
+        containerStyle={{
+          width: "100%",
+          borderRadius: 8,
+        }}
+        titleStyle={{
+          fontFamily: "GT-America-Standard-Regular",
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -121,15 +115,19 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
   },
+  title2: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
   input: {
-    height: 150,
+    flex: 1,
     borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 8,
@@ -146,11 +144,22 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     marginTop: 16,
-    alignItems: "center",
   },
   loadingText: {
     marginTop: 8,
     fontSize: 16,
     color: "#555",
+  },
+  iconContainer: {
+    borderRadius: 5,
+    justifyContent: "center",
+    width:29,
+    height: 29,
+    backgroundColor: "#FF462D",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
   },
 });

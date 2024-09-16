@@ -7,7 +7,6 @@ export default function SignIn() {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>{authState.token}</Text>
       <Text
         onPress={async () => {
           await onLogin("rafaelpark", "password");
