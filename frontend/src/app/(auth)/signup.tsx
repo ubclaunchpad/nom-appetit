@@ -15,7 +15,7 @@ export default function SignIn() {
   const paddedWindowWidth = Dimensions.get("window").width - 80;
 
   const postData = async () => {
-    const response = await axios.post("http://127.0.0.1:5000/createUser", {
+    const response = await axios.post("http://10.0.2.2:5000/createUser", {
       name: name,
       email: email,
       password: password,

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-native-webview": "^13.12.2"
+  }
+}

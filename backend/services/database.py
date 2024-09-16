@@ -12,17 +12,29 @@ fb.initialize_app(cred)
 db = firestore.client()
 
 # ===== user & profile initialization =====
-def createUser(name, email, password):
+def createUser(name, email, password, user_id):
     emailValidation(email)
-    passwordValidation(password)
-    user_id = secrets.token_hex(8)
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    data = {
-        "name": name,
-        "email": email,
-        "hashed_password": hashed_password.decode('utf-8')
-    }
+    data = {}
+    
+    if password:
+        passwordValidation(password)
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        data = {
+            "name": name,
+            "email": email,
+            "hashed_password": hashed_password.decode('utf-8')
+        }
+    else:
+        data = {
+            "name": name,
+            "email": email
+        }
+    
+    if not user_id:
+        user_id = secrets.token_hex(8)
+    
+    
     db.collection("users").document(user_id).set(data)
     return user_id
 

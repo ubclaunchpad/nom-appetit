@@ -1,5 +1,6 @@
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import { Pressable, StyleSheet, Text, View, Image, Linking } from "react-native";
 import Images from "@assets/images";
+import React, { useState } from 'react';
 
 type OAuthButtonsProps = {
   message: string;
@@ -8,6 +9,11 @@ type OAuthButtonsProps = {
 
 export default function OAuthButtons(props: OAuthButtonsProps) {
   const buttonWidth = (props.paddedWindowWidth / 3);
+  const GoogleUrl = 'http://127.0.0.1:5000/authorize/google' 
+
+  const handlePressGoogle= async () => {
+    await Linking.openURL(GoogleUrl); // Opens the URL in a browser
+  };
 
   return (
     <View>
@@ -22,7 +28,7 @@ export default function OAuthButtons(props: OAuthButtonsProps) {
         <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>
           <Image source={Images.facebook} style={styles.image} />
         </Pressable>
-        <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>
+        <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={handlePressGoogle}>
           <Image source={Images.google} style={styles.image} />
         </Pressable>
         <Pressable style={[styles.optionButton, { width: buttonWidth}]} onPress={() => {}}>

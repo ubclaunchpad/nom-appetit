@@ -13,7 +13,7 @@ export default function Profile() {
   const [usernameValidation, setUsernameValidation] = useState("");
 
   const postData = async () => {
-    const response = await axios.post("http://127.0.0.1:5000/createProfile", {
+    const response = await axios.post("http://10.0.2.2:5000/createProfile", {
       user_id: user_id,
       username: username,
       password: password,
