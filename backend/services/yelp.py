@@ -1,10 +1,8 @@
-# ===== imports =====
 from dotenv import load_dotenv
 from datetime import datetime
 import requests
 import os
 
-# ===== api configuration =====
 load_dotenv('./services/secrets/.env')
 
 YELP_KEY = os.getenv('YELP_KEY')
@@ -19,16 +17,18 @@ headers = {
 if not YELP_KEY:
     raise Exception("API_KEY_MISSING")
 
-# ===== functions =====
-def searchRestaurants(longitude, latitude, keywords):
+def searchRestaurants(longitude, latitude, keywords, location):
     params = {
-        'longitude': longitude,
-        'latitude': latitude,
         'radius': 15000,
         'term': keywords + ' ' + 'restaurants',
         'sort_by': 'rating',
         'limit': 50
     }
+    if location:
+        params['location'] = location
+    else:
+        params['longitude'] = longitude
+        params['latitude'] = latitude
     response = requests.get(SEARCH_URL, params=params, headers=headers)
     response_array = response.json()["businesses"]
     parsed_array = []

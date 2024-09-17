@@ -1,20 +1,17 @@
-# ===== imports  =====
-import re
-import secrets
-import bcrypt
-import firebase_admin as fb
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
+import firebase_admin as fb
+import re
+import secrets
+import bcrypt
 
 load_dotenv("./services/secrets/.env")
 
-# ===== firebase config =====
 cred = credentials.Certificate("./services/secrets/serviceAccountKey.json")
 fb.initialize_app(cred)
 db = firestore.client()
 
-# ===== user & profile initialization =====
 def createUser(name, email, password):
     emailValidation(email)
     passwordValidation(password)
@@ -49,7 +46,6 @@ def createProfile(user_id, username):
     data = {
         "username": username,
         "bio": "",
-        "profile_pic": "IMG_0000.png",
         "saved": [],
         "reviews": [],
     }
@@ -61,8 +57,6 @@ def usernameValidation(username):
     if username in total_usernames:
         raise Exception("USERNAME_EXISTS")
 
-
-# ===== user authentication =====
 def validateUser(username, password):
     profiles = list(
         db.collection("profiles")
@@ -83,14 +77,9 @@ def validateUser(username, password):
     print("USER_ID: " + str(user_id))
     print("USER_PROFILE: " + str(user_profile))
     print("HASHED_PASSWORD: " + hashed_password)
-    print(
-        "CORRECT_PASSWORD: "
-        + str(bcrypt.checkpw(password.encode("UTF-8"), hashed_password.encode("UTF-8")))
-    )
+    print("CORRECT_PASSWORD: " + str(bcrypt.checkpw(password.encode("UTF-8"), hashed_password.encode("UTF-8"))))
     return user_id
 
-
-# ===== retrieving user information =====
 def getUserInfo(user_id):
     user = db.collection("users").document(user_id).get().to_dict()
     if not user:
@@ -111,7 +100,6 @@ def getDetailedUserInfo(user_id):
         "email": user_info["email"],
         "username": profile_info["username"],
         "bio": profile_info["bio"],
-        "profile_pic": profile_info["profile_pic"],
         "reviews": profile_info["reviews"],
         "review_total": len(profile_info["reviews"]),
         "saved": profile_info["saved"],
@@ -129,8 +117,6 @@ def getReviews(restaurant_id):
             total_reviews_array.append(review_data)
     return total_reviews_array
 
-
-# ===== editing user information =====
 def editProfileInfo(user_id, data):
     db.collection("users").document(user_id).update({"name": data["name"]})
     db.collection("profiles").document(user_id).update(
@@ -141,12 +127,13 @@ def editProfileInfo(user_id, data):
     )
     return True
 
-def createReview(review_id, restaurant_id, user_id, rating, review, date):
+def createReview(review_id, restaurant_id, user_id, rating, review):
     if rating < 0 or rating > 5:
         raise Exception("INVALID_RATING")
-    total_review_array = getReviews(restaurant_id)
-    for review in total_review_array:
-        if review.get("user_id") == user_id:
+    user_profile = db.collection("profiles").document(user_id).get().to_dict()
+    saved_reviews_array = user_profile.get("reviews")
+    for saved_review in saved_reviews_array:
+        if saved_review == restaurant_id:
             raise Exception("REVIEW_EXISTS")
     else:
         data = {
@@ -154,12 +141,12 @@ def createReview(review_id, restaurant_id, user_id, rating, review, date):
             "review": review,
             "restaurant_id": restaurant_id,
             "user_id": user_id,
-            "date": date,
         }
+        print(data)
         db.collection("reviews").document(review_id).set(data)
         db.collection("profiles").document(user_id).update(
             {
-                "reviews": firestore.ArrayUnion([review_id]),
+                "reviews": firestore.ArrayUnion([restaurant_id]),
             }
         )
         return review_id
@@ -171,3 +158,15 @@ def saveRestaurant(user_id, restaurant_id):
         }
     )
     return True
+
+def unsaveRestaurant(user_id, restaurant_id):
+    db.collection("profiles").document(user_id).update(
+        {
+            "saved": firestore.ArrayRemove([restaurant_id]),
+        }
+    )
+    return True
+
+def getSavedRestaurants(user_id):
+    profile = db.collection("profiles").document(user_id).get().to_dict()
+    return profile.get("saved")
