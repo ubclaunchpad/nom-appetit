@@ -4,9 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@assets/*": ["assets/*"],
     }
   },
-  "include": ["src"]
+  "include": ["src", "assets", "archive/components/AuthButton.tsx", "archive/components/FilterPressable.tsx", "archive/components/Header.tsx", "archive/components/HomeButton.tsx", "archive/components/HomeProfile.tsx", "archive/components/MenuItemDisplay.tsx", "archive/components/NavigatorTab.tsx", "archive/components/OAuthButtons.tsx", "archive/components/ProfileDisplay.tsx", "archive/components/RestaurantSearchFilter.tsx", "archive/components/ReviewInfoPreview.tsx", "archive/components/StarRating.tsx", "archive/components/Switch.tsx"]
 }

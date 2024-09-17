@@ -1,68 +1,84 @@
-import Images from "@assets/images";
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
+import ImageView from "react-native-image-viewing";
 
 interface ReviewInfoProps {
-  name: string;
-  reviews: number;
-  photos: number;
+  review_id: string;
+  user_id: string;
+  review: string;
   rating: number;
-  time: string;
-  description: string;
-  profilePicture: string;
+  images: string[];
+  profile_picture: string;
+  name: string;
+  review_total: number;
+  saved_total: number;
 }
 
+const generateFullStars = (rating: number) => {
+  const fullStars = Math.floor(rating);
+  const stars = [];
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(
+      <View key={i} style={styles.iconContainer}>
+        <Icon name="star" type="font-awesome" color="#FFFFFF" size={14} />
+      </View>
+    );
+  }
+  return stars;
+};
+
 export const ReviewInfo = (props: ReviewInfoProps) => {
-  const truncateName = (name: string) => {
-    return name.length > 25 ? `${name.substring(0, 22)}...` : name;
-  };
+  const [visible, setIsVisible] = useState(false);
+  const [imageArray, setImageArray] = useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const generateFullStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    return Array(fullStars)
-      .fill(null)
-      .map((_, i) => <Icon key={i} name="star" type="font-awesome" color="#F9BC60" size={16} />);
-  };
-
-  const generateHalfStar = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = Number((rating - fullStars).toFixed(1));
-    if (halfStar >= 0.4 && halfStar <= 0.5) {
-      return <Icon name="star-half-o" type="font-awesome" color="#F9BC60" size={16} />;
-    } else if (halfStar > 0.5) {
-      return <Icon name="star" type="font-awesome" color="#F9BC60" size={16} />;
+  const openImage = (index: number) => {
+    setImageArray([]);
+    for (const imageURL of props.images) {
+      const imageDict = {
+        uri: imageURL,
+      };
+      setImageArray((prevArray) => [...prevArray, imageDict]);
     }
+    setSelectedImageIndex(index);
+    setIsVisible(true);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Avatar rounded source={{ uri: props.profilePicture }} size={42} />
-        <View style={styles.rightProfile}>
-          <Text style={styles.name}>{truncateName(props.name)}</Text>
+        <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
+        <View style={styles.profileInfoContainer}>
+          <Text style={styles.name}>{props.name}</Text>
           <View style={styles.infoTextContainer}>
-            <Text style={styles.infoText}>
-              {props.reviews} reviews · {props.photos} photos
-            </Text>
+            <View style={styles.profileInfo}>
+              <Icon name="account-box" type="material-community" color="#7F7E78" size={14} />
+              <Text style={styles.reviewsNum}>{props.review_total}</Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Icon name="star-box" type="material-community" color="#7F7E78" size={14} />
+              <Text style={styles.reviewsNum}>{props.saved_total}</Text>
+            </View>
           </View>
         </View>
       </View>
       <View style={styles.starsTimeContainer}>
-        <View style={styles.starsContainer}>
-          {generateFullStars(props.rating)}
-          {generateHalfStar(props.rating)}
-        </View>
-        <Text style={styles.timeText}>{props.time}</Text>
+        <View style={styles.starsContainer}>{generateFullStars(props.rating)}</View>
       </View>
-      <View style={styles.reviewContainer}>
-        <Text style={styles.reviewText}>{props.description}</Text>
+      <View style={styles.reviewTextContainer}>
+        <Text style={styles.reviewText}>{props.review}</Text>
       </View>
-      <ScrollView style={styles.imageContainer} contentContainerStyle={styles.imageContainerStyle} horizontal>
-        <Image source={Images.dummyFood1} style={styles.foodImage} />
-        <Image source={Images.dummyFood2} style={styles.foodImage} />
-        <Image source={Images.dummyFood2} style={styles.foodImage} />
-      </ScrollView>
+      {props.images && props.images.length > 0 && (
+        <ScrollView style={styles.imageContainer} contentContainerStyle={styles.imageContainerStyle} horizontal>
+          {props.images.map((imageUri, index) => (
+            <Pressable key={index} onPress={() => openImage(index)}>
+              <Image source={{ uri: imageUri }} style={styles.foodImage} />
+            </Pressable>
+          ))}
+        </ScrollView>
+      )}
+      <ImageView images={imageArray} imageIndex={selectedImageIndex} visible={visible} onRequestClose={() => setIsVisible(false)} />
     </View>
   );
 };
@@ -70,59 +86,72 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    backgroundColor: "#FFFEFA",
-    padding: 30,
-    borderRadius: 12
   },
   profile: {
     flexDirection: "row",
     alignItems: "center",
   },
-  rightProfile: {
-    paddingLeft: 10,
+  avatar: {
+    borderRadius: 8,
+  },
+  profileInfoContainer: {
+    paddingLeft: 8,
   },
   name: {
-    fontFamily: "Montserrat_500Medium",
-    fontSize: 16,
+    fontFamily: "GT-America-Standard-Regular",
+    fontSize: 15,
+    color: "#1A1A1A",
   },
   infoTextContainer: {
     flexDirection: "row",
-    marginTop: 2,
+    alignItems: "center",
+    gap: 5,
   },
-  infoText: {
-    fontFamily: "Montserrat_400Regular",
+  profileInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+  reviewsNum: {
+    fontFamily: "Lato-SemiBold",
     fontSize: 14,
+    color: "#7F7E78",
   },
   starsTimeContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
+    marginTop: 8,
+    marginBottom: 5,
     gap: 5,
   },
   starsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 2.5,
+    gap: 3,
   },
-  timeText: {
-    fontFamily: "Montserrat_400Regular",
+  iconContainer: {
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 20,
+    height: 20,
+    backgroundColor: "#FF462D",
+  },
+  reviewTextContainer: {},
+  reviewText: {
+    fontFamily: "GT-America-Standard-Regular",
+    color: "#1A1A1A",
     fontSize: 14,
   },
-  reviewText: {
-    fontFamily: "Montserrat_400Regular",
-    fontSize: 16,
-  },
-  reviewContainer: {
-  },
   imageContainer: {
-    marginTop: 20,
+    marginTop: 15,
   },
   imageContainerStyle: {
-    gap: 10
+    gap: 10,
   },
   foodImage: {
-    borderRadius: 12,
-    width: 150,
-    height: 100,
+    width: 115,
+    height: 75,
+    borderRadius: 8
   },
 });
