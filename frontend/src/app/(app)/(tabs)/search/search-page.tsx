@@ -1,42 +1,54 @@
 import InputForm from "@components/InputForm";
-import NavigatorTab from "@components/NavigatorTab";
 import RestaurantInfo from "@components/RestaurantInfo";
 import axios from "axios";
-import { BlurView } from "expo-blur";
-import { router, useLocalSearchParams } from "expo-router";
+import * as Location from "expo-location";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { Button, Icon, Tab } from "react-native-elements";
+import { Alert, FlatList, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSession } from "src/context/SessionContext";
 
-export default function Search() {
-  const { token, longitude, latitude, initialSearchText } = useLocalSearchParams();
-  const [searchText, setSearchText] = useState(initialSearchText as string);
+export default function SearchPage() {
+  const [searchText, setSearchText] = useState("");
   const [locationText, setLocationText] = useState("");
   const [restaurants, setRestaurants] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [index, setIndex] = useState(0);
-
-  // TODO: Implement heart icon functionality
-  // TODO: Implement location filter
+  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const { onLogout }= useSession();
 
   useEffect(() => {
-    searchRestaurants("");
-  }, []);
+    getLocation();
+    searchRestaurants();
+  }, [longitude, latitude]);
 
-  const searchRestaurants = async (textVariable: string) => {
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Location Permission Denied", "Please enable location services in your device settings to continue.");
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    setLongitude(location["coords"]["longitude"]);
+    setLatitude(location["coords"]["latitude"]);
+  };
+
+  const searchRestaurants = async () => {
     try {
-      const data = {
+      const params = {
         longitude: longitude,
         latitude: latitude,
-        keywords: textVariable.replace(/’/, ""),
+        keywords: searchText.replace(/’/, ""),
       };
-      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "searchRestaurants";
-      const response = await axios.post(server_url, data);
+      if (locationText) {
+        params["location"] = locationText;
+      }
+      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "/searchRestaurants";
+      const response = await axios.get(server_url, { params });
       const { invalid_token, restaurants } = response.data;
       if (invalid_token) {
-        router.replace("/");
+        Alert.alert("Error", "Your sesssion expired. Please log in again.");
+        onLogout();
+        router.replace("../../");
       } else {
         setRestaurants(restaurants);
       }
@@ -46,78 +58,61 @@ export default function Search() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <SafeAreaView edges={["top", "left", "right"]} style={styles.searchContainer}>
-          <InputForm
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholder="Search for Restaurants, cuisine, occasion"
-            onSubmitEditing={() => searchRestaurants(searchText as string)}
-            iconName="search"
-            autoCapitalize="words"
-          />
-          <InputForm
-            value={locationText}
-            onChangeText={setLocationText}
-            placeholder="Current Location"
-            onSubmitEditing={() => {}}
-            iconName="location-pin"
-            autoCapitalize="words"
-          />
-        </SafeAreaView>
-        <View style={styles.restaurantContainer}>
-          <FlatList
-            data={restaurants}
-            renderItem={({ item }) => (
-              <Pressable
-                onPress={() =>
-                  router.push({
-                    pathname: "search/restaurant",
-                    params: {
-                      restaurant_id: item.id
-                    },
-                  })
-                }
-              >
-                <RestaurantInfo
-                  name={item.name}
-                  category={item.category}
-                  price={item.price}
-                  rating={item.rating}
-                  distance={item.distance}
-                  image_url={item.image_url}
-                  city={item.city}
-                />
-              </Pressable>
-            )}
-          />
-        </View>
+    <View style={styles.main}>
+      <SafeAreaView edges={["top", "left", "right"]} style={styles.searchContainer}>
+        <InputForm
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="Search for Restaurants, cuisine, occasion"
+          onSubmitEditing={() => searchRestaurants()}
+          iconName="search"
+          autoCapitalize="words"
+        />
+        <InputForm
+          value={locationText}
+          onChangeText={setLocationText}
+          placeholder="Current Location"
+          onSubmitEditing={() => searchRestaurants()}
+          iconName="location-pin"
+          autoCapitalize="words"
+        />
+      </SafeAreaView>
+      <View style={styles.restaurantContainer}>
+        <FlatList
+          data={restaurants}
+          renderItem={({ item }) => (
+            <Pressable onPress={() => router.push({ pathname: "search/restaurant", params: { restaurant_id: item.id } })}>
+              <RestaurantInfo
+                restaurant_id={item.id}
+                name={item.name}
+                category={item.category}
+                price={item.price}
+                rating={item.rating}
+                distance={item.distance}
+                image_url={item.image_url}
+                city={item.city}
+              />
+            </Pressable>
+          )}
+        />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-  },
   main: {
     flex: 1,
-    width: "100%",
     paddingHorizontal: 30,
+    backgroundColor: "#FFFFFF",
   },
   searchContainer: {
     marginTop: 20,
     flexDirection: "column",
-    alignItems: "center",
     gap: 10,
   },
   restaurantContainer: {
     flex: 1,
-    marginTop: 20,
+    paddingTop: 20,
   },
 });
