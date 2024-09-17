@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 # ===== token authentication =====
 def createToken(username, password, secret_key):
     user_id = validateUser(username, password)
-    expiration_time = datetime.now(timezone.utc) + timedelta(minutes=15)
+    expiration_time = datetime.now(timezone.utc) + timedelta(hours=15)
     payload_data = {
         'user_id' : user_id,
         'exp' : expiration_time 

@@ -1,67 +1,49 @@
-import Images from "@assets/images";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import axios from "axios";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
 
 interface RestaurantProps {
+  restaurant_id: string;
   category: string;
   price: string;
   name: string;
   rating: number;
   distance: string;
   image_url: string;
+  city: string;
 }
 
 export default function RestaurantInfo(props: RestaurantProps) {
-  const truncateName = (name: string) => {
-    if (name.length > 22) {
-      return name.substring(0, 22 - 3) + "...";
-    }
-    return name;
-  };
+  const { image_url, name, rating, category, price, city, distance } = props;
+  const [savedRestaurant, setSavedRestaurant] = useState(false);
 
-  const generateFullStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const stars = [];
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Icon
-          key={`full-star-${i}`}
-          name="star"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
-    }
-    return stars;
-  };
-
-  const generateHalfStar = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = Number((rating - fullStars).toFixed(1));
-    if (halfStar == 0.4 || halfStar == 0.5) {
-      return (
-        <Icon
-          key="half-star"
-          name="star-half-o"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
-    } else if (halfStar < 0.4) {
-      return;
-    } else if (halfStar > 0.5) {
-      return (
-        <Icon
-          key="full-star"
-          name="star"
-          type="font-awesome"
-          color="#F9BC60"
-          size={16}
-        />
-      );
+  const saveRestaurant = async () => {
+    try {
+      const server_url = process.env.EXPO_PUBLIC_SERVER_URL;
+      const data = {
+        restaurant_id: props.restaurant_id,
+      };
+      if (savedRestaurant) {
+        setSavedRestaurant(false);
+        const response = await axios.post(server_url + "unsaveRestaurant", data);
+        const { invalid_token, success } = response.data;
+        if (invalid_token) {
+          Alert.alert("Error", "Your token expired. Please log in again.");
+          router.replace("../../");
+        }
+      } else {
+        setSavedRestaurant(true);
+        const response = await axios.post(server_url + "saveRestaurant", data);
+        const { invalid_token, success } = response.data;
+        if (invalid_token) {
+          Alert.alert("Error", "Your token expired. Please log in again.");
+          router.replace("../../");
+        }
+      }
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -69,22 +51,39 @@ export default function RestaurantInfo(props: RestaurantProps) {
     <View style={styles.container}>
       <Image
         source={{
-          uri: props.image_url ? props.image_url : "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
+          uri: image_url || "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
         }}
         style={styles.image}
+        resizeMode="cover"
       />
-      <View>
-        <Text style={styles.nameContainer}>{truncateName(props.name)}</Text>
-        <View style={styles.categoryAndPriceContainer}>
-          <Text style={styles.categoryAndPriceText}>{props.category} </Text>
-          <Text style={styles.categoryAndPriceText}>·</Text>
-          <Text style={styles.categoryAndPriceText}> {props.price}</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.name}>{name}</Text>
+        {savedRestaurant ? (
+          <Pressable onPress={saveRestaurant}>
+            <Icon name="heart" type="material-community" color="#7F7E78" size={20} />
+          </Pressable>
+        ) : (
+          <Pressable onPress={saveRestaurant}>
+            <Icon name="heart-outline" type="material-community" color="#7F7E78" size={20} />
+          </Pressable>
+        )}
+      </View>
+      <View style={styles.detailsContainer}>
+        <View style={styles.iconContainer}>
+          <Icon name="star" type="material" color="#FF462D" size={14} />
+          <Text style={styles.rating}>{rating.toFixed(1)}</Text>
         </View>
-        <View style={styles.starsContainer}>
-          {generateFullStars(props.rating)}
-          {generateHalfStar(props.rating)}
+        <Text style={styles.detailsText}>
+          {" "}
+          • {category} • {price}
+        </Text>
+      </View>
+      <View style={styles.detailsContainer}>
+        <View style={styles.iconContainer}>
+          <Icon name="location-pin" type="material" color="#7F7E78" size={14} />
+          <Text style={styles.detailsText}>{city}</Text>
         </View>
-        <Text style={styles.distanceContainer}>{props.distance}km away</Text>
+        <Text style={styles.detailsText}> • {distance}km away</Text>
       </View>
     </View>
   );
@@ -92,47 +91,43 @@ export default function RestaurantInfo(props: RestaurantProps) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    height: 140,
-    backgroundColor: "#FFFFFF",
     marginBottom: 20,
-    paddingLeft: 30,
-    borderRadius: 12,
   },
   image: {
-    width: 110,
-    height: 75,
-    marginRight: 20,
+    width: "100%",
+    height: 175,
+    resizeMode: "cover",
     borderRadius: 12,
   },
-  nameContainer: {
-    fontFamily: "Lato",
-    color: "#004643",
-    marginTop: 5,
-  },
-  categoryAndPriceContainer: {
-    display: "flex",
+  headerContainer: {
+    marginTop: 8,
+    marginBottom: 4,
     flexDirection: "row",
-    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  categoryAndPriceText: {
-    fontFamily: "Lato",
-    fontSize: 10,
-    color: "#004643",
+  name: {
+    fontFamily: "GT-America-Standard-Bold",
+    fontSize: 16,
+    color: "#1A1A1A",
   },
-  starsContainer: {
-    justifyContent: "flex-start",
+  detailsContainer: {
     flexDirection: "row",
-    gap: 5,
-    marginTop: 5,
+    alignItems: "center",
   },
-  distanceContainer: {
-    fontFamily: "Lato",
-    fontSize: 10,
-    color: "#004643",
-    marginTop: 5,
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+  detailsText: {
+    fontFamily: "GT-America-Standard-Regular",
+    fontSize: 12,
+    color: "#747474",
+  },
+  rating: {
+    fontFamily: "GT-America-Standard-Bold",
+    fontSize: 12,
+    color: "#FF462D",
   },
 });

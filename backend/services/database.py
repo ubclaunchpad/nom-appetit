@@ -1,23 +1,18 @@
 # ===== imports  =====
-import os
 import re
 import secrets
-
 import bcrypt
 import firebase_admin as fb
 from dotenv import load_dotenv
-from firebase_admin import credentials, firestore, storage
+from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 
 load_dotenv("./services/secrets/.env")
 
 # ===== firebase config =====
 cred = credentials.Certificate("./services/secrets/serviceAccountKey.json")
-fb.initialize_app(
-    cred,
-)
+fb.initialize_app(cred)
 db = firestore.client()
-
 
 # ===== user & profile initialization =====
 def createUser(name, email, password):
@@ -34,7 +29,6 @@ def createUser(name, email, password):
     db.collection("users").document(user_id).set(data)
     return user_id
 
-
 def emailValidation(email):
     # checking if email is valid
     regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
@@ -46,11 +40,9 @@ def emailValidation(email):
     if email in total_emails:
         raise Exception("EMAIL_EXISTS")
 
-
 def passwordValidation(password):
     if len(password) < 8:
         raise Exception("PASSWORD_TOO_SHORT")
-
 
 def createProfile(user_id, username):
     usernameValidation(username)
@@ -62,7 +54,6 @@ def createProfile(user_id, username):
         "reviews": [],
     }
     db.collection("profiles").document(user_id).set(data)
-
 
 def usernameValidation(username):
     total_profiles = db.collection("profiles").stream()
@@ -106,12 +97,37 @@ def getUserInfo(user_id):
         raise Exception("USER_NOT_FOUND")
     return user
 
-
 def getProfileInfo(user_id):
     profile = db.collection("profiles").document(user_id).get().to_dict()
     if not profile:
         raise Exception("PROFILE_NOT_FOUND")
     return profile
+
+def getDetailedUserInfo(user_id):
+    user_info = getUserInfo(user_id)
+    profile_info = getProfileInfo(user_id)
+    detailed_info = {
+        "name": user_info["name"],
+        "email": user_info["email"],
+        "username": profile_info["username"],
+        "bio": profile_info["bio"],
+        "profile_pic": profile_info["profile_pic"],
+        "reviews": profile_info["reviews"],
+        "review_total": len(profile_info["reviews"]),
+        "saved": profile_info["saved"],
+        "saved_total": len(profile_info["saved"]),
+    }
+    return detailed_info
+
+def getReviews(restaurant_id):
+    total_reviews_array = []
+    total_reviews = db.collection("reviews").stream()
+    for review in total_reviews:
+        review_data = review.to_dict()
+        review_data["review_id"] = review.id
+        if review_data.get("restaurant_id") == restaurant_id:
+            total_reviews_array.append(review_data)
+    return total_reviews_array
 
 
 # ===== editing user information =====
@@ -121,6 +137,37 @@ def editProfileInfo(user_id, data):
         {
             "bio": data["bio"],
             "username": data["username"],
+        }
+    )
+    return True
+
+def createReview(review_id, restaurant_id, user_id, rating, review, date):
+    if rating < 0 or rating > 5:
+        raise Exception("INVALID_RATING")
+    total_review_array = getReviews(restaurant_id)
+    for review in total_review_array:
+        if review.get("user_id") == user_id:
+            raise Exception("REVIEW_EXISTS")
+    else:
+        data = {
+            "rating": float(rating),
+            "review": review,
+            "restaurant_id": restaurant_id,
+            "user_id": user_id,
+            "date": date,
+        }
+        db.collection("reviews").document(review_id).set(data)
+        db.collection("profiles").document(user_id).update(
+            {
+                "reviews": firestore.ArrayUnion([review_id]),
+            }
+        )
+        return review_id
+
+def saveRestaurant(user_id, restaurant_id):
+    db.collection("profiles").document(user_id).update(
+        {
+            "saved": firestore.ArrayUnion([restaurant_id]),
         }
     )
     return True

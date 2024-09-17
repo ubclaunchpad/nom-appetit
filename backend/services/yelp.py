@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from datetime import datetime
 import requests
 import os
-import json
 
 # ===== api configuration =====
 load_dotenv('./services/secrets/.env')
@@ -38,34 +37,6 @@ def searchRestaurants(longitude, latitude, keywords):
         parsed_array.append(parsed_restaurant)
     return parsed_array
 
-def filterSearchRestaurants(longitude, latitude, location, distance, cuisine, rating, price):
-    params = {
-        'term': 'restaurants',
-        'sort_by': 'best_match',
-        'limit': 50
-    }
-    if location: 
-        params['location'] = location
-    else: 
-        params['longitude'] = longitude
-        params['latitude'] = latitude
-        params['radius'] = 15000
-    if cuisine: 
-        params['categories'] = cuisine
-    response = requests.get(SEARCH_URL, params=params, headers=headers)
-    response_array = response.json()["businesses"]
-    parsed_array = []
-    for restaurant in response_array:
-        parsed_restaurant = parseRestaurant(restaurant)
-        if distance and parsed_restaurant["distance"] > int(distance):
-            continue
-        if rating and parsed_restaurant["rating"] < int(rating):
-            continue 
-        if price and parsed_restaurant["price"] != price:
-            continue
-        parsed_array.append(parsed_restaurant)
-    return parsed_array
-
 def parseRestaurant(restaurant):
     parsed_restaurant = {
         "id": restaurant["id"],
@@ -73,7 +44,8 @@ def parseRestaurant(restaurant):
         "name": restaurant["name"],
         "rating": restaurant["rating"],
         "category": restaurant["categories"][0]["title"],
-        "distance": round(restaurant["distance"] / 1000, 2)
+        "distance": round(restaurant["distance"] / 1000, 2),
+        "city": restaurant["location"]["city"],
     }
     if "price" in restaurant:
         parsed_restaurant["price"] = restaurant["price"]
@@ -84,7 +56,7 @@ def parseRestaurant(restaurant):
 def getRestaurantDetails(restaurant_id, current_day):
     response = requests.get(DETAILS_URL + restaurant_id, headers=headers)
     response_json = response.json()
-    restaurant_info = {
+    restaurant_details = {
         "id": response_json["id"],
         "name": response_json["name"],
         "rating": response_json["rating"],
@@ -95,25 +67,24 @@ def getRestaurantDetails(restaurant_id, current_day):
         "state": response_json["location"]["state"],
         "imageURL": response_json["image_url"],
         "hours_na": True,
-        "hours_24": False
+        "hours_24": False,
+        "category": response_json["categories"][0]["title"]
     }
+    if "price" in response_json:
+        restaurant_details["price"] = response_json["price"]
     if 'hours' in response_json and 'open' in response_json["hours"][0]:
-        print("HOURS EXIST")
-        restaurant_info["hours_na"] = False
-        restaurant_info["open"] = response_json["hours"][0]["is_open_now"]
+        restaurant_details["hours_na"] = False
+        restaurant_details["open"] = response_json["hours"][0]["is_open_now"]
         hours_open_array = response_json["hours"][0]["open"]
         for day in hours_open_array:
-            print("SEARCHING FOR MATCHING DAY")
             if day["day"] == current_day:
-                print("MATCHING DAY FOUND")
                 start_time = day["start"]
                 end_time = day["end"]
                 start_datetime = datetime.strptime(start_time, "%H%M")
                 end_datetime = datetime.strptime(end_time, "%H%M")
-                restaurant_info["startTime"] = start_datetime.strftime("%I:%M %p")
-                restaurant_info["endTime"] = end_datetime.strftime("%I:%M %p")
-                if restaurant_info["startTime"] == "12:00 AM" and restaurant_info["endTime"] == "12:00 AM":
-                    restaurant_info["hours_24"] = True
-    print(restaurant_info)
-    return restaurant_info
+                restaurant_details["startTime"] = start_datetime.strftime("%I:%M %p")
+                restaurant_details["endTime"] = end_datetime.strftime("%I:%M %p")
+                if restaurant_details["startTime"] == "12:00 AM" and restaurant_details["endTime"] == "12:00 AM":
+                    restaurant_details["hours_24"] = True
+    return restaurant_details
 
