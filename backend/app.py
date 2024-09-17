@@ -34,15 +34,16 @@ app.config['OAUTH2_PROVIDERS'] = {
         'token_url': 'https://accounts.google.com/o/oauth2/token',
         'userinfo': {
             'url': 'https://www.googleapis.com/oauth2/v3/userinfo',
-            'email': lambda json: json['family_name'],
+            'email': lambda json: json['email'],
             'displayName': lambda json: json['name'],
             'userID': lambda json: json['sub']
         },
-        'scopes': ['https://www.googleapis.com/auth/userinfo.profile'],
+        'scopes': ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
     }
 }
-login = LoginManager(app)
-login.login_view = '/'
+login_manager = LoginManager(app)
+login_manager.login_view = '/'
+login_manager.init_app(app)
 
 # ===== Initialize User Class =====
 class User(UserMixin):
@@ -131,7 +132,7 @@ def oauth2_callback(provider):
     if not oauth2_token:
         abort(401)
 
-    # use the access token to get the user's email address
+    # use the access token to get the user's information
     response = requests.get(provider_data['userinfo']['url'], headers={
         'Authorization': 'Bearer ' + oauth2_token,
         'Accept': 'application/json',
@@ -153,16 +154,20 @@ def oauth2_callback(provider):
         user = None
         
     if user is None:
-        # handle the case where the user is new, 
-        # by creating a user in the database using their email, name, and userID.
-        print("This is a new user.")
+        # handle the case where the user is new
+        password = None
+        createUser(name, email, password, userID)
 
     # log the user in
+    # somehow user is still "None" even after the if statement above has passed. That means that 
+    # createUser is not assigning user to anything right now. 
+    # I probably need to properly implement flask-Mixin into our user system.
     login_user(user)
 
     return redirect('http://127.0.0.1:5000/home')
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash('You have been logged out.')
@@ -205,7 +210,8 @@ def createUserRoute():
         name = data.get("name")
         email = data.get("email")
         password = data.get("password")
-        user_id = createUser(name, email, password)
+        user_id = None
+        user_id = createUser(name, email, password, user_id)
         return {"user_id": user_id}
 
     except Exception as e:
