@@ -1,4 +1,3 @@
-# ===== imports =====
 from functools import wraps
 from flask import Flask, g, request
 from services.authentication import *
@@ -8,17 +7,14 @@ import jwt
 import json
 import secrets
 
-# ===== flask config =====
 app = Flask(__name__)
-app.config["SECRET_KEY"] = secrets.token_urlsafe(32)
+app.config["SECRET_KEY"] = "SECRET_KEY" # TODO: replace this with secrets.token_hex(16) when deploying
 
-# ===== test files =====
 with open('tests/test-search.json', 'r') as file:
     test_search = json.load(file)
 with open('tests/test-detailed-search.json', 'r') as file:
     test_detailed_search = json.load(file)
 
-# ===== jwt =====
 def token_required(func):
     @wraps(func)
     def decorated(*args, **kwargs):
@@ -31,93 +27,25 @@ def token_required(func):
         except:
             return {"invalid_token": True}
         return func(*args, **kwargs)
-
     return decorated
 
-# ===== routing: user & profile =====
-@app.route("/createUser", methods=["POST"])
-# params: name, (unique) username, (unique) email, password
-# returns: user_id
-# function: creates user auth in firebase
-def createUserRoute():
+@app.route("/register", methods=["POST"])
+def registerRoute():
     try:
         data = request.get_json()
         name = data.get("name")
         email = data.get("email")
+        username = data.get("username")
         password = data.get("password")
         user_id = createUser(name, email, password)
+        createProfile(user_id, username)
         return {"user_id": user_id}
     
     except Exception as e:
-        # PASSWORD_TOO_SHORT, EMAIL_EXISTS, EMAIL_INVALID
-        return {"error": str(e)}
-
-@app.route("/createProfile", methods=["POST"])
-# params: user_id, (unique) username
-# returns: none
-# function: creates user profile in firebase
-def createProfileRoute():
-    try:
-        data = request.get_json()
-        user_id = data.get("user_id")
-        username = data.get("username")
-        password = data.get("password")
-        createProfile(user_id, username)
-        token = createToken(username, password, app.config["SECRET_KEY"])
-        return {"token": token}
-    
-    except Exception as e:
-        # USERNAME_EXISTS
-        return {"error": str(e)}
-
-@app.route("/editUserInfo", methods=["POST"])
-@token_required
-# params: user_id
-# returns: success or failure message
-# function: to edit user information
-def editUserInfoRoute():
-    try:
-        data = request.get_json()
-        result = editProfileInfo(g.user_id, data)
-        return {"result": result}
-    
-    except Exception as e:
+        # PASSWORD_TOO_SHORT, EMAIL_EXISTS, EMAIL_INVALID, USERNAME_EXISTS
         return {"error": str(e)}
     
-@app.route("/getDetailedUserInfo", methods=["POST"])
-@token_required
-# params: user_id
-# returns: user_info
-# function: to get detailed user information
-def getDetailedUserInfoRoute():
-    try:
-        user_info = getDetailedUserInfo(g.user_id)
-        return {"user_info": user_info}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-@app.route("/saveRestaurant", methods=["POST"])
-@token_required
-# params: user_id, restaurant_id
-# returns: success/failure
-# function: to save a restaurant
-def saveRestaurantRoute():
-    try:
-        data = request.get_json()
-        restaurant_id = data.get("restaurant_id")
-        result = saveRestaurant(g.user_id, restaurant_id)
-        return {"success": result}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
-# ===== routing: authentication =====
 @app.route("/login", methods=["POST"])
-# params: username, password
-# returns: token
-# function: verifies user credentials and creates jwt token
 def loginRoute():
     try:
         data = request.get_json()
@@ -130,58 +58,95 @@ def loginRoute():
         # USER_NOT_FOUND, INVALID_PASSWORD
         return {"error": str(e)}
 
-@app.route("/verifyToken", methods=["POST"])
+@app.route("/editUserInfo", methods=["POST"])
 @token_required
-# params: token (header)
-# returns: json message
-# function: verifies jwt token
-def verifyTokenRoute():
-    return {"valid_token": True}
-
-
-# ===== routing: yelp =====
-@app.route("/searchRestaurants", methods=["POST"])
-@token_required
-# params: longitude, latitude, keywords
-# returns: [list of restaurants]
-# function: searches for restaurants given coordinates and keywords
-def searchRestaurantsRoute():
+def editUserInfoRoute():
     try:
         data = request.get_json()
+        result = editProfileInfo(g.user_id, data)
+        return {"result": result}
+    
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/getDetailedUserInfo", methods=["GET"])
+@token_required
+def getDetailedUserInfoRoute():
+    try:
+        data = request.args
+        user_id = data.get("user_id")
+        user_info = getDetailedUserInfo(user_id)
+        return {"user_info": user_info}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.route("/saveRestaurant", methods=["POST"])
+@token_required
+def saveRestaurantRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        result = saveRestaurant(g.user_id, restaurant_id)
+        return {"result": result}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/unsaveRestaurant", methods=["POST"])
+@token_required
+def unsaveRestaurantRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        result = unsaveRestaurant(g.user_id, restaurant_id)
+        return {"success": result}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/getSavedRestaurants", methods=["GET"])
+@token_required
+def getSavedRestaurantsRoute():
+    try:
+        saved_restaurants = getSavedRestaurants(g.user_id)
+        return {"saved_restaurants": saved_restaurants}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.route("/searchRestaurants", methods=["GET"])
+@token_required
+def searchRestaurantsRoute():
+    try:
+        data = request.args
         longitude = data.get("longitude")
         latitude = data.get("latitude")
         keywords = data.get("keywords")
-        restaurants = test_search
+        location = data.get("location")
+        restaurants = searchRestaurants(longitude, latitude, keywords, location)
         return {"restaurants": restaurants}
 
     except Exception as e:
         # API_KEY_MISSING
         return {"error": str(e)}
 
-@app.route("/getRestaurantDetails", methods=["POST"])
+@app.route("/getRestaurantDetails", methods=["GET"])
 @token_required
-# params: restaurant_id, date
-# returns: restaurant details (json)
-# function: retrieves restaurant details
 def getRestaurantDetailsRoute():
     try:
-        data = request.get_json()
+        data = request.args
         restaurant_id = data.get("restaurant_id")
         current_day = data.get("current_day")
-        restaurant = test_detailed_search
+        restaurant = getRestaurantDetails(restaurant_id, current_day)
         return {"restaurant_details": restaurant}
 
     except Exception as e:
         # API_KEY_MISSING
         return {"error": str(e)}
 
-
-# ===== routing: reviews =====
 @app.route("/createReview", methods=["POST"])
 @token_required
-# params: review_id, restaurant_id, review, rating
-# returns: review_id
-# function: creates a review
 def createReviewRoute():
     try:
         data = request.get_json()
@@ -189,21 +154,18 @@ def createReviewRoute():
         restaurant_id = data.get("restaurant_id")
         review = data.get("review")
         rating = data.get("rating")
-        date = data.get("date")
-        review_id = createReview(review_id, restaurant_id, g.user_id, rating, review, date)
+        review_id = createReview(review_id, restaurant_id, g.user_id, rating, review)
+        print(review)
         return {"review_id": review_id}
 
     except Exception as e:
         return {"error": str(e)}
 
-@app.route("/getReviews", methods=["POST"])
+@app.route("/getReviews", methods=["GET"])
 @token_required
-# params: restaurant_id
-# returns: [list of reviews]
-# function: retrieves all reviews for a given restaurant
 def getReviewsRoute():
     try:
-        data = request.get_json()
+        data = request.args
         restaurant_id = data.get("restaurant_id")
         reviews = getReviews(restaurant_id)
         return {"reviews": reviews}
