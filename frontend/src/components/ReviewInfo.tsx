@@ -1,6 +1,7 @@
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
+import ImageView from "react-native-image-viewing";
 
 interface ReviewInfoProps {
   review_id: string;
@@ -12,7 +13,6 @@ interface ReviewInfoProps {
   name: string;
   review_total: number;
   saved_total: number;
-  date: string;
 }
 
 const generateFullStars = (rating: number) => {
@@ -20,7 +20,7 @@ const generateFullStars = (rating: number) => {
   const stars = [];
   for (let i = 0; i < fullStars; i++) {
     stars.push(
-      <View style={styles.iconContainer}>
+      <View key={i} style={styles.iconContainer}>
         <Icon name="star" type="font-awesome" color="#FFFFFF" size={14} />
       </View>
     );
@@ -29,10 +29,26 @@ const generateFullStars = (rating: number) => {
 };
 
 export const ReviewInfo = (props: ReviewInfoProps) => {
+  const [visible, setIsVisible] = useState(false);
+  const [imageArray, setImageArray] = useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const openImage = (index: number) => {
+    setImageArray([]);
+    for (const imageURL of props.images) {
+      const imageDict = {
+        uri: imageURL,
+      };
+      setImageArray((prevArray) => [...prevArray, imageDict]);
+    }
+    setSelectedImageIndex(index);
+    setIsVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Avatar source={{ uri: props.profile_picture }} size={32} avatarStyle={styles.avatar} />
+        <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
         <View style={styles.profileInfoContainer}>
           <Text style={styles.name}>{props.name}</Text>
           <View style={styles.infoTextContainer}>
@@ -56,10 +72,13 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
       {props.images && props.images.length > 0 && (
         <ScrollView style={styles.imageContainer} contentContainerStyle={styles.imageContainerStyle} horizontal>
           {props.images.map((imageUri, index) => (
-            <Image key={index} source={{ uri: imageUri }} style={styles.foodImage} />
+            <Pressable key={index} onPress={() => openImage(index)}>
+              <Image source={{ uri: imageUri }} style={styles.foodImage} />
+            </Pressable>
           ))}
         </ScrollView>
       )}
+      <ImageView images={imageArray} imageIndex={selectedImageIndex} visible={visible} onRequestClose={() => setIsVisible(false)} />
     </View>
   );
 };
@@ -80,15 +99,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: "GT-America-Standard-Regular",
-    fontSize: 14,
+    fontSize: 15,
     color: "#1A1A1A",
   },
   infoTextContainer: {
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
-  },
-  reviewTextContainer: { 
   },
   profileInfo: {
     flexDirection: "row",
@@ -114,13 +131,13 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     borderRadius: 4,
-    position: "relative",
     alignItems: "center",
     justifyContent: "center",
     width: 20,
     height: 20,
     backgroundColor: "#FF462D",
   },
+  reviewTextContainer: {},
   reviewText: {
     fontFamily: "GT-America-Standard-Regular",
     color: "#1A1A1A",
@@ -133,7 +150,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   foodImage: {
-    width: 150,
-    height: 100,
+    width: 115,
+    height: 75,
+    borderRadius: 8
   },
 });

@@ -11,7 +11,7 @@ interface AuthProps {
 const AuthContext = createContext<AuthProps>({});
 
 const TOKEN_KEY = "my-jwt-token";
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = process.env.EXPO_PUBLIC_SERVER_URL;
 
 export const useSession = () => {
   return useContext(AuthContext);

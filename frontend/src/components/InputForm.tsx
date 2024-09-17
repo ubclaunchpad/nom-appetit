@@ -1,4 +1,4 @@
-import { Input } from 'react-native-elements';
+import { Input } from "react-native-elements";
 
 type InputFormProps = {
   value: string;
@@ -21,14 +21,11 @@ export default function InputForm(props: InputFormProps) {
         fontFamily: "GT-America-Standard-Regular",
         fontSize: 14,
       }}
-
       // ===== on submit =====
       onSubmitEditing={props.onSubmitEditing}
-      
       // ===== placeholder =====
       placeholder={props.placeholder}
       placeholderTextColor={"#747474"}
-
       // ===== container =====
       containerStyle={{
         borderWidth: 1,
@@ -41,18 +38,15 @@ export default function InputForm(props: InputFormProps) {
         height: 42,
         borderBottomWidth: 0,
       }}
-
       // ===== error message =====
       errorMessage={props.errorMessage}
-      errorStyle={{ 
+      errorStyle={{
         fontFamily: "GT-America-Standard-Regular",
-        color: '#FF0000', 
+        color: "#FF0000",
       }}
       renderErrorMessage={props.errorMessage ? true : false}
-
       // ===== left icon =====
-      leftIcon={{type: 'material', name: props.iconName, size: 20, color: "#747474" }}
-
+      leftIcon={{ type: "material", name: props.iconName, size: 20, color: "#747474" }}
       // ===== extras =====
       autoCapitalize={props.autoCapitalize}
       secureTextEntry={props.secureTextEntry}

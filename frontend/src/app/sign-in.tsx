@@ -9,7 +9,7 @@ export default function SignIn() {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text
         onPress={async () => {
-          await onLogin("rafaelpark", "password");
+          await onLogin("admin", "password");
           // Navigate after signing in. You may want to tweak this to ensure sign-in is
           // successful before navigating.
           router.replace("/");
