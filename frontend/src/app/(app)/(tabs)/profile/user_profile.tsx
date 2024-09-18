@@ -68,7 +68,7 @@ export const Profile = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:5000/getCurrentUserInfo"
+          process.env.EXPO_PUBLIC_SERVER_URL + "/getCurrentUserInfo"
         );
 
         await addImageUrls(data["current_user_reviews"]);

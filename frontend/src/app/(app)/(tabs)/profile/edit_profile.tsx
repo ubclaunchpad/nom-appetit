@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontFamily: "Lato",
-    fontWeight: 600,
+    fontWeight: "600",
     fontSize: 24,
     color: "#004643",
   },
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 15,
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: "400",
     fontFamily: "Lato",
   },
   inputContainer: {
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   bio: {
     padding: 15,
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: "400",
     fontFamily: "Lato",
     textAlignVertical: "top",
     minHeight: 200,
