@@ -27,7 +27,10 @@ export default function RestaurantInfo(props: RestaurantProps) {
       };
       if (savedRestaurant) {
         setSavedRestaurant(false);
-        const response = await axios.post(server_url + "unsaveRestaurant", data);
+        const response = await axios.post(
+          server_url + "unsaveRestaurant",
+          data
+        );
         const { invalid_token, success } = response.data;
         if (invalid_token) {
           Alert.alert("Error", "Your token expired. Please log in again.");
@@ -51,7 +54,9 @@ export default function RestaurantInfo(props: RestaurantProps) {
     <View style={styles.container}>
       <Image
         source={{
-          uri: image_url || "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
+          uri:
+            image_url ||
+            "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png",
         }}
         style={styles.image}
         resizeMode="cover"
@@ -60,11 +65,21 @@ export default function RestaurantInfo(props: RestaurantProps) {
         <Text style={styles.name}>{name}</Text>
         {savedRestaurant ? (
           <Pressable onPress={saveRestaurant}>
-            <Icon name="heart" type="material-community" color="#7F7E78" size={20} />
+            <Icon
+              name="heart"
+              type="material-community"
+              color="#7F7E78"
+              size={20}
+            />
           </Pressable>
         ) : (
           <Pressable onPress={saveRestaurant}>
-            <Icon name="heart-outline" type="material-community" color="#7F7E78" size={20} />
+            <Icon
+              name="heart-outline"
+              type="material-community"
+              color="#7F7E78"
+              size={20}
+            />
           </Pressable>
         )}
       </View>

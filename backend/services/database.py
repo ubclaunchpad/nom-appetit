@@ -1,16 +1,18 @@
+import re
+import secrets
+
+import bcrypt
+import firebase_admin as fb
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
-import firebase_admin as fb
-import re
-import secrets
-import bcrypt
 
 load_dotenv("./services/secrets/.env")
 
 cred = credentials.Certificate("./services/secrets/serviceAccountKey.json")
 fb.initialize_app(cred)
 db = firestore.client()
+
 
 def createUser(name, email, password):
     emailValidation(email)
@@ -26,6 +28,7 @@ def createUser(name, email, password):
     db.collection("users").document(user_id).set(data)
     return user_id
 
+
 def emailValidation(email):
     # checking if email is valid
     regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
@@ -37,9 +40,11 @@ def emailValidation(email):
     if email in total_emails:
         raise Exception("EMAIL_EXISTS")
 
+
 def passwordValidation(password):
     if len(password) < 8:
         raise Exception("PASSWORD_TOO_SHORT")
+
 
 def createProfile(user_id, username):
     usernameValidation(username)
@@ -51,11 +56,13 @@ def createProfile(user_id, username):
     }
     db.collection("profiles").document(user_id).set(data)
 
+
 def usernameValidation(username):
     total_profiles = db.collection("profiles").stream()
     total_usernames = [profile.get("username") for profile in total_profiles]
     if username in total_usernames:
         raise Exception("USERNAME_EXISTS")
+
 
 def validateUser(username, password):
     profiles = list(
@@ -77,8 +84,12 @@ def validateUser(username, password):
     print("USER_ID: " + str(user_id))
     print("USER_PROFILE: " + str(user_profile))
     print("HASHED_PASSWORD: " + hashed_password)
-    print("CORRECT_PASSWORD: " + str(bcrypt.checkpw(password.encode("UTF-8"), hashed_password.encode("UTF-8"))))
+    print(
+        "CORRECT_PASSWORD: "
+        + str(bcrypt.checkpw(password.encode("UTF-8"), hashed_password.encode("UTF-8")))
+    )
     return user_id
+
 
 def getUserInfo(user_id):
     user = db.collection("users").document(user_id).get().to_dict()
@@ -86,11 +97,13 @@ def getUserInfo(user_id):
         raise Exception("USER_NOT_FOUND")
     return user
 
+
 def getProfileInfo(user_id):
     profile = db.collection("profiles").document(user_id).get().to_dict()
     if not profile:
         raise Exception("PROFILE_NOT_FOUND")
     return profile
+
 
 def getDetailedUserInfo(user_id):
     user_info = getUserInfo(user_id)
@@ -107,6 +120,7 @@ def getDetailedUserInfo(user_id):
     }
     return detailed_info
 
+
 def getReviews(restaurant_id):
     total_reviews_array = []
     total_reviews = db.collection("reviews").stream()
@@ -117,6 +131,15 @@ def getReviews(restaurant_id):
             total_reviews_array.append(review_data)
     return total_reviews_array
 
+
+def getUserReviews(restaurant_id, user_id):
+    reviews_list = getReviews(restaurant_id)
+    for review in reviews_list:
+        if review.get("user_id") == user_id:
+            return review
+    return None
+
+
 def editProfileInfo(user_id, data):
     db.collection("users").document(user_id).update({"name": data["name"]})
     db.collection("profiles").document(user_id).update(
@@ -126,6 +149,7 @@ def editProfileInfo(user_id, data):
         }
     )
     return True
+
 
 def createReview(review_id, restaurant_id, user_id, rating, review):
     if rating < 0 or rating > 5:
@@ -151,6 +175,7 @@ def createReview(review_id, restaurant_id, user_id, rating, review):
         )
         return review_id
 
+
 def saveRestaurant(user_id, restaurant_id):
     db.collection("profiles").document(user_id).update(
         {
@@ -159,6 +184,7 @@ def saveRestaurant(user_id, restaurant_id):
     )
     return True
 
+
 def unsaveRestaurant(user_id, restaurant_id):
     db.collection("profiles").document(user_id).update(
         {
@@ -166,6 +192,7 @@ def unsaveRestaurant(user_id, restaurant_id):
         }
     )
     return True
+
 
 def getSavedRestaurants(user_id):
     profile = db.collection("profiles").document(user_id).get().to_dict()

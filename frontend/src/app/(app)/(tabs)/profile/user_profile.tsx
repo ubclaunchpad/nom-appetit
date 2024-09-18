@@ -31,127 +31,96 @@ import {
 import Navigation from "@components/Navigation";
 import { ReviewInfo } from "@components/ReviewInfo";
 
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
 import { FIREBASE_STORAGE } from "firebaseConfig";
 
-type Review = {
-  name: string;
-  reviews: number;
-  photos: number;
-  rating: number;
-  time: string;
-  description: string;
-  profilePicture: string;
-};
-
-const listReview: Review[] = [
-  {
-    name: "Bryan Tao",
-    reviews: 10,
-    photos: 5,
-    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
-    rating: 4,
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  },
-  {
-    name: "Rafael Park",
-    reviews: 10,
-    photos: 5,
-    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
-    rating: 4,
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  },
-  {
-    name: "Name",
-    reviews: 10,
-    photos: 5,
-    rating: 4,
-    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  },
-  {
-    name: "Name",
-    reviews: 10,
-    photos: 5,
-    rating: 4,
-    profilePicture: "https://randomuser.me/api/portraits/men/41.jpg",
-    time: "1w",
-    description:
-      "Delightful dinner! Friendly staff and unforgettable dessert. From the warm welcome at the door to the attentive service throughout our meal, every aspect of the evening contributed to a cozy, enjoyable atmosphere. The culinary creations were nothing short of exquisite, showcasing a brilliant blend of flavors and textures. This restaurant not only impressed with its menu but also with the genuine kindness and professionalism of its staff, making our dining experience exceptionally memorable. view less",
-  },
-];
-
 type profile_info = {
+  id: string;
   name: string;
-  user_id: string;
+  email: string;
   username: string;
   bio: string;
-  saved: string[];
   reviews: string[];
+  review_total: number;
+  saved: string[];
+  saved_total: number;
+};
+
+type Review = {
+  rating: number;
+  restaurant_id: string;
+  review: string;
+  review_id: string;
+  user_id: string;
+  images: string[];
 };
 
 export const Profile = () => {
-  const { token } = useLocalSearchParams();
   const [loaded, setLoaded] = useState(false);
   const [profile, setProfile] = useState<profile_info>();
-  const [url, setUrl] = useState("");
+  const [reviewInformation, setReviewInformation] = useState<Review[]>([]);
+  const [url, setUrl] = useState(null);
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["37.5%", "90%"], []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:5000/getUserInformation",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "http://127.0.0.1:5000/getCurrentUserInfo"
         );
-        setProfile(data);
-        getDownloadURL(ref(FIREBASE_STORAGE, "users/" + data.user_id))
+
+        await addImageUrls(data["current_user_reviews"]);
+        await getDownloadURL(
+          ref(FIREBASE_STORAGE, `users/${data["current_user_info"].id}.jpg`)
+        )
           .then((url) => setUrl(url))
           .catch((e) => setUrl(null));
+
+        setProfile(data["current_user_info"]);
         setLoaded(true);
       } catch (error) {
         console.error(error.message);
       }
     };
-
     fetchData();
-  }, []);
+  }, [loaded]);
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  console.log(reviewInformation);
 
-  // variables
-  const snapPoints = useMemo(() => ["42.5%", "87.5%"], []);
+  const addImageUrls = async (reviews: Review[]) => {
+    await Promise.all(
+      reviews.map(async (review) => {
+        review.images = await getAllImages(review.review_id);
+      })
+    );
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
+    setReviewInformation(reviews);
+  };
 
   useEffect(() => {
     bottomSheetModalRef.current?.present();
   }, [bottomSheetModalRef, loaded]);
 
+  console.log(reviewInformation);
+
+  const getAllImages = async (review_id: string) => {
+    try {
+      const path_ref = ref(FIREBASE_STORAGE, `reviews/${review_id}`);
+      const review_images = await listAll(path_ref);
+      const { items } = review_images;
+      const urls = await Promise.all(items.map((item) => getDownloadURL(item)));
+      return urls;
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <>
       {loaded && (
         <SafeAreaView style={styles.containerBackground}>
-          <View style={{ width: 334 }}>
-            <Navigation
-              leftIcon="arrow-left"
-              rightIcon="home"
-              leftNavigationOnPress={() => router.back()}
-            />
-          </View>
-
           <View style={styles.imageBackground}>
             {url ? (
               <>
@@ -167,10 +136,12 @@ export const Profile = () => {
           <Text style={styles.userName}>{profile.username}</Text>
           <Text>{profile.bio}</Text>
           <View style={styles.infoBox}>
-            <Pressable onPress={() => router.push("/saved_restaurants")}>
+            <Pressable
+              onPress={() => router.push("collection/saved_restaurants")}
+            >
               <View style={styles.innerInfoBox}>
                 <Text style={{ fontSize: 16 }}>Saved Restaurants</Text>
-                <Text style={styles.profileStat}>{profile.saved.length}</Text>
+                <Text style={styles.profileStat}>{profile.saved_total}</Text>
               </View>
             </Pressable>
           </View>
@@ -179,13 +150,11 @@ export const Profile = () => {
               style={styles.editProfile}
               onPress={() => {
                 router.push({
-                  pathname: "edit_profile",
+                  pathname: "profile/edit_profile",
                   params: {
-                    token: token,
-                    id: profile.user_id,
                     oldName: profile.name,
-                    oldUsername: profile.username,
                     oldBio: profile.bio,
+                    oldUsername: profile.username,
                   },
                 });
               }}
@@ -203,11 +172,11 @@ export const Profile = () => {
               >
                 <BottomSheetView style={styles.bottomSheetContainer}>
                   <Text style={styles.bottomSheetHeader}>
-                    My Reviews ({profile.reviews.length})
+                    My Reviews ({profile.review_total})
                   </Text>
                   <View style={{ marginTop: 20 }}>
                     <FlatList
-                      data={listReview}
+                      data={reviewInformation}
                       renderItem={({ item }) => (
                         <View
                           style={{
@@ -217,7 +186,17 @@ export const Profile = () => {
                             marginBottom: 15,
                           }}
                         >
-                          <ReviewInfo {...item} />
+                          <ReviewInfo
+                            review_id={item.review_id}
+                            user_id={profile.id}
+                            review={item.review}
+                            rating={item.rating}
+                            images={item.images}
+                            profile_picture={url}
+                            name={profile.name}
+                            review_total={profile.review_total}
+                            saved_total={profile.saved_total}
+                          />
                         </View>
                       )}
                     />
