@@ -98,7 +98,7 @@ export default function RestaurantInfo(props: RestaurantProps) {
           <Icon name="location-pin" type="material" color="#7F7E78" size={14} />
           <Text style={styles.detailsText}>{city}</Text>
         </View>
-        <Text style={styles.detailsText}> • {distance}km away</Text>
+        <Text style={styles.detailsText}> • {distance} km away</Text>
       </View>
     </View>
   );

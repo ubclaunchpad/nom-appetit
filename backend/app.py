@@ -148,11 +148,22 @@ def unsaveRestaurantRoute():
 @token_required
 def getSavedRestaurantsRoute():
     date = request.args.get("current_day")
+    longitude = request.args.get("longitude")
+    latitude = request.args.get("latitude")
     try:
         restaurant_list = []
         saved_restaurants = getSavedRestaurants(g.user_id)
         for restaurant in saved_restaurants:
             restaurant_details = getRestaurantDetails(restaurant, date)
+            restaurant_details["distance"] = round(
+                haversine(
+                    float(longitude),
+                    float(latitude),
+                    float(restaurant_details["longitude"]),
+                    float(restaurant_details["latitude"]),
+                ),
+                2,
+            )
             restaurant_list.append(restaurant_details)
 
         return {"saved_restaurants": restaurant_list}

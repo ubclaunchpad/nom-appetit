@@ -3,7 +3,9 @@
 import Navigation from "@components/Navigation";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import * as Location from "expo-location";
 import {
+  Alert,
   Dimensions,
   FlatList,
   Pressable,
@@ -13,13 +15,31 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RestaurantInfo from "@components/RestaurantInfo";
+
 import axios from "axios";
 
 const SavedRestaurants = () => {
   const [savedRestaurants, setSavedRestaurants] = useState([]);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Location Permission Denied",
+        "Please enable location services in your device settings to continue."
+      );
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    setLongitude(location["coords"]["longitude"]);
+    setLatitude(location["coords"]["latitude"]);
+  };
 
   useEffect(() => {
     const date = new Date();
+    getLocation();
 
     const fetchData = async () => {
       try {
@@ -28,6 +48,8 @@ const SavedRestaurants = () => {
           {
             params: {
               current_day: date.getDay(),
+              longitude: longitude,
+              latitude: latitude,
             },
           }
         );
@@ -38,7 +60,7 @@ const SavedRestaurants = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [longitude, latitude]);
 
   return (
     <View style={styles.containerBackground}>

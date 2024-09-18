@@ -1,34 +1,34 @@
-from dotenv import load_dotenv
-from datetime import datetime
-import requests
 import os
+from datetime import datetime
+from math import asin, cos, radians, sin, sqrt
 
-load_dotenv('./services/secrets/.env')
+import requests
+from dotenv import load_dotenv
 
-YELP_KEY = os.getenv('YELP_KEY')
+load_dotenv("./services/secrets/.env")
+
+YELP_KEY = os.getenv("YELP_KEY")
 SEARCH_URL = "https://api.yelp.com/v3/businesses/search"
 DETAILS_URL = "https://api.yelp.com/v3/businesses/"
 
-headers = {
-    "accept": "application/json",
-    "Authorization": 'Bearer %s' % YELP_KEY
-}
+headers = {"accept": "application/json", "Authorization": "Bearer %s" % YELP_KEY}
 
 if not YELP_KEY:
     raise Exception("API_KEY_MISSING")
 
+
 def searchRestaurants(longitude, latitude, keywords, location):
     params = {
-        'radius': 15000,
-        'term': keywords + ' ' + 'restaurants',
-        'sort_by': 'rating',
-        'limit': 50
+        "radius": 15000,
+        "term": keywords + " " + "restaurants",
+        "sort_by": "rating",
+        "limit": 50,
     }
     if location:
-        params['location'] = location
+        params["location"] = location
     else:
-        params['longitude'] = longitude
-        params['latitude'] = latitude
+        params["longitude"] = longitude
+        params["latitude"] = latitude
     response = requests.get(SEARCH_URL, params=params, headers=headers)
     response_array = response.json()["businesses"]
     parsed_array = []
@@ -36,6 +36,7 @@ def searchRestaurants(longitude, latitude, keywords, location):
         parsed_restaurant = parseRestaurant(restaurant)
         parsed_array.append(parsed_restaurant)
     return parsed_array
+
 
 def parseRestaurant(restaurant):
     parsed_restaurant = {
@@ -49,10 +50,11 @@ def parseRestaurant(restaurant):
     }
     if "price" in restaurant:
         parsed_restaurant["price"] = restaurant["price"]
-    else: 
+    else:
         parsed_restaurant["price"] = "N/A"
     return parsed_restaurant
-    
+
+
 def getRestaurantDetails(restaurant_id, current_day):
     response = requests.get(DETAILS_URL + restaurant_id, headers=headers)
     response_json = response.json()
@@ -68,11 +70,11 @@ def getRestaurantDetails(restaurant_id, current_day):
         "imageURL": response_json["image_url"],
         "hours_na": True,
         "hours_24": False,
-        "category": response_json["categories"][0]["title"]
+        "category": response_json["categories"][0]["title"],
     }
     if "price" in response_json:
         restaurant_details["price"] = response_json["price"]
-    if 'hours' in response_json and 'open' in response_json["hours"][0]:
+    if "hours" in response_json and "open" in response_json["hours"][0]:
         restaurant_details["hours_na"] = False
         restaurant_details["open"] = response_json["hours"][0]["is_open_now"]
         hours_open_array = response_json["hours"][0]["open"]
@@ -84,7 +86,26 @@ def getRestaurantDetails(restaurant_id, current_day):
                 end_datetime = datetime.strptime(end_time, "%H%M")
                 restaurant_details["startTime"] = start_datetime.strftime("%I:%M %p")
                 restaurant_details["endTime"] = end_datetime.strftime("%I:%M %p")
-                if restaurant_details["startTime"] == "12:00 AM" and restaurant_details["endTime"] == "12:00 AM":
+                if (
+                    restaurant_details["startTime"] == "12:00 AM"
+                    and restaurant_details["endTime"] == "12:00 AM"
+                ):
                     restaurant_details["hours_24"] = True
     return restaurant_details
 
+
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance in kilometers between two points
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    r = 6371  # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+    return c * r
