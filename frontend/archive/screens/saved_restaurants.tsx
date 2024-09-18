@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Lato",
-    fontWeight: 600,
+    fontWeight: "600",
     fontSize: 24,
     color: "#004643",
     marginBottom: 5,

@@ -20,10 +20,11 @@ const SavedRestaurants = () => {
 
   useEffect(() => {
     const date = new Date();
+
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:5000/getSavedRestaurants",
+          process.env.EXPO_PUBLIC_SERVER_URL + "/getSavedRestaurants",
           {
             params: {
               current_day: date.getDay(),
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "GT-America-Standard-Bold",
-    fontWeight: 600,
+    fontWeight: "600",
     fontSize: 28,
     color: "#1A1A1A",
   },
