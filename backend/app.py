@@ -1,19 +1,23 @@
+import json
+import secrets
 from functools import wraps
+
+import jwt
 from flask import Flask, g, request
 from services.authentication import *
 from services.database import *
 from services.yelp import *
-import jwt
-import json
-import secrets
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "SECRET_KEY" # TODO: replace this with secrets.token_hex(16) when deploying
+app.config["SECRET_KEY"] = (
+    "SECRET_KEY"  # TODO: replace this with secrets.token_hex(16) when deploying
+)
 
-with open('tests/test-search.json', 'r') as file:
+with open("tests/test-search.json", "r") as file:
     test_search = json.load(file)
-with open('tests/test-detailed-search.json', 'r') as file:
+with open("tests/test-detailed-search.json", "r") as file:
     test_detailed_search = json.load(file)
+
 
 def token_required(func):
     @wraps(func)
@@ -27,7 +31,9 @@ def token_required(func):
         except:
             return {"invalid_token": True}
         return func(*args, **kwargs)
+
     return decorated
+
 
 @app.route("/register", methods=["POST"])
 def registerRoute():
@@ -40,11 +46,12 @@ def registerRoute():
         user_id = createUser(name, email, password)
         createProfile(user_id, username)
         return {"user_id": user_id}
-    
+
     except Exception as e:
         # PASSWORD_TOO_SHORT, EMAIL_EXISTS, EMAIL_INVALID, USERNAME_EXISTS
         return {"error": str(e)}
-    
+
+
 @app.route("/login", methods=["POST"])
 def loginRoute():
     try:
@@ -58,6 +65,7 @@ def loginRoute():
         # USER_NOT_FOUND, INVALID_PASSWORD
         return {"error": str(e)}
 
+
 @app.route("/editUserInfo", methods=["POST"])
 @token_required
 def editUserInfoRoute():
@@ -65,10 +73,11 @@ def editUserInfoRoute():
         data = request.get_json()
         result = editProfileInfo(g.user_id, data)
         return {"result": result}
-    
+
     except Exception as e:
         return {"error": str(e)}
-    
+
+
 @app.route("/getDetailedUserInfo", methods=["GET"])
 @token_required
 def getDetailedUserInfoRoute():
@@ -81,6 +90,34 @@ def getDetailedUserInfoRoute():
     except Exception as e:
         return {"error": str(e)}
 
+
+@app.route("/getCurrentUserInfo", methods=["GET"])
+@token_required
+# params: none
+# returns: user and profile information
+# function: to retrieve profile information from token
+def getCurrentUserInfoRoute():
+    try:
+        user_id = g.user_id
+        current_user_info = getDetailedUserInfo(user_id)
+        current_user_info["id"] = user_id
+        reviewed_restaurant_ids = current_user_info["reviews"]
+        review_details = []
+        for review_id in reviewed_restaurant_ids:
+            review_detail = getUserReviews(review_id, user_id)
+            review_details.append(review_detail)
+        return {
+            "current_user_info": current_user_info,
+            "current_user_reviews": review_details,
+        }
+
+    except Exception as e:
+        if str(e) == "USER_NOT_FOUND":
+            return {"user_not_found": True}
+        if str(e) == "PROFILE_NOT_FOUND":
+            return {"profile_not_found": True}
+
+
 @app.route("/saveRestaurant", methods=["POST"])
 @token_required
 def saveRestaurantRoute():
@@ -92,7 +129,8 @@ def saveRestaurantRoute():
 
     except Exception as e:
         return {"error": str(e)}
-    
+
+
 @app.route("/unsaveRestaurant", methods=["POST"])
 @token_required
 def unsaveRestaurantRoute():
@@ -104,16 +142,24 @@ def unsaveRestaurantRoute():
 
     except Exception as e:
         return {"error": str(e)}
-    
+
+
 @app.route("/getSavedRestaurants", methods=["GET"])
 @token_required
 def getSavedRestaurantsRoute():
+    date = request.args.get("current_day")
     try:
+        restaurant_list = []
         saved_restaurants = getSavedRestaurants(g.user_id)
-        return {"saved_restaurants": saved_restaurants}
+        for restaurant in saved_restaurants:
+            restaurant_details = getRestaurantDetails(restaurant, date)
+            restaurant_list.append(restaurant_details)
+
+        return {"saved_restaurants": restaurant_list}
 
     except Exception as e:
         return {"error": str(e)}
+
 
 @app.route("/searchRestaurants", methods=["GET"])
 @token_required
@@ -131,6 +177,7 @@ def searchRestaurantsRoute():
         # API_KEY_MISSING
         return {"error": str(e)}
 
+
 @app.route("/getRestaurantDetails", methods=["GET"])
 @token_required
 def getRestaurantDetailsRoute():
@@ -144,6 +191,7 @@ def getRestaurantDetailsRoute():
     except Exception as e:
         # API_KEY_MISSING
         return {"error": str(e)}
+
 
 @app.route("/createReview", methods=["POST"])
 @token_required
@@ -160,6 +208,7 @@ def createReviewRoute():
 
     except Exception as e:
         return {"error": str(e)}
+
 
 @app.route("/getReviews", methods=["GET"])
 @token_required

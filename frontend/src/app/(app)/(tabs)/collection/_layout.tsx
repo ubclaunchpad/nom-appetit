@@ -8,7 +8,7 @@ const Layout = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen name="saved_restaurants" />
     </Stack>
   );
 };
