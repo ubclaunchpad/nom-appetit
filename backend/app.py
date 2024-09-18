@@ -45,28 +45,11 @@ login_manager = LoginManager(app)
 login_manager.login_view = '/'
 login_manager.init_app(app)
 
-# ===== Initialize User Class =====
-class User(UserMixin):
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = username
-        self.email = email
-
-    def __repr__(self):
-        return f'<User {self.username}>'
-
-@login.user_loader
-def load_user(user_id):
-    return getUserInfo(user_id)
-
+@app.route('/authorize/<provider>')
 # params: provider
 # returns: a redirect to the provider's authorization endpoint
 # function: reroutes the user to the third-party (Google) login page
-@app.route('/authorize/<provider>')
 def oauth2_authorize(provider):
-    if not current_user.is_anonymous:
-        return redirect('http://127.0.0.1:5000/home')
-
     provider_data = current_app.config['OAUTH2_PROVIDERS'].get(provider)
     if provider_data is None:
         abort(404)
@@ -93,9 +76,6 @@ def oauth2_authorize(provider):
 # function: accepts the authorization token from the provider, exchanges it for an access token,
 #           then exchanges the access token for user information
 def oauth2_callback(provider):
-    if not current_user.is_anonymous:
-        return redirect('http://127.0.0.1:5000/home')
-
     provider_data = current_app.config['OAUTH2_PROVIDERS'].get(provider)
     if provider_data is None:
         abort(404)
@@ -139,13 +119,16 @@ def oauth2_callback(provider):
     })
     if response.status_code != 200:
         abort(401)
-    
-    # for testing
-    print(response.json())
 
+    # access user information
     email = provider_data['userinfo']['email'](response.json())
     name = provider_data['userinfo']['displayName'](response.json())
     userID = provider_data['userinfo']['userID'](response.json())
+
+    # !!!!!!
+
+    # THIS SECTION NEEDS TO BE ADJUSTED TO THE NEW IMPLEMENTATION OF FIREBASE AUTHENTICATION
+
 
     # find the user in the database
     try:
@@ -158,21 +141,9 @@ def oauth2_callback(provider):
         password = None
         createUser(name, email, password, userID)
 
-    # log the user in
-    # somehow user is still "None" even after the if statement above has passed. That means that 
-    # createUser is not assigning user to anything right now. 
-    # I probably need to properly implement flask-Mixin into our user system.
-    login_user(user)
+    # !!!!!!
 
     return redirect('http://127.0.0.1:5000/home')
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.')
-    return redirect(url_for('index'))
-
 
 
 
