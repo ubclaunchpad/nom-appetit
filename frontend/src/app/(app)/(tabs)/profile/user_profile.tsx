@@ -87,8 +87,6 @@ export const Profile = () => {
     fetchData();
   }, [loaded]);
 
-  console.log(reviewInformation);
-
   const addImageUrls = async (reviews: Review[]) => {
     await Promise.all(
       reviews.map(async (review) => {
@@ -102,8 +100,6 @@ export const Profile = () => {
   useEffect(() => {
     bottomSheetModalRef.current?.present();
   }, [bottomSheetModalRef, loaded]);
-
-  console.log(reviewInformation);
 
   const getAllImages = async (review_id: string) => {
     try {

@@ -5,7 +5,19 @@ import { router, useLocalSearchParams } from "expo-router";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { FIREBASE_STORAGE } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, Image, ImageBackground, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Image,
+  ImageBackground,
+  Linking,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "src/context/SessionContext";
@@ -21,7 +33,9 @@ export default function Restaurant() {
   const [hours24, setHours24] = useState(false);
   const [address, setAddress] = useState("");
   const [open, setOpen] = useState(false);
-  const [imageURL, setImageURL] = useState("https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png");
+  const [imageURL, setImageURL] = useState(
+    "https://eldermoraes.com/wp-content/uploads/2023/05/placeholder.png"
+  );
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [reviews, setReviews] = useState([]);
@@ -53,7 +67,8 @@ export default function Restaurant() {
 
   const searchRestaurantDetails = async () => {
     try {
-      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "/getRestaurantDetails";
+      const server_url =
+        process.env.EXPO_PUBLIC_SERVER_URL + "/getRestaurantDetails";
       const current_day = new Date().getDay();
       const params = {
         restaurant_id: restaurant_id,
@@ -125,7 +140,8 @@ export default function Restaurant() {
 
   const getUserSavedRestaurants = async () => {
     try {
-      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "/getSavedRestaurants";
+      const server_url =
+        process.env.EXPO_PUBLIC_SERVER_URL + "/getUserSavedRestaurants";
       const response = await axios.get(server_url);
       const { invalid_token, saved_restaurants } = response.data;
       if (invalid_token) {
@@ -148,7 +164,10 @@ export default function Restaurant() {
       };
       if (savedRestaurants) {
         setSavedRestaurants(false);
-        const response = await axios.post(server_url + "/unsaveRestaurant", data);
+        const response = await axios.post(
+          server_url + "/unsaveRestaurant",
+          data
+        );
         const { invalid_token } = response.data;
         if (invalid_token) {
           Alert.alert("Error", "Your session expired. Please log in again.");
@@ -218,7 +237,8 @@ export default function Restaurant() {
       const params = {
         user_id: user_id,
       };
-      const server_url = process.env.EXPO_PUBLIC_SERVER_URL + "/getDetailedUserInfo";
+      const server_url =
+        process.env.EXPO_PUBLIC_SERVER_URL + "/getDetailedUserInfo";
       const response = await axios.get(server_url, { params });
       const { invalid_token, user_info } = response.data;
       if (invalid_token) {
@@ -254,7 +274,12 @@ export default function Restaurant() {
             leftIcon="arrow-left"
             leftNavigationOnPress={() => router.back()}
             middleIcon="note-edit-outline"
-            middleNavigationOnPress={() => router.navigate({ pathname: "search/add-review", params: { restaurant_id: restaurant_id } })}
+            middleNavigationOnPress={() =>
+              router.navigate({
+                pathname: "search/add-review",
+                params: { restaurant_id: restaurant_id },
+              })
+            }
             rightIcon={savedRestaurants ? "heart" : "heart-outline"}
             rightNavigationOnPress={() => saveRestaurant()}
             color="#FFFFFF"
@@ -275,7 +300,12 @@ export default function Restaurant() {
                 </Text>
               </View>
               <View style={styles.detailsRow}>
-                <Icon name="clock-outline" type="material-community" color="#7F7E78" size={16} />
+                <Icon
+                  name="clock-outline"
+                  type="material-community"
+                  color="#7F7E78"
+                  size={16}
+                />
                 {hoursNA ? (
                   <Text style={styles.detailsText}>Not Available</Text>
                 ) : hours24 ? (
@@ -289,7 +319,12 @@ export default function Restaurant() {
                 )}
               </View>
               <View style={styles.detailsRow}>
-                <Icon name="location-pin" type="material" color="#7F7E78" size={16} />
+                <Icon
+                  name="location-pin"
+                  type="material"
+                  color="#7F7E78"
+                  size={16}
+                />
                 <Text style={styles.detailsText}>{address}</Text>
               </View>
             </View>
@@ -314,7 +349,11 @@ export default function Restaurant() {
           </View>
           <View style={styles.reviewsContainer}>
             <Text style={styles.reviewsText}>Reviews</Text>
-            {reviewsTotalInformation.length === 0 && <Text style={styles.detailsText}>No reviews so far. Add yours!</Text>}
+            {reviewsTotalInformation.length === 0 && (
+              <Text style={styles.detailsText}>
+                No reviews so far. Add yours!
+              </Text>
+            )}
             <FlatList
               ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
               scrollEnabled={false}
@@ -328,7 +367,6 @@ export default function Restaurant() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   main: {

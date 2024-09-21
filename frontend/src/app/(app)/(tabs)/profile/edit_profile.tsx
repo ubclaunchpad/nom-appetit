@@ -53,8 +53,6 @@ const EditProfile = () => {
       } else {
         router.back();
       }
-
-      console.log(data);
     } catch (error) {
       console.error(error.message);
     }

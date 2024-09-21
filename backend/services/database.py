@@ -140,6 +140,19 @@ def getUserReviews(restaurant_id, user_id):
     return None
 
 
+def removeReview(review_id, user_id):
+    review_info = db.collection("reviews").document(review_id).get().to_dict()
+    restaurant_id = review_info["restaurant_id"]
+    print(restaurant_id)
+    db.collection("profiles").document(user_id).update(
+        {
+            "reviews": firestore.ArrayRemove([restaurant_id]),
+        }
+    )
+    db.collection("reviews").document(review_id).delete()
+    return True
+
+
 def editProfileInfo(user_id, data):
     db.collection("users").document(user_id).update({"name": data["name"]})
     db.collection("profiles").document(user_id).update(

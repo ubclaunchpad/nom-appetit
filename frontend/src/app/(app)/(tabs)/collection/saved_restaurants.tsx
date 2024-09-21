@@ -44,7 +44,7 @@ const SavedRestaurants = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          process.env.EXPO_PUBLIC_SERVER_URL + "/getSavedRestaurants",
+          process.env.EXPO_PUBLIC_SERVER_URL + "/getSavedRestaurantsDetails",
           {
             params: {
               current_day: date.getDay(),

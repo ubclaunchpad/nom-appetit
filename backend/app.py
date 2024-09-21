@@ -144,9 +144,20 @@ def unsaveRestaurantRoute():
         return {"error": str(e)}
 
 
-@app.route("/getSavedRestaurants", methods=["GET"])
+@app.route("/getUserSavedRestaurants", methods=["GET"])
 @token_required
-def getSavedRestaurantsRoute():
+def getUserSavedRestaurantsRoute():
+    try:
+        saved_restaurants = getSavedRestaurants(g.user_id)
+        return {"saved_restaurants": saved_restaurants}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.route("/getSavedRestaurantsDetails", methods=["GET"])
+@token_required
+def getSavedRestaurantsDetailsRoute():
     date = request.args.get("current_day")
     longitude = request.args.get("longitude")
     latitude = request.args.get("latitude")
@@ -230,5 +241,27 @@ def getReviewsRoute():
         reviews = getReviews(restaurant_id)
         return {"reviews": reviews}
 
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.route("/compareUserID", methods=["GET"])
+@token_required
+def getUserIDRoute():
+    current_id = request.args.get("current_id")
+    same_id = g.user_id == current_id
+    try:
+        return {"same_id": same_id}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.route("/removeReview", methods=["DELETE"])
+@token_required
+def removeReviewRoute():
+    try:
+        review_id = request.args.get("review_id")
+        status = removeReview(review_id, g.user_id)
+        return {"removed_status": status}
     except Exception as e:
         return {"error": str(e)}

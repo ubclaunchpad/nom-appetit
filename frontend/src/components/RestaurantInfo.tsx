@@ -89,7 +89,6 @@ export default function RestaurantInfo(props: RestaurantProps) {
           <Text style={styles.rating}>{rating.toFixed(1)}</Text>
         </View>
         <Text style={styles.detailsText}>
-          {" "}
           • {category} • {price}
         </Text>
       </View>
