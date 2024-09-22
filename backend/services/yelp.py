@@ -65,7 +65,7 @@ def getRestaurantDetails(restaurant_id, current_day):
         "address": response_json["location"]["address1"],
         "city": response_json["location"]["city"],
         "state": response_json["location"]["state"],
-        "imageURL": response_json["image_url"],
+        "image_url": response_json["image_url"],
         "hours_na": True,
         "hours_24": False,
         "category": response_json["categories"][0]["title"]
@@ -87,4 +87,9 @@ def getRestaurantDetails(restaurant_id, current_day):
                 if restaurant_details["startTime"] == "12:00 AM" and restaurant_details["endTime"] == "12:00 AM":
                     restaurant_details["hours_24"] = True
     return restaurant_details
+
+def getRestaurantDetailsFull(restaurant_id):
+    response = requests.get(DETAILS_URL + restaurant_id, headers=headers)
+    response_json = response.json()
+    return response_json
 

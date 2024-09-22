@@ -5,6 +5,7 @@ import firebase_admin as fb
 from dotenv import load_dotenv
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
+from datetime import datetime 
 
 load_dotenv("./services/secrets/.env")
 
@@ -40,7 +41,6 @@ def emailValidation(email):
 def passwordValidation(password):
     if len(password) < 8:
         raise Exception("PASSWORD_TOO_SHORT")
-
 
 def createProfile(user_id, username):
     usernameValidation(username)
@@ -152,6 +152,7 @@ def createReview(review_id, restaurant_id, user_id, rating, review):
             "review": review,
             "restaurant_id": restaurant_id,
             "user_id": user_id,
+            "created_at": datetime.now().isoformat() 
         }
         print(data)
         db.collection("reviews").document(review_id).set(data)

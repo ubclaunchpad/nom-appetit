@@ -6,6 +6,7 @@ from flask import Flask, g, request
 from services.authentication import *
 from services.database import *
 from services.yelp import *
+from services.recommendation import *
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = (
@@ -215,5 +216,21 @@ def getReviewsRoute():
         reviews = getReviews(restaurant_id)
         return {"reviews": reviews}
 
+    except Exception as e:
+        return {"error": str(e)}
+    
+
+@app.route("/getUserRecommendations", methods=["POST"])
+@token_required
+def getUserRecommendationsRoute():
+    try:
+        data = request.get_json()
+        user_id = g.user_id
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        current_day = data.get("current_day")
+        recommendations = recommendUser(user_id, latitude, longitude, current_day)
+        return recommendations
+    
     except Exception as e:
         return {"error": str(e)}

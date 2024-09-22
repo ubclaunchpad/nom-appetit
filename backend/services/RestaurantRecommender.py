@@ -99,4 +99,4 @@ class RestaurantRecommender():
             final_table['index'] = knn.kneighbors(target_df_without_info)[1][0]
             final_table.set_index('index')
             result = final_table.join(self.processed_training_df, on='index')
-            return result[['distance','index','name','id', 'rating']].head(10)
+            return result[['distance','index','name','id', 'rating']].head(5)
