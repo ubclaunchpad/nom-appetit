@@ -76,7 +76,7 @@ export default function Restaurant() {
         hours_na,
         hours_24,
         price,
-        imageURL,
+        image_url,
       } = response.data.restaurant_details;
       if (invalid_token) {
         Alert.alert("Error", "Your session expired. Please log in again.");
@@ -95,7 +95,7 @@ export default function Restaurant() {
         setHoursNA(hours_na);
         setHours24(hours_24);
         setPrice(price);
-        setImageURL(imageURL);
+        setImageURL(image_url);
       }
     } catch (error) {
       console.error(error.message);
