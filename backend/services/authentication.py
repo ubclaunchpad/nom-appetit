@@ -1,4 +1,3 @@
-# ===== imports  =====
 from services.database import *
 import jwt
 from datetime import datetime, timedelta, timezone

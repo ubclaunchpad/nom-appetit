@@ -1,8 +1,7 @@
 import json
 import secrets
-from functools import wraps
-
 import jwt
+from functools import wraps
 from flask import Flask, g, request
 from services.authentication import *
 from services.database import *
@@ -93,9 +92,6 @@ def getDetailedUserInfoRoute():
 
 @app.route("/getCurrentUserInfo", methods=["GET"])
 @token_required
-# params: none
-# returns: user and profile information
-# function: to retrieve profile information from token
 def getCurrentUserInfoRoute():
     try:
         user_id = g.user_id
