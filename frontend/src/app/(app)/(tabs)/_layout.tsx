@@ -17,16 +17,9 @@ const TabsLayout = () => {
           fontFamily: "GT-America-Standard-Regular",
           fontSize: 12,
         },
-        tabBarActiveTintColor: "#FF462D"
+        tabBarActiveTintColor: "#FF462D",
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color }) => <Icon type="material-community" name="home" size={24} color={color} />,
-        }}
-      />
       <Tabs.Screen
         name="search"
         options={{
@@ -35,9 +28,16 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="collection"
+        name="discover"
         options={{
-          tabBarLabel: "Collection",
+          tabBarLabel: "Discover",
+          tabBarIcon: ({ color }) => <Icon type="material-community" name="compass-outline" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="saved"
+        options={{
+          tabBarLabel: "Saved",
           tabBarIcon: ({ color }) => <Icon type="material" name="bookmark" size={24} color={color} />,
         }}
       />

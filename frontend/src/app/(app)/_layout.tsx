@@ -17,6 +17,6 @@ export default function AppLayout() {
       </Stack>
     );
   } else {
-    return <Redirect href="/sign-in" />;
+    return <Redirect href="/" />;
   }
 }

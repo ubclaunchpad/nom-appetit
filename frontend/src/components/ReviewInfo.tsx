@@ -1,18 +1,19 @@
+import { Divider } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import ImageView from "react-native-image-viewing";
 
 interface ReviewInfoProps {
-  review_id: string;
   user_id: string;
-  review: string;
   rating: number;
-  images: string[];
+  review: string;
+  image_urls: string[];
   profile_picture: string;
-  name: string;
-  review_total: number;
-  saved_total: number;
+  user_name: string;
+  user_total_reviews: number;
+  user_total_saved: number;
+  picture_id: string;
 }
 
 const generateFullStars = (rating: number) => {
@@ -35,7 +36,7 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
 
   const openImage = (index: number) => {
     setImageArray([]);
-    for (const imageURL of props.images) {
+    for (const imageURL of props.image_urls) {
       const imageDict = {
         uri: imageURL,
       };
@@ -48,17 +49,21 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
+        {props.profile_picture ? (
+          <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
+        ) : (
+          <Image source={Images.blankProfile} style={styles.blankAvatar} />
+        )}
         <View style={styles.profileInfoContainer}>
-          <Text style={styles.name}>{props.name}</Text>
+          <Text style={styles.name}>{props.user_name}</Text>
           <View style={styles.infoTextContainer}>
             <View style={styles.profileInfo}>
               <Icon name="account-box" type="material-community" color="#7F7E78" size={14} />
-              <Text style={styles.reviewsNum}>{props.review_total}</Text>
+              <Text style={styles.reviewsNum}>{props.user_total_reviews}</Text>
             </View>
             <View style={styles.profileInfo}>
               <Icon name="star-box" type="material-community" color="#7F7E78" size={14} />
-              <Text style={styles.reviewsNum}>{props.saved_total}</Text>
+              <Text style={styles.reviewsNum}>{props.user_total_saved}</Text>
             </View>
           </View>
         </View>
@@ -69,9 +74,9 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
       <View style={styles.reviewTextContainer}>
         <Text style={styles.reviewText}>{props.review}</Text>
       </View>
-      {props.images && props.images.length > 0 && (
+      {props.image_urls && props.image_urls.length > 0 && (
         <ScrollView style={styles.imageContainer} contentContainerStyle={styles.imageContainerStyle} horizontal>
-          {props.images.map((imageUri, index) => (
+          {props.image_urls.map((imageUri, index) => (
             <Pressable key={index} onPress={() => openImage(index)}>
               <Image source={{ uri: imageUri }} style={styles.foodImage} />
             </Pressable>
@@ -92,14 +97,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatar: {
-    borderRadius: 8,
+    width: 34,
+    height: 34,
+    borderRadius: 20,
+  },
+  blankAvatar: {
+    width: 34,
+    height: 34,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#A7A9AD",
   },
   profileInfoContainer: {
     paddingLeft: 8,
   },
   name: {
     fontFamily: "GT-America-Standard-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#1A1A1A",
   },
   infoTextContainer: {
@@ -112,16 +126,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 2,
   },
-  reviewsNum: {
-    fontFamily: "Lato-SemiBold",
-    fontSize: 14,
-    color: "#7F7E78",
-  },
   starsTimeContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 8,
-    marginBottom: 5,
+    marginBottom: 8,
     gap: 5,
   },
   starsContainer: {
@@ -143,8 +152,13 @@ const styles = StyleSheet.create({
     color: "#1A1A1A",
     fontSize: 14,
   },
+  reviewsNum: {
+    fontFamily: "GT-America-Standard-Regular",
+    fontSize: 14,
+    color: "#7F7E78",
+  },
   imageContainer: {
-    marginTop: 15,
+    marginTop: 8,
   },
   imageContainerStyle: {
     gap: 10,
@@ -152,6 +166,6 @@ const styles = StyleSheet.create({
   foodImage: {
     width: 115,
     height: 75,
-    borderRadius: 8
+    borderRadius: 8,
   },
 });

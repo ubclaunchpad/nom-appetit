@@ -46,7 +46,6 @@ export default function Restaurant() {
     getAllReviews();
   }, []);
 
-
   const getRestaurantDetails = async () => {
     try {
       const params = {
@@ -190,7 +189,7 @@ export default function Restaurant() {
             middleIcon="note-edit-outline"
             middleNavigationOnPress={() => 
               router.push({
-                pathname: "search/add-review",
+                pathname: "saved/add-review",
                 params: { 
                   restaurant_id: restaurant_id, 
                   name: restaurantName, 

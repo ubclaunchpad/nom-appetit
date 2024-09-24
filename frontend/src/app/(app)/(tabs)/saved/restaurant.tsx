@@ -190,7 +190,7 @@ export default function Restaurant() {
             middleIcon="note-edit-outline"
             middleNavigationOnPress={() => 
               router.push({
-                pathname: "search/add-review",
+                pathname: "saved/add-review",
                 params: { 
                   restaurant_id: restaurant_id, 
                   name: restaurantName, 
