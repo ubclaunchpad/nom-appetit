@@ -221,9 +221,21 @@ def removeReviewRoute():
         data = request.get_json()
         user_id = g.user_id
         restaurant_id = data.get("restaurant_id")
-        print(user_id, restaurant_id)
         result = removeReview(user_id, restaurant_id)
         return {"success": result}
+    
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/getImageID", methods=["GET"])
+@token_required
+def getImageIDRoute():
+    try:
+        data = request.args
+        user_id = g.user_id
+        restaurant_id = data.get("restaurant_id")
+        picture_id = getImageID(user_id, restaurant_id)
+        return {"picture_id": picture_id}
     
     except Exception as e:
         return {"error": str(e)}

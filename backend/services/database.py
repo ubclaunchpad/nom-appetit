@@ -180,3 +180,11 @@ def removeReview(user_id, restaurant_id):
     review_ref = db.collection("reviews").document(restaurant_id).collection("user_reviews").document(user_id)
     review_ref.delete()
     return True
+
+def getImageID(user_id, restaurant_id):
+    user_reviews = getUserReviews(user_id)
+    for review in user_reviews:
+        if review['restaurant']['restaurant_id'] == restaurant_id:
+            picture_id = review['review'].get('picture_id')
+            return picture_id
+    return None
