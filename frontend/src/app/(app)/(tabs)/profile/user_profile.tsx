@@ -20,10 +20,12 @@ type ProfileInfo = {
 type Review = {
   review_id: string;
   restaurant: {
+    restaurant_id: string;
     restaurant_name: string;
     restaurant_image_url: string;
   };
   review: {
+    picture_id: string;
     rating: number;
     review: string;
   };
@@ -79,6 +81,19 @@ export const Profile = () => {
     ));
   };
 
+  const removeReview = async (restaurant_id: string) => {
+    try {
+      const data = {
+        "restaurant_id": restaurant_id,
+      };
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/removeReview`, data);
+      // Update local state to remove the review
+      setUserReviews((prevReviews) => prevReviews.filter((review) => review.restaurant.restaurant_id !== restaurant_id));
+    } catch (error) {
+      console.error("Error removing review:", error.message);
+    }
+  };
+
   const renderProfileHeader = () => (
     <View style={{ paddingBottom: 10 }}>
       <Image source={{ uri: url }} style={styles.image} />
@@ -125,7 +140,12 @@ export const Profile = () => {
               <View style={styles.reviewContent}>
                 <Image source={{ uri: item.restaurant.restaurant_image_url }} style={styles.reviewImage} />
                 <View style={styles.textContainer}>
-                  <Text style={styles.restaurantName}>{item.restaurant.restaurant_name}</Text>
+                  <View style={styles.topContainer}>
+                    <Text style={styles.restaurantName}>{item.restaurant.restaurant_name}</Text>
+                    <Pressable onPress={() => removeReview(item.restaurant.restaurant_id)}>
+                      <Icon name="close" type="material-community" size={24} color="#7F7E78" />
+                    </Pressable>
+                  </View>
                   <View style={styles.starsTimeContainer}>
                     <View style={styles.starsContainer}>{generateFullStars(item.review.rating, item.review_id)}</View>
                   </View>
@@ -182,7 +202,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   reviewContainer: {
-    paddingTop: 15,
+    paddingTop: 20,
     borderRadius: 12,
   },
   reviewContent: {
@@ -273,5 +293,13 @@ const styles = StyleSheet.create({
     fontFamily: "GT-America-Standard-Standard",
     fontSize: 14,
     color: "#7F7E78",
-  }
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  topContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });

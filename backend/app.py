@@ -221,6 +221,7 @@ def removeReviewRoute():
         data = request.get_json()
         user_id = g.user_id
         restaurant_id = data.get("restaurant_id")
+        print(user_id, restaurant_id)
         result = removeReview(user_id, restaurant_id)
         return {"success": result}
     
