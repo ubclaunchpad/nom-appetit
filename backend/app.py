@@ -210,6 +210,19 @@ def getUserRecommendationsRoute():
         refresh_request = data.get("refresh_request")
         recommendations = recommendUser(user_id, refresh_request)
         return {"restaurants": recommendations}
+    
     except Exception as e:
         return {"error": str(e)}
 
+@app.route("/removeReview", methods=["POST"])
+@token_required
+def removeReviewRoute():
+    try:
+        data = request.get_json()
+        user_id = g.user_id
+        restaurant_id = data.get("restaurant_id")
+        result = removeReview(user_id, restaurant_id)
+        return {"success": result}
+    
+    except Exception as e:
+        return {"error": str(e)}
