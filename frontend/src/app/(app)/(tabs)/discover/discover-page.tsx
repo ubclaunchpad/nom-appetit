@@ -21,10 +21,10 @@ export default function SearchPage() {
 
   const getSavedRestaurants = async () => {
     try {
-      const params = {
+      const data = {
         refresh_status: refreshing,
       };
-      const response = await axios.post(process.env.EXPO_PUBLIC_SERVER_URL + "/getUserRecommendations", { params });
+      const response = await axios.post(process.env.EXPO_PUBLIC_SERVER_URL + "/getUserRecommendations", data);
       const { invalid_token, error, restaurants } = response.data;
       if (invalid_token) {
         Alert.alert("Error", "Your session expired. Please log in again.");
