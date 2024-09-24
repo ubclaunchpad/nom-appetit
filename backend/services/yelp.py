@@ -84,9 +84,5 @@ def parseRestaurant(restaurant, user_id, regular_search):
         parsed_restaurant["rating"] = restaurant["rating"]
     else:
         parsed_restaurant["rating"] = 0
-    # ===== saved status for user =====
-    if regular_search:
-        saved_status = getSavedStatus(user_id, restaurant["id"])
-        parsed_restaurant["saved"] = saved_status
     return parsed_restaurant
     

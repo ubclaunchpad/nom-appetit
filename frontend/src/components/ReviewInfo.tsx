@@ -49,11 +49,7 @@ export const ReviewInfo = (props: ReviewInfoProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        {props.profile_picture ? (
-          <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
-        ) : (
-          <Image source={Images.blankProfile} style={styles.blankAvatar} />
-        )}
+        <Avatar source={{ uri: props.profile_picture }} size={34} avatarStyle={styles.avatar} />
         <View style={styles.profileInfoContainer}>
           <Text style={styles.name}>{props.user_name}</Text>
           <View style={styles.infoTextContainer}>

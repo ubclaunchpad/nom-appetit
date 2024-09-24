@@ -157,9 +157,8 @@ def getUserRecommendationStatus(user_id):
         return False
     
 def getSavedStatus(user_id, restaurant_id):
-    doc_ref = db.collection("profiles").document(user_id)
-    doc = doc_ref.get()
-    saved_array = doc.to_dict().get("saved", [])
+    user_info = getUserInfo(user_id)
+    saved_array = user_info['saved']
     for saved_restaurant in saved_array:
         if saved_restaurant['restaurant_id'] == restaurant_id:
             return True

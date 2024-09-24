@@ -4,7 +4,8 @@ import axios from "axios";
 import * as Location from "expo-location";
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { RefreshControl } from "react-native";
+import { Alert, FlatList, Pressable, StyleSheet, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "src/context/SessionContext";
 
@@ -16,10 +17,10 @@ export default function SearchPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    getSavedRestaurants();
+    getUserRecommendations();
   }, []);
 
-  const getSavedRestaurants = async () => {
+  const getUserRecommendations = async () => {
     try {
       const data = {
         refresh_status: refreshing,
@@ -37,6 +38,7 @@ export default function SearchPage() {
             "It seems you haven’t submitted enough reviews for personalized recommendations. Start sharing your ratings to unlock tailored suggestions! ☺"
           );
         } else {
+          setErrorStatus(false);
           setRestaurants(restaurants);
         }
       }
@@ -50,7 +52,7 @@ export default function SearchPage() {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     const timeout = setTimeout(() => {
-      getSavedRestaurants();
+      getUserRecommendations();
     }, 2000);
   }, []);
 
@@ -60,13 +62,18 @@ export default function SearchPage() {
         <Text style={styles.headerText}>Discover</Text>
       </SafeAreaView>
       {errorStatus ? (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <View>
+          <ScrollView style={styles.scrollViewContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+          </ScrollView>
+        </View>
       ) : (
         <View style={styles.restaurantContainer}>
           <FlatList
             data={restaurants}
             refreshing={refreshing}
             onRefresh={onRefresh}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <RestaurantInfo
                 restaurant_id={item.restaurant_id}
@@ -80,8 +87,7 @@ export default function SearchPage() {
                 business_hours={item.business_hours}
                 categories={item.categories}
                 rating={item.rating}
-                saved={item.saved}
-                path={"saved"}
+                path={"discover"}
               />
             )}
           />
@@ -115,6 +121,9 @@ const styles = StyleSheet.create({
     fontFamily: "GT-America-Standard-Standard",
     fontSize: 14,
     color: "#7F7E78",
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
+  scrollViewContainer: {
+    height: 400,
+  },
 });
