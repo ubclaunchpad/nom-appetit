@@ -14,12 +14,15 @@ export default function SearchPage() {
   const [restaurants, setRestaurants] = useState([]);
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
-  const { onLogout }= useSession();
+  const [locationReady, setLocationReady] = useState(false);
+  const { onLogout } = useSession();
 
   useEffect(() => {
     getLocation();
-    searchRestaurants();
-  }, [longitude, latitude]);
+    if (locationReady) {
+      searchRestaurants();
+    }
+  }, [locationReady]);
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -30,6 +33,7 @@ export default function SearchPage() {
     let location = await Location.getCurrentPositionAsync({});
     setLongitude(location["coords"]["longitude"]);
     setLatitude(location["coords"]["latitude"]);
+    setLocationReady(true);
   };
 
   const searchRestaurants = async () => {
@@ -50,7 +54,7 @@ export default function SearchPage() {
         onLogout();
         router.replace("../../");
       } else {
-        setRestaurants(restaurants);
+        setRestaurants(await restaurants);
       }
     } catch (error) {
       console.error(error.message);
@@ -81,18 +85,21 @@ export default function SearchPage() {
         <FlatList
           data={restaurants}
           renderItem={({ item }) => (
-            <Pressable onPress={() => router.push({ pathname: "search/restaurant", params: { restaurant_id: item.id } })}>
               <RestaurantInfo
                 restaurant_id={item.id}
                 name={item.name}
-                category={item.category}
-                price={item.price}
-                rating={item.rating}
+                coordinates={item.coordinates}
+                location={item.location}
+                isDistance={true}
                 distance={item.distance}
                 image_url={item.image_url}
-                city={item.city}
+                price={item.price}
+                business_hours={item.business_hours}
+                categories={item.categories}
+                rating={item.rating.toFixed(1)}
+                saved={item.saved}
+                path={'search'}
               />
-            </Pressable>
           )}
         />
       </View>

@@ -9,6 +9,7 @@ type InputFormProps = {
   iconName?: string;
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
   secureTextEntry?: boolean;
+  borderRadius?: number;
 };
 
 export default function InputForm(props: InputFormProps) {
@@ -29,7 +30,7 @@ export default function InputForm(props: InputFormProps) {
       // ===== container =====
       containerStyle={{
         borderWidth: 1,
-        borderRadius: 12,
+        borderRadius: props.borderRadius ? props.borderRadius : 12,
         borderColor: "#E2E2E2",
         backgroundColor: "#FFFFFF",
         paddingLeft: 10,
