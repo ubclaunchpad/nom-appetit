@@ -1,13 +1,13 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
 import { router } from "expo-router";
-import { getDownloadURL, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, listAll, ref } from "firebase/storage";
 import { FIREBASE_STORAGE } from "firebaseConfig";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "src/context/SessionContext";
-import { Icon } from "react-native-elements";
 
 type ProfileInfo = {
   user_id: string;
@@ -86,8 +86,26 @@ export const Profile = () => {
       const data = {
         "restaurant_id": restaurant_id,
       };
-      const response = await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/removeReview`, data);
-      // Update local state to remove the review
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/getImageID`, { 
+        params: {
+        "restaurant_id": restaurant_id
+      }});
+      await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/removeReview`, data);
+      const { picture_id } = response.data
+      const folderRef = ref(FIREBASE_STORAGE, "reviews/" + restaurant_id + "/" + picture_id + "/");
+      listAll(folderRef)
+      .then((dir) => {
+        dir.items.forEach((fileRef) => {
+          const file = ref(FIREBASE_STORAGE, fileRef.fullPath);
+          deleteObject(file)
+            .then(() => {
+              console.log("deleted:", fileRef.name);
+            })
+            .catch((e) => {
+              console.log("Error deleting", fileRef.name, ":", e.message);
+            });
+        });
+      })
       setUserReviews((prevReviews) => prevReviews.filter((review) => review.restaurant.restaurant_id !== restaurant_id));
     } catch (error) {
       console.error("Error removing review:", error.message);
