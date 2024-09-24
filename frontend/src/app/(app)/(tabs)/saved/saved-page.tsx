@@ -67,7 +67,6 @@ export default function SearchPage() {
                 business_hours={item.business_hours}
                 categories={item.categories}
                 rating={item.rating}
-                saved={item.saved}
                 path={'saved'}
               />
           )}

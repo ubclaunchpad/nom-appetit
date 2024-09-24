@@ -33,7 +33,6 @@ interface RestaurantProps {
   business_hours: Array<BusinessHour>;
   categories: Array<Category>;
   rating: number;
-  saved: boolean;
   path: string;
 }
 
@@ -50,65 +49,7 @@ export default function RestaurantInfo(props: RestaurantProps) {
   const business_hours = props.business_hours;
   const categories = props.categories;
   const rating = props.rating;
-  const saved = props.saved;
   const isDistance = props.isDistance;
-
-  const [isSaved, setIsSaved] = useState(props.saved);
-
-  const saveRestaurant = async () => {
-    try {
-      const server_url = process.env.EXPO_PUBLIC_SERVER_URL;
-      // do the opposite of what is current so since it is save, now unsave
-      setIsSaved(false);
-      if (isSaved) {
-        const data = {
-          restaurant_id: props.restaurant_id,
-        };
-        const response = await axios.post(server_url + "/unsaveRestaurant", data);
-        const { invalid_token } = response.data;
-        if (invalid_token) {
-          Alert.alert("Error", "Your token expired. Please log in again.");
-          router.replace("../../");
-        }
-      } else {
-        // it is not saved yet, so now we save
-        setIsSaved(true);
-        const data = {
-          restaurant_id: props.restaurant_id,
-          name: props.name,
-          coordinates: props.coordinates,
-          location: props.location,
-          image_url: props.image_url,
-          price: props.price,
-          business_hours: props.business_hours,
-          categories: props.categories,
-          rating: props.rating,
-          saved: true,
-        };
-        const response = await axios.post(server_url + "/saveRestaurant", data);
-        const { invalid_token } = response.data;
-        if (invalid_token) {
-          Alert.alert("Error", "Your token expired. Please log in again.");
-          router.replace("../../");
-        }
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const generateFullStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const stars = [];
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <View key={i} style={styles.iconContainer}>
-          <Icon name="star" type="font-awesome" color="#FFFFFF" size={14} />
-        </View>
-      );
-    }
-    return stars;
-  };
 
   return (
     <Pressable
@@ -117,7 +58,6 @@ export default function RestaurantInfo(props: RestaurantProps) {
           pathname: props.path + "/restaurant",
           params: {
             restaurant_id: props.restaurant_id,
-            saved: (isSaved ? 'true' : 'false') ,
           },
         })
       }
@@ -132,15 +72,6 @@ export default function RestaurantInfo(props: RestaurantProps) {
         />
         <View style={styles.headerContainer}>
           <Text style={styles.name}>{name}</Text>
-          {isSaved ? (
-            <Pressable onPress={saveRestaurant}>
-              <Icon name="heart" type="material-community" color="#7F7E78" size={20} />
-            </Pressable>
-          ) : (
-            <Pressable onPress={saveRestaurant}>
-              <Icon name="heart-outline" type="material-community" color="#7F7E78" size={20} />
-            </Pressable>
-          )}
         </View>
         <View style={styles.detailsContainer}>
           <View style={styles.iconContainer}>

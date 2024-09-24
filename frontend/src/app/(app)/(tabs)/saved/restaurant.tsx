@@ -11,9 +11,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "src/context/SessionContext";
 
 export default function Restaurant() {
-  const { restaurant_id, saved } = useLocalSearchParams();
+  const { restaurant_id } = useLocalSearchParams();
   const [reviews, setReviews] = useState([]);
-  const [isSaved, setIsSaved] = useState(saved === 'true');
+  const [isSaved, setIsSaved] = useState(false);
 
   const [businessHours, setBusinessHours] = useState([]);
   const [categories, setCategories] = useState([
@@ -42,10 +42,19 @@ export default function Restaurant() {
   const { onLogout } = useSession();
 
   useEffect(() => {
+    getSavedStatus();
     getRestaurantDetails();
     getAllReviews();
   }, []);
 
+  const getSavedStatus = async () => {
+    const data = {
+      "restaurant_id": restaurant_id
+    };
+    const response = await axios.post(process.env.EXPO_PUBLIC_SERVER_URL + "/getSavedStatus", data);
+    const { saved } = response.data 
+    setIsSaved(saved)
+  };
 
   const getRestaurantDetails = async () => {
     try {
@@ -161,7 +170,7 @@ export default function Restaurant() {
           business_hours: businessHours,
           categories: categories,
           rating: rating as number,
-          saved: true
+          saved: true,
         };
         const response = await axios.post(server_url + "/saveRestaurant", data);
         const { invalid_token } = response.data;
@@ -188,15 +197,16 @@ export default function Restaurant() {
             leftIcon="arrow-left"
             leftNavigationOnPress={() => router.back()}
             middleIcon="note-edit-outline"
-            middleNavigationOnPress={() => 
+            middleNavigationOnPress={() =>
               router.push({
                 pathname: "saved/add-review",
-                params: { 
-                  restaurant_id: restaurant_id, 
-                  name: restaurantName, 
-                  image_url: imageUrl 
-                }
-              })}
+                params: {
+                  restaurant_id: restaurant_id,
+                  name: restaurantName,
+                  image_url: imageUrl,
+                },
+              })
+            }
             rightIcon={isSaved ? "heart" : "heart-outline"}
             rightNavigationOnPress={() => saveRestaurant()}
             color="#FFFFFF"

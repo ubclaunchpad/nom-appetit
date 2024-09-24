@@ -97,7 +97,6 @@ export default function SearchPage() {
                 business_hours={item.business_hours}
                 categories={item.categories}
                 rating={item.rating.toFixed(1)}
-                saved={item.saved}
                 path={'search'}
               />
           )}

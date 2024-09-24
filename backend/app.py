@@ -239,3 +239,16 @@ def getImageIDRoute():
     
     except Exception as e:
         return {"error": str(e)}
+
+@app.route("/getSavedStatus", methods=["POST"])
+@token_required
+def getSavedStatusRoute():
+    try:
+        data = request.get_json()
+        user_id = g.user_id
+        restaurant_id = data.get("restaurant_id")
+        status = getSavedStatus(user_id, restaurant_id)
+        return {"saved": status}
+    
+    except Exception as e:
+        return {"error": str(e)}
