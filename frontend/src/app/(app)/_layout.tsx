@@ -17,6 +17,6 @@ export default function AppLayout() {
       </Stack>
     );
   } else {
-    return <Redirect href="/index" />;
+    return <Redirect href="/" />;
   }
 }

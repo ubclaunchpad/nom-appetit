@@ -1,12 +1,12 @@
 import json
 import secrets
-from functools import wraps
-
 import jwt
+from functools import wraps
 from flask import Flask, g, request
 from services.authentication import *
 from services.database import *
 from services.yelp import *
+from services.recommendation import *
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = (
@@ -17,7 +17,6 @@ with open("tests/test-search.json", "r") as file:
     test_search = json.load(file)
 with open("tests/test-detailed-search.json", "r") as file:
     test_detailed_search = json.load(file)
-
 
 def token_required(func):
     @wraps(func)
@@ -34,23 +33,20 @@ def token_required(func):
 
     return decorated
 
-
 @app.route("/register", methods=["POST"])
 def registerRoute():
     try:
         data = request.get_json()
-        name = data.get("name")
         email = data.get("email")
         username = data.get("username")
+        name = data.get("name")
         password = data.get("password")
-        user_id = createUser(name, email, password)
-        createProfile(user_id, username)
+        user_id = createUser(username, email, password)
+        createProfile(user_id, name)
         return {"user_id": user_id}
 
     except Exception as e:
-        # PASSWORD_TOO_SHORT, EMAIL_EXISTS, EMAIL_INVALID, USERNAME_EXISTS
         return {"error": str(e)}
-
 
 @app.route("/login", methods=["POST"])
 def loginRoute():
@@ -65,71 +61,16 @@ def loginRoute():
         # USER_NOT_FOUND, INVALID_PASSWORD
         return {"error": str(e)}
 
-
-@app.route("/editUserInfo", methods=["POST"])
-@token_required
-def editUserInfoRoute():
-    try:
-        data = request.get_json()
-        result = editProfileInfo(g.user_id, data)
-        return {"result": result}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
-@app.route("/getDetailedUserInfo", methods=["GET"])
-@token_required
-def getDetailedUserInfoRoute():
-    try:
-        data = request.args
-        user_id = data.get("user_id")
-        user_info = getDetailedUserInfo(user_id)
-        return {"user_info": user_info}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
-@app.route("/getCurrentUserInfo", methods=["GET"])
-@token_required
-# params: none
-# returns: user and profile information
-# function: to retrieve profile information from token
-def getCurrentUserInfoRoute():
-    try:
-        user_id = g.user_id
-        current_user_info = getDetailedUserInfo(user_id)
-        current_user_info["id"] = user_id
-        reviewed_restaurant_ids = current_user_info["reviews"]
-        review_details = []
-        for review_id in reviewed_restaurant_ids:
-            review_detail = getUserReviews(review_id, user_id)
-            review_details.append(review_detail)
-        return {
-            "current_user_info": current_user_info,
-            "current_user_reviews": review_details,
-        }
-
-    except Exception as e:
-        if str(e) == "USER_NOT_FOUND":
-            return {"user_not_found": True}
-        if str(e) == "PROFILE_NOT_FOUND":
-            return {"profile_not_found": True}
-
-
 @app.route("/saveRestaurant", methods=["POST"])
 @token_required
 def saveRestaurantRoute():
     try:
         data = request.get_json()
-        restaurant_id = data.get("restaurant_id")
-        result = saveRestaurant(g.user_id, restaurant_id)
+        result = saveRestaurant(g.user_id, data)
         return {"result": result}
 
     except Exception as e:
         return {"error": str(e)}
-
 
 @app.route("/unsaveRestaurant", methods=["POST"])
 @token_required
@@ -142,25 +83,7 @@ def unsaveRestaurantRoute():
 
     except Exception as e:
         return {"error": str(e)}
-
-
-@app.route("/getSavedRestaurants", methods=["GET"])
-@token_required
-def getSavedRestaurantsRoute():
-    date = request.args.get("current_day")
-    try:
-        restaurant_list = []
-        saved_restaurants = getSavedRestaurants(g.user_id)
-        for restaurant in saved_restaurants:
-            restaurant_details = getRestaurantDetails(restaurant, date)
-            restaurant_list.append(restaurant_details)
-
-        return {"saved_restaurants": restaurant_list}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
+    
 @app.route("/searchRestaurants", methods=["GET"])
 @token_required
 def searchRestaurantsRoute():
@@ -168,56 +91,125 @@ def searchRestaurantsRoute():
         data = request.args
         longitude = data.get("longitude")
         latitude = data.get("latitude")
-        keywords = data.get("keywords")
         location = data.get("location")
-        restaurants = searchRestaurants(longitude, latitude, keywords, location)
+        keywords = data.get("keywords")
+        user_id = g.user_id
+        restaurants = searchRestaurants(longitude, latitude, keywords, location, user_id)
         return {"restaurants": restaurants}
 
     except Exception as e:
         # API_KEY_MISSING
         return {"error": str(e)}
+    
+@app.route("/createReview", methods=["POST"])
+@token_required
+def createReviewRoute():
+    try:
+        data = request.get_json()
+        restaurant_id = data.get("restaurant_id")
+        name = data.get("name")
+        image_url = data.get("image_url")
+        picture_id = data.get("picture_id")
+        user_id = g.user_id
+        rating = data.get("rating")
+        review = data.get("review")
+        result = createReview(restaurant_id, name, image_url, user_id, rating, review, picture_id)
+        return {"success": result}
 
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/getAllReviews", methods=["GET"])
+@token_required
+def getAllReviewsRoute():
+    try:
+        data = request.args
+        restaurant_id = data.get("restaurant_id")
+        reviews = getAllReviews(restaurant_id)
+        return {"reviews": reviews}
 
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/getUserInfo", methods=["GET"])
+@token_required
+def getUserInfoRoute():
+    try:
+        user_id = g.user_id
+        user_info = getUserInfo(user_id)
+        user_creds = getUserCreds(user_id)
+        user_info['user_id'] = user_id
+        user_info['username'] = user_creds['username']
+        user_info['email'] = user_creds['email']
+        return {"user_info": user_info}
+
+    except Exception as e:
+        return {"error": str(e)}
+    
 @app.route("/getRestaurantDetails", methods=["GET"])
 @token_required
 def getRestaurantDetailsRoute():
     try:
         data = request.args
         restaurant_id = data.get("restaurant_id")
-        current_day = data.get("current_day")
-        restaurant = getRestaurantDetails(restaurant_id, current_day)
-        return {"restaurant_details": restaurant}
-
+        user_id = g.user_id
+        restaurant_details = getRestaurantDetails(restaurant_id, user_id)
+        return {"restaurant_details": restaurant_details}
+        
     except Exception as e:
-        # API_KEY_MISSING
+        return {"error": str(e)}
+    
+@app.route("/getSavedRestaurants", methods=["GET"])
+@token_required
+def getSavedRestaurantsRoute():
+    try:
+        user_id = g.user_id
+        saved_restaurants = getSavedRestaurants(user_id)
+        return {"saved_restaurants": saved_restaurants}
+        
+    except Exception as e:
         return {"error": str(e)}
 
-
-@app.route("/createReview", methods=["POST"])
+@app.route("/getUserReviews", methods=["GET"])
 @token_required
-def createReviewRoute():
+def getUserReviewsRoute():
+    try:
+        user_id = g.user_id
+        reviews = getUserReviews(user_id)
+        return {"reviews": reviews}
+        
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.route("/editUserInfo", methods=["POST"])
+@token_required
+def editUserInfoRoute():
     try:
         data = request.get_json()
-        review_id = data.get("review_id")
-        restaurant_id = data.get("restaurant_id")
-        review = data.get("review")
-        rating = data.get("rating")
-        review_id = createReview(review_id, restaurant_id, g.user_id, rating, review)
-        print(review)
-        return {"review_id": review_id}
+        result = editProfileInfo(g.user_id, data)
+        return {"result": result}
 
     except Exception as e:
         return {"error": str(e)}
 
-
-@app.route("/getReviews", methods=["GET"])
-@token_required
-def getReviewsRoute():
+@app.route("/getAllUsernames", methods=["GET"])
+def getAllUsernamesRoute():
     try:
-        data = request.args
-        restaurant_id = data.get("restaurant_id")
-        reviews = getReviews(restaurant_id)
-        return {"reviews": reviews}
+        result = getAllUsernames()
+        return {"result": result}
 
     except Exception as e:
         return {"error": str(e)}
+    
+@app.route("/getUserRecommendations", methods=["POST"])
+@token_required
+def getUserRecommendationsRoute():
+    try:
+        data = request.get_json()
+        user_id = g.user_id
+        refresh_request = data.get("refresh_request")
+        recommendations = recommendUser(user_id, refresh_request)
+        return {"restaurants": recommendations}
+    except Exception as e:
+        return {"error": str(e)}
+

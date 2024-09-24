@@ -1,11 +1,10 @@
-# ===== imports  =====
 from services.database import *
 import jwt
 from datetime import datetime, timedelta, timezone
 
 def createToken(username, password, secret_key):
     user_id = validateUser(username, password)
-    expiration_time = datetime.now(timezone.utc) + timedelta(hours=15)
+    expiration_time = datetime.now(timezone.utc) + timedelta(days=30)
     payload_data = {
         'user_id' : user_id,
         'exp' : expiration_time 

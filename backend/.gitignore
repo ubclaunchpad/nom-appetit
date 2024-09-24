@@ -2,3 +2,5 @@
 services/secrets/*
 __pycache__/
 .DS_Store/
+services/data/*
+services/models/*

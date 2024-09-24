@@ -8,7 +8,9 @@ const Layout = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="saved_restaurants" />
+      <Stack.Screen name="saved-page" />
+      <Stack.Screen name="restaurant" />
+      <Stack.Screen name="add-review" />
     </Stack>
   );
 };
