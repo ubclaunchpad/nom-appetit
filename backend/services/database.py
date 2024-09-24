@@ -173,101 +173,10 @@ def setRecommendations(user_id, json):
     )
     return True
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def setRecommendedStatus(user_id, status):
-#     db.collection("profiles").document(user_id).update(
-#         {
-#             "rec_status": status
-#         }
-#     )
-#     return True
-
-# def getRecommendations(user_id):
-#     profile = db.collection("profiles").document(user_id).get().to_dict()
-#     return profile.get("recommendations")
-
-# def getRecommendationStatus(user_id):
-#     profile = db.collection("profiles").document(user_id).get().to_dict()
-#     return profile.get("rec_status")
-
-# def setRecommendations(user_id, json):
-#     db.collection("profiles").document(user_id).update(
-#         {
-#             "recommendations": json
-#         }
-#     )
-#     return True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
+def removeReview(user_id, restaurant_id):
+    db.collection("profiles").document(user_id).update({
+        "reviews": firestore.ArrayRemove([restaurant_id])
+    })
+    review_ref = db.collection("reviews").document(restaurant_id).collection("user_reviews").document(user_id)
+    review_ref.delete()
+    return True
