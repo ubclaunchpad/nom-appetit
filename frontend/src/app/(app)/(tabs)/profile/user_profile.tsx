@@ -136,7 +136,7 @@ export const Profile = () => {
             </View>
           )}
           ListHeaderComponent={renderProfileHeader}
-          ListEmptyComponent={<Text>No reviews yet</Text>}
+          ListEmptyComponent={<Text style={styles.noReviews}>No reviews yet</Text>}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{ paddingBottom: 20 }}
           showsVerticalScrollIndicator={false}
@@ -269,4 +269,9 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#E0E0E0", // Divider color
   },
+  noReviews: {
+    fontFamily: "GT-America-Standard-Standard",
+    fontSize: 14,
+    color: "#7F7E78",
+  }
 });

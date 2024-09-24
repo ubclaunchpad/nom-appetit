@@ -33,7 +33,7 @@ const EditProfile = () => {
       await axios.post(`${process.env.EXPO_PUBLIC_SERVER_URL}/editUserInfo`, { name, bio });
 
       if (image) {
-        const response = await fetch(image);
+        const response = await fetch(image as string);
         const blob = await response.blob();
         const storageRef = ref(FIREBASE_STORAGE, `users/${id}.jpg`);
         uploadBytesResumable(storageRef, blob).then(() => router.back());
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     width: '100%',
   },
   image: {
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   inputContent: {
     width: '100%',
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 40,
     gap: 10,
   },
