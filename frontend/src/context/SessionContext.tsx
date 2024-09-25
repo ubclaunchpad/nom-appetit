@@ -41,7 +41,6 @@ export const SessionProvider = ({ children }: any) => {
   const register = async (email: string, username: string, name: string, password: string) => {
     try {
       return await axios.post(`${API_URL}/register`, { email, username, name, password });
-      
     } catch (error) {
       return { error: true, msg: (error as any).response.data.message };
     }
@@ -50,6 +49,9 @@ export const SessionProvider = ({ children }: any) => {
   const login = async (username: string, password: string) => {
     try {
       const result = await axios.post(`${API_URL}/login`, { username, password });
+      if (result.data.error) {
+        return result.data.error
+      }
       setAuthState({
         token: result.data.token,
         authenticated: true,
@@ -60,6 +62,7 @@ export const SessionProvider = ({ children }: any) => {
       return result;
 
     } catch (error) {
+      console.log(error)
       return { error: true, msg: (error as any).response.data.message };
     }
   };
@@ -73,7 +76,6 @@ export const SessionProvider = ({ children }: any) => {
         token: null,
         authenticated: false,
       });
-
     } catch (error) {
       return { error: true, msg: (error as any).response.data.message };
     }

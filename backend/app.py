@@ -252,3 +252,19 @@ def getSavedStatusRoute():
     
     except Exception as e:
         return {"error": str(e)}
+    
+@app.route("/getOtherUserInfo", methods=["GET"])
+@token_required
+def getOtherUserInfoRoute():
+    try:
+        data = request.args
+        user_id = data.get("user_id")
+        user_info = getUserInfo(user_id)
+        user_creds = getUserCreds(user_id)
+        user_info['user_id'] = user_id
+        user_info['username'] = user_creds['username']
+        user_info['email'] = user_creds['email']
+        return {"user_info": user_info}
+
+    except Exception as e:
+        return {"error": str(e)}

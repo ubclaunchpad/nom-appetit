@@ -17,13 +17,13 @@ export default function SearchPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    getUserRecommendations();
+    getUserRecommendations(false);
   }, []);
 
-  const getUserRecommendations = async () => {
+  const getUserRecommendations = async (refresh_request: boolean) => {
     try {
       const data = {
-        refresh_status: refreshing,
+        refresh_request: refresh_request,
       };
       const response = await axios.post(process.env.EXPO_PUBLIC_SERVER_URL + "/getUserRecommendations", data);
       const { invalid_token, error, restaurants } = response.data;
@@ -50,10 +50,8 @@ export default function SearchPage() {
   };
 
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    const timeout = setTimeout(() => {
-      getUserRecommendations();
-    }, 2000);
+    setRefreshing(true)
+    getUserRecommendations(true);
   }, []);
 
   return (

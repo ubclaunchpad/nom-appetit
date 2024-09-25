@@ -114,7 +114,7 @@ export default function Restaurant() {
           const profile_picture = await getDownloadURL(profile_picture_ref);
           review["profile_picture"] = profile_picture;
           // get user info
-          const response = await axios.get(process.env.EXPO_PUBLIC_SERVER_URL + "/getUserInfo");
+          const response = await axios.get(process.env.EXPO_PUBLIC_SERVER_URL + "/getOtherUserInfo");
           const { invalid_token, user_info } = response.data;
           if (invalid_token) {
             Alert.alert("Error", "Your session expired. Please log in again.");

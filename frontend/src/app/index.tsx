@@ -7,42 +7,57 @@ import { useSession } from "../context/SessionContext";
 
 export default function SignIn() {
   const { onLogin } = useSession();
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userNotFoundMessage, setUserNotFoundMessage] = useState("");
-  const [invalidPasswordMessage, setInvalidPasswordMessage] = useState("");
+  const [userNotFound, setUserNotFound] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
 
   const handleSignIn = async () => {
-    await onLogin(name, password);
-    router.replace("/search/");
+    const result = await onLogin(username, password);
+    console.log(result)
+    if (result == "USER_NOT_FOUND") {
+      setUserNotFound(true);
+      setInvalidPassword(false);
+    } else if (result == "INVALID_PASSWORD") {
+      setInvalidPassword(true);
+      setUserNotFound(false);
+    } else {
+      router.replace("/search/");
+    }
   };
+
+  console.log(userNotFound)
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <InputForm
-          value={name}
-          onChangeText={setName}
-          placeholder="Username"
-          errorMessage={userNotFoundMessage}
-          autoCapitalize="none"
-          secureTextEntry={false}
-          borderRadius={8}
-        />
-        <InputForm
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          errorMessage={invalidPasswordMessage}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          borderRadius={8}
-        />
+        <View style={styles.inputWrapper}>
+          <InputForm
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Username"
+            autoCapitalize="none"
+            secureTextEntry={false}
+            borderRadius={8}
+          />
+          {userNotFound ? <Text style={styles.errorText}>ⓘ User not found</Text> : null}
+        </View>
+        <View style={styles.inputWrapper}>
+          <InputForm
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            borderRadius={8}
+          />
+          {invalidPassword ? <Text style={styles.errorText}>ⓘ Invalid password</Text> : null}
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => router.replace('register')} style={styles.link}>
+      <TouchableOpacity onPress={() => router.replace("register")} style={styles.link}>
         <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -80,5 +95,17 @@ const styles = StyleSheet.create({
   },
   linkText: {
     color: "#1A1A1A",
+  },
+  errorText: {
+    fontFamily: "GT-America-Standard-Regular",
+    color: "red",
+    fontSize: 12,
+    marginTop: 5,
+  },
+  input: {
+    marginVertical: 0,
+  },
+  inputWrapper: {
+    width: "100%",
   },
 });
