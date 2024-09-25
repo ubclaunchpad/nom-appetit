@@ -1,6 +1,11 @@
-<div align="center">
-  <img src="./frontend/assets/gallery/logo.png" alt="Logo" width=300 style="margin-top: 50px; margin-bottom: 50px"/>
-</div>
+<br>
+<p align="center">
+  <img src="./frontend/assets/gallery/logo.png" alt="Logo" width=300/>
+</p>
+<p align="center">
+  Restaurant tracking and recommendation app
+</p>
+<br>
 
 # 📚 Table of Contents
 + [About The Project](#abouttheproject)
@@ -22,11 +27,11 @@ At the heart of Nom Appetit is its intelligent recommendation system. Using item
 With Nom Appetit, finding your next meal becomes a collaborative and enjoyable experience, connecting food lovers and simplifying the decision-making process.
 
 # 📷 Gallery
-<div style="display: flex; justify-content: center; gap: 20px; width: 100%;">
-  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" style="width: 33.33%; height: auto;"/>
-  <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" style="width: 33.33%; height: auto;"/>
-  <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" style="width: 33.33%; height: auto;"/>
-</div>
+<p align="center">
+  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" width="300" style="margin-right: 10px;"/>
+  <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" width="300" style="margin-right: 10px;"/>
+  <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" width="300"/>
+</p>
 
 
 # 🚀 Getting Started
