@@ -10,6 +10,7 @@ type InputFormProps = {
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
   secureTextEntry?: boolean;
   borderRadius?: number;
+  required?: boolean;
 };
 
 export default function InputForm(props: InputFormProps) {

@@ -83,12 +83,12 @@ def createReview(restaurant_id, name, image_url, user_id, rating, review, pictur
             'reviews': firestore.ArrayUnion([restaurant_id])
         }
     )
-    if not restaurant_ref.get().exists:
-        restaurant_ref.set({
-            "restaurant_id": restaurant_id,
-            "restaurant_name": name,
-            "restaurant_image_url": image_url
-        })
+    # if not restaurant_ref.get().exists:
+    restaurant_ref.set({
+        "restaurant_id": restaurant_id,
+        "restaurant_name": name,
+        "restaurant_image_url": image_url
+    })
     reviews_ref.set({
         "rating": float(rating),
         "review": review,

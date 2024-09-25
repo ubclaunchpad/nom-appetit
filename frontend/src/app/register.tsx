@@ -14,18 +14,24 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailValid, setEmailValid] = useState(true);
-  const [usernameValid, setUsernameValid] = useState(true);
-  const [passwordValid, setPasswordValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(false);
+  const [usernameValid, setUsernameValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
 
   const handleRegister = async () => {
-    validateEmail(email);
-    await validateUsername(username);
-    
-    if (emailValid && usernameValid && passwordValid) {
+    const emailIsValid = validateEmail(email);
+    const usernameIsValid = await validateUsername(username);
+    const passwordIsValid = validatePassword(password);
+    const nameIsValid = validateName(name);
+
+    const allValid = emailIsValid && usernameIsValid && passwordIsValid && nameIsValid;
+
+    if (allValid) {
       const response = await onRegister(email, username, name, password);
       const user_id = response.data.user_id;
       await addProfilePicture(user_id);
@@ -38,7 +44,7 @@ const Register = () => {
     const response = await fetch("https://i.postimg.cc/hvVKRDnP/Untitled-design-1.png");
     const blob = await response.blob();
     const storageRef = ref(FIREBASE_STORAGE, `users/${user_id}.jpg`);
-    uploadBytesResumable(storageRef, blob);
+    await uploadBytesResumable(storageRef, blob);
   };
 
   const validateEmail = (email: string) => {
@@ -46,27 +52,58 @@ const Register = () => {
     if (!emailRegex.test(email)) {
       setEmailValid(false);
       setEmailError("ⓘ Invalid email address");
-    } else {
-      setEmailValid(true);
-      setEmailError("");
+      return false;
     }
+    setEmailValid(true);
+    setEmailError("");
+    return true;
   };
 
   const validateUsername = async (username: string) => {
+    if (!username) {
+      setUsernameValid(false);
+      setUsernameError("ⓘ Username is required");
+      return false;
+    }
+    
     try {
       const response = await axios.get(`${process.env.EXPO_PUBLIC_SERVER_URL}/getAllUsernames`);
       const username_array: string[] = response.data["result"];
       if (username_array.includes(username)) {
         setUsernameValid(false);
         setUsernameError("ⓘ Username already taken");
-      } else {
-        setUsernameValid(true);
-        setUsernameError("");
+        return false;
       }
+      setUsernameValid(true);
+      setUsernameError("");
+      return true;
     } catch (error) {
       setUsernameValid(false);
       setUsernameError("ⓘ Error checking username");
+      return false;
     }
+  };
+
+  const validatePassword = (password: string) => {
+    if (password.length === 0) {
+      setPasswordValid(false);
+      setPasswordError("ⓘ Password is required");
+      return false;
+    }
+    setPasswordValid(true);
+    setPasswordError("");
+    return true;
+  };
+
+  const validateName = (name: string) => {
+    if (name.length === 0) {
+      setNameValid(false);
+      setNameError("ⓘ Name is required");
+      return false;
+    }
+    setNameValid(true);
+    setNameError("");
+    return true;
   };
 
   return (
@@ -81,6 +118,7 @@ const Register = () => {
             secureTextEntry={false}
             borderRadius={8}
           />
+          {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
         </View>
         <View style={styles.inputWrapper}>
           <InputForm
@@ -113,6 +151,7 @@ const Register = () => {
             secureTextEntry={true}
             borderRadius={8}
           />
+          {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
         </View>
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
