@@ -7,12 +7,6 @@
 </p>
 <br>
 
-# 📚 Table of Contents
-+ [About The Project](#abouttheproject)
-+ [Gallery](#gallery)
-+ [Getting Started](#getting-started)
-+ [Contributing](#contributing)
-
 # 💡About The Project
 Nom Appetit is a social restaurant tracking and recommendation app designed to answer the age-old question: “So… where do you want to eat?”
 
@@ -28,9 +22,9 @@ With Nom Appetit, finding your next meal becomes a collaborative and enjoyable e
 
 # 📷 Gallery
 <p align="center">
-  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" width="300" style="margin-right: 10px;"/>
-  <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" width="300" style="margin-right: 10px;"/>
-  <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" width="300"/>
+  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" width="260" style="margin-right: 50px;"/>
+  <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" width="260" style="margin-right: 50px;"/>
+  <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" width="260"/>
 </p>
 
 
@@ -56,17 +50,17 @@ To get a local copy up and running follow these simple example steps.
 ```
 npm install
 ```
-3. Generate Google Cloud Platform and Firebase credentials, and place them inside a .env file. (Note: You will need to manually add the storageBucket value in firebaseConfig.js.)
-5. Configure the server URL for your specific emulator device, and place the credentials inside a .env file.
+3. Generate Google Cloud Platform and Firebase credentials, and place them inside a `.env` file. (Note: You will need to manually add the storageBucket value in firebaseConfig.js.)
+5. Configure the server URL for your specific emulator device, and place the credentials inside a `.env` file.
 ```
-EXPO_PUBLIC_GOOGLE_KEY = (GOOGLE KEY)
-API_KEY = (FIREBASE)
-AUTH_DOMAIN = (FIREBASE)
-PROJECT_ID = (FIREBASE) 
-MESSAGING_SENDER_ID = (FIREBASE)
-APP_ID = (FIREBASE)
-MEASUREMENT_ID = (FIREBASE)
-EXPO_PUBLIC_SERVER_URL = (URL)
+EXPO_PUBLIC_GOOGLE_KEY = [GOOGLE KEY]
+API_KEY = [FIREBASE]
+AUTH_DOMAIN = [FIREBASE]
+PROJECT_ID = [FIREBASE] 
+MESSAGING_SENDER_ID = [FIREBASE]
+APP_ID = [FIREBASE]
+MEASUREMENT_ID = [FIREBASE]
+EXPO_PUBLIC_SERVER_URL = [URL]
 ```
 6. Start the application and follow the instructions in the terminal.
 ```
@@ -79,7 +73,7 @@ npx expo start
 3. Generate & download Firebase Admin SDK private key.
 4. Generate Yelp Fusion API key and place it inside a `.env` file.
 ```
-YELP_API = (YELP FUSION KEY)
+YELP_API = [YELP FUSION KEY]
 ```
 5. Place both the Firebase Admin SDK private key & `.env` file in the `secrets` directory.
 6. Install the required Python modules.
