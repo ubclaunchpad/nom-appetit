@@ -1,49 +1,80 @@
-# Nom Appetit
+<br>
+<p align="center">
+  <img src="./frontend/assets/gallery/logo.png" alt="Logo" width=125/>
+</p>
+<p align="center">
+  Restaurant tracking and recommendation app
+</p>
+<br>
 
-## Table of Contents
-+ [About The Project](#abouttheproject)
-+ [Getting Started](#getting-started)
-+ [Deployment](#deployment)
-+ [Contributing](#contributing)
+# 💡About The Project
+Nom Appetit is a social restaurant tracking and recommendation app designed to answer the age-old question: “So… where do you want to eat?”
 
-## About The Project
-Nom Appetit is a social restaurant tracking and recommendation app with the purpose of helping users pick a place to eat for both individuals and groups. It is designed to finally answer the question of “So… where do you want to eat?”
+Key Features:
 
-The first feature is a tracking feature that allows you to create shareable lists and populate them with restaurants you’ve been to, as well as restaurants that you would like to go to. Think Google Maps lists, but with more sorting and commenting functionalities. A stretch goal for this feature would be to build social media platform integrations to auto-populate or import restaurants into these lists.
+1. **Restaurant Tracking:**
+Discover and explore a wide range of restaurants through an intuitive search feature. Save your favorite spots to a personal list, create reviews that include ratings and images, and share your experiences with the community by viewing others' reviews.
 
-The second feature is a restaurant picking feature - the heart and soul of Nom Appetit. Each user is prompted with yes or no statements in a short quiz, such as “I want to try a new place”. The app will then algorithmically draw upon each user’s lists and answers, and suggest a restaurant to go to. A stretch goal for this feature would be to implement machine learning to “smart suggest” a place to eat.
+2. **Smart Recommendations:**
+At the heart of Nom Appetit is its intelligent recommendation system. Using item-item collaborative filtering trained on Yelp's dataset, the app offers personalized suggestions, helping you find the perfect place to dine based on your preferences.
 
-## Getting Started
+With Nom Appetit, finding your next meal becomes a collaborative and enjoyable experience, connecting food lovers and simplifying the decision-making process.
+
+# 📷 Gallery
+<p align="center">
+  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" width="260" style="margin-right: 50px;"/>
+  <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" width="260" style="margin-right: 50px;"/>
+  <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" width="260"/>
+</p>
+
+
+# 🚀 Getting Started
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+## Prerequisites
 
 - [Python](https://www.python.org/downloads/)
-- [Expo Go](https://docs.expo.dev/)
+- [npm](https://www.npmjs.com/)
 
-### API Credentials
+
+## API Credentials
 - [Firebase](https://firebase.google.com/docs/functions/get-started?gen=2nd)
+- [Google Cloud Platform](https://cloud.google.com/)
 - [Yelp Fusion API](https://docs.developer.yelp.com/docs/fusion-intro)
 
-### Installation
+## Installation
 
-#### Frontend
+### Frontend
 1. Navigate to the `frontend` folder.
 2. Install the required Node.js modules.
 ```
 npm install
 ```
-3. Generate Google Developer API key and set it as the `EXPO_PUBLIC_GOOGLE_KEY` variable in a `.env` file.
-4. Start the application and follow the instructions in the terminal.
+3. Generate Google Cloud Platform and Firebase credentials, and place them inside a `.env` file. (Note: You will need to manually add the storageBucket value in firebaseConfig.js.)
+5. Configure the server URL for your specific emulator device, and place the credentials inside a `.env` file.
+```
+EXPO_PUBLIC_GOOGLE_KEY = [GOOGLE KEY]
+API_KEY = [FIREBASE]
+AUTH_DOMAIN = [FIREBASE]
+PROJECT_ID = [FIREBASE] 
+MESSAGING_SENDER_ID = [FIREBASE]
+APP_ID = [FIREBASE]
+MEASUREMENT_ID = [FIREBASE]
+EXPO_PUBLIC_SERVER_URL = [URL]
+```
+6. Start the application and follow the instructions in the terminal.
 ```
 npx expo start
 ```
 
-#### Backend
+### Backend
 1. Navigate to the `backend` folder.
 2. Create a `secrets` folder in the `services` folder.
 3. Generate & download Firebase Admin SDK private key.
-4. Generate Yelp Fusion API key and set it as the `YELP_API` variable in a `.env` file.
+4. Generate Yelp Fusion API key and place it inside a `.env` file.
+```
+YELP_API = [YELP FUSION KEY]
+```
 5. Place both the Firebase Admin SDK private key & `.env` file in the `secrets` directory.
 6. Install the required Python modules.
 ```
@@ -54,10 +85,7 @@ pip install -r requirements.txt
 flask run
 ```
 
-## Deployment
-Currently in progress!
-
-## Contributing
+# 🤝 Contributing
 
 Contributions are what make the community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 

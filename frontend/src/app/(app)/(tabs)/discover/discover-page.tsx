@@ -74,7 +74,7 @@ export default function SearchPage() {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <RestaurantInfo
-                restaurant_id={item.restaurant_id}
+                restaurant_id={item.id}
                 name={item.name}
                 coordinates={item.coordinates}
                 location={item.location}
