@@ -26,8 +26,6 @@ export default function SignIn() {
     }
   };
 
-  console.log(userNotFound)
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
