@@ -1,6 +1,8 @@
-<img src="./frontend/assets/gallery/logo.png" alt="Review Submission Page"/>
+<div align="center">
+  <img src="./frontend/assets/gallery/logo.png" alt="Review Submission Page" width=300/>
+</div>
 
-# Table of Contents
+# 📚 Table of Contents
 + [About The Project](#abouttheproject)
 + [Gallery](#gallery)
 + [Getting Started](#getting-started)
@@ -20,17 +22,19 @@ At the heart of Nom Appetit is its intelligent recommendation system. Using item
 With Nom Appetit, finding your next meal becomes a collaborative and enjoyable experience, connecting food lovers and simplifying the decision-making process.
 
 # 📷 Gallery
-<div align="center">
-  <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" height=400/>
-  <p>Log in, explore restaurants, and share reviews</p>
-</div>
-<div align="center">
-  <img src="./frontend/assets/gallery/profile.gif" alt="Review Submission Page" height=400/>
-  <p>Customize your profile</p>
-</div>
-<div align="center">
-  <img src="./frontend/assets/gallery/discover.gif" alt="Review Submission Page" height=400/>
-  <p>Generate recommendations based on your tastes</p>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+  <div>
+    <img src="./frontend/assets/gallery/search.gif" alt="Review Submission Page" style="height: 400px; width: auto;"/>
+    <p>Log in, explore restaurants, and share reviews</p>
+  </div>
+  <div>
+    <img src="./frontend/assets/gallery/profile.gif" alt="Profile Page" style="height: 400px; width: auto;"/>
+    <p>Customize your profile</p>
+  </div>
+  <div>
+    <img src="./frontend/assets/gallery/discover.gif" alt="Recommendations Page" style="height: 400px; width: auto;"/>
+    <p>Generate recommendations based on your tastes</p>
+  </div>
 </div>
 
 # 🚀 Getting Started
@@ -90,7 +94,7 @@ pip install -r requirements.txt
 flask run
 ```
 
-# 📚 Contributing
+# 🤝 Contributing
 
 Contributions are what make the community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
