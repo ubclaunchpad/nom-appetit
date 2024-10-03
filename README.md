@@ -1,6 +1,9 @@
 <br>
 <p align="center">
-  <img src="./frontend/assets/gallery/logo.png" alt="Logo" width=300/>
+  <img src="./frontend/assets/gallery/logo-new.png" alt="Logo" width=375/>
+</p>
+<p align="center">
+  Restaurant tracking and recommendation app
 </p>
 <br>
 
