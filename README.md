@@ -2,9 +2,6 @@
 <p align="center">
   <img src="./frontend/assets/gallery/logo.png" alt="Logo" width=300/>
 </p>
-<p align="center">
-  Restaurant tracking and recommendation app
-</p>
 <br>
 
 # 💡About The Project
