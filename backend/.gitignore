@@ -1,4 +1,2 @@
-.venv/
-services/secrets/*
-__pycache__/
-.DS_Store/
+.venv/*
+.env
